@@ -1,0 +1,36 @@
+debug: false
+#server:
+#  port: 443
+#  ssl:
+#    key-store: classpath:k3t3.com.pfx
+#    key-store-password: 40I69DfH
+#    key-store-type: PKCS12
+spring:
+  devtools:
+    restart:
+      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/utopia?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2048MB
+      max-request-size: 2048MB
+  mail:
+    host: smtp.qq.com
+    username: 1416978277@qq.com
+    password: akaipgfscehfghci
+    protocol: smtp
+    default-encoding: UTF-8
+#mybatis:
+#  mapper-locations: classpath:**/mapper/*.xml
+#  type-aliases-package: com.utopia.po
+logging:
+  file:
+    name: /log/demo.log
+  level:
+    root: info
+#    com.utopia.dao: trace

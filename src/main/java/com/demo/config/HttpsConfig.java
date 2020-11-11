@@ -1,4 +1,4 @@
-package com.demo.util;
+package com.demo.config;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
@@ -7,8 +7,19 @@ import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * <h1>Https配置类</h1>
+ *
+ * <p>
+ * 取消注释@Configuration来开启Https
+ * </p>
+ *
+ * <p>createDate 2020/11/11 11:11:11</p>
+ *
+ * @author ALI[1416978277@qq.com]
+ */
 // @Configuration
-public class SSL {
+public class HttpsConfig {
     @Bean
     public Connector connector() {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");

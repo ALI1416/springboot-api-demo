@@ -1,7 +1,9 @@
 package com.demo.tool;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
+import javax.annotation.Nonnull;
+import java.util.concurrent.*;
 
 /**
  * <h1>线程池</h1>
@@ -12,9 +14,20 @@ import java.util.concurrent.Executors;
  **/
 public class ThreadPool {
     /**
-     * 无限量线程池
+     * 线程池命名
      */
-    private static ExecutorService pool = Executors.newCachedThreadPool();
+    private static final ThreadFactory namedThreadFactory = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d").build();
+    /**
+     * 自定义线程池
+     */
+    private static ExecutorService pool = null;
+
+    /**
+     * 创建线程池
+     */
+    private static void create() {
+        pool = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(1024), namedThreadFactory, new ThreadPoolExecutor.AbortPolicy());
+    }
 
     /**
      * 执行线程
@@ -23,8 +36,8 @@ public class ThreadPool {
      */
     public static void execute(Runnable command) {
         // 如果线程池已关闭，则重新创建一个新的
-        if (pool.isShutdown()) {
-            pool = Executors.newCachedThreadPool();
+        if (pool == null || pool.isShutdown()) {
+            create();
         }
         pool.execute(command);
     }

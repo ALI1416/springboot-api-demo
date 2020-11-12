@@ -11,39 +11,54 @@ import org.springframework.context.annotation.Bean;
  * <h1>Https配置类</h1>
  *
  * <p>
- * 取消注释@Configuration来开启Https
+ * 监听所有路径，http协议切换到https协议
  * </p>
  *
- * <p>createDate 2020/11/11 11:11:11</p>
+ * <p>
+ * <b>取消注释@Configuration来开启Https</b>
+ * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * <p>
+ * createDate 2020/11/11 11:11:11
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
  */
-// @Configuration
-public class HttpsConfig {
-    @Bean
-    public Connector connector() {
-        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        connector.setScheme("http");
-        connector.setPort(80);
-        connector.setSecure(false);
-        connector.setRedirectPort(443);
-        return connector;
-    }
 
-    @Bean
-    public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector) {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-            @Override
-            protected void postProcessContext(Context context) {
-                SecurityConstraint securityConstraint = new SecurityConstraint();
-                securityConstraint.setUserConstraint("CONFIDENTIAL");
-                SecurityCollection collection = new SecurityCollection();
-                collection.addPattern("/*");
-                securityConstraint.addCollection(collection);
-                context.addConstraint(securityConstraint);
-            }
-        };
-        tomcat.addAdditionalTomcatConnectors(connector);
-        return tomcat;
-    }
+//@Configuration
+public class HttpsConfig {
+	/**
+	 * 配置connector的http协议80端口，跳转到443端口
+	 */
+	@Bean
+	public Connector connector() {
+		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+		connector.setScheme("http");
+		connector.setPort(80);
+		connector.setSecure(false);
+		connector.setRedirectPort(443);
+		return connector;
+	}
+
+	/**
+	 * 配置connector下所有路径监听
+	 * 
+	 * @param connector connector
+	 */
+	@Bean
+	public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector) {
+		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+			@Override
+			protected void postProcessContext(Context context) {
+				SecurityConstraint securityConstraint = new SecurityConstraint();
+				securityConstraint.setUserConstraint("CONFIDENTIAL");
+				SecurityCollection collection = new SecurityCollection();
+				collection.addPattern("/*");
+				securityConstraint.addCollection(collection);
+				context.addConstraint(securityConstraint);
+			}
+		};
+		tomcat.addAdditionalTomcatConnectors(connector);
+		return tomcat;
+	}
 }

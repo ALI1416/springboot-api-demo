@@ -5,6 +5,10 @@ test:
   float-type: 1.2345678901234567
   double-type: 1.2345678901234567
   string-type: qwertyuiopasdfghjkl
+  user-type:
+    id: 666
+    name: cccc
+    gender: 2
   #数字数组可能会报错，忽略就好
   ints-type:
     - 123

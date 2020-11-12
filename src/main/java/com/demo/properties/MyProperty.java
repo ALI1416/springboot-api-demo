@@ -11,7 +11,16 @@ import com.demo.po.User;
 import java.time.Duration;
 import java.util.List;
 
-//@PropertySource读取外部配置文件。因为只能读取properties类型，所以需要使用MyPropertySourceFactory将yml转换为properties
+/**
+ * <h1>My配置类</h1>
+ * 
+ * <p>
+ * createDate 2020/11/11 11:11:11
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ */
+//@PropertySource读取外部配置文件。因为只能读取properties类型，所以需要使用PropertySourceLoadYamlFactory将yaml文件转换为properties
 @PropertySource(value = { "classpath:my.yml" }, factory = PropertySourceLoadYamlFactory.class)
 // prefix前缀
 // ignoreInvalidFields = true忽略类型不匹配或不存在的字段，没有指定默认值的会自动赋值(基本类型：默认值；包装类型：null)
@@ -26,6 +35,7 @@ public class MyProperty {
 	private float floatType;
 	private double doubleType;
 	private String stringType;
+	private User userType;
 	private int[] intsType;
 	private List<String> stringListType;
 	private List<User> userListType;

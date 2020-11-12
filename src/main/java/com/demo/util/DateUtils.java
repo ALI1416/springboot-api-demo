@@ -9,7 +9,7 @@ import java.util.Date;
  *
  * <h2>日期格式</h2>
  * <table>
- * <tr><th>标记<th>解释
+ * <tr><td><b>标记<td><b>解释
  * <tr><td>G<td>纪元标记
  * <tr><td>yyyy<td>年
  * <tr><td>MM<td>月
@@ -34,7 +34,7 @@ import java.util.Date;
  *
  * <p>createDate 2020/11/11 11:11:11</p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  */
 public class DateUtils {
     public static void main(String[] args) {

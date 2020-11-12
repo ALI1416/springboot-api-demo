@@ -24,41 +24,40 @@ import org.springframework.context.annotation.Bean;
  *
  * @author ALI[ali-k@foxmail.com]
  */
-
 //@Configuration
 public class HttpsConfig {
-	/**
-	 * 配置connector的http协议80端口，跳转到443端口
-	 */
-	@Bean
-	public Connector connector() {
-		Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-		connector.setScheme("http");
-		connector.setPort(80);
-		connector.setSecure(false);
-		connector.setRedirectPort(443);
-		return connector;
-	}
+    /**
+     * 配置connector的http协议80端口，跳转到443端口
+     */
+    @Bean
+    public Connector connector() {
+        Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
+        connector.setScheme("http");
+        connector.setPort(80);
+        connector.setSecure(false);
+        connector.setRedirectPort(443);
+        return connector;
+    }
 
-	/**
-	 * 配置connector下所有路径监听
-	 * 
-	 * @param connector connector
-	 */
-	@Bean
-	public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector) {
-		TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
-			@Override
-			protected void postProcessContext(Context context) {
-				SecurityConstraint securityConstraint = new SecurityConstraint();
-				securityConstraint.setUserConstraint("CONFIDENTIAL");
-				SecurityCollection collection = new SecurityCollection();
-				collection.addPattern("/*");
-				securityConstraint.addCollection(collection);
-				context.addConstraint(securityConstraint);
-			}
-		};
-		tomcat.addAdditionalTomcatConnectors(connector);
-		return tomcat;
-	}
+    /**
+     * 配置connector下所有路径监听
+     *
+     * @param connector connector
+     */
+    @Bean
+    public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector) {
+        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory() {
+            @Override
+            protected void postProcessContext(Context context) {
+                SecurityConstraint securityConstraint = new SecurityConstraint();
+                securityConstraint.setUserConstraint("CONFIDENTIAL");
+                SecurityCollection collection = new SecurityCollection();
+                collection.addPattern("/*");
+                securityConstraint.addCollection(collection);
+                context.addConstraint(securityConstraint);
+            }
+        };
+        tomcat.addAdditionalTomcatConnectors(connector);
+        return tomcat;
+    }
 }

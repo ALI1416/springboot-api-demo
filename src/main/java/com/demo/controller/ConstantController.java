@@ -21,19 +21,21 @@ import com.demo.tool.Log;
 @RequestMapping("/const")
 @RestController
 public class ConstantController {
-	@GetMapping("")
-	public String index() {
-		Log.i(Constant.A + "");
-		Log.i(Constant.B + "");
-		Log.i(Constant.C + "");
-		Log.i(MailConstant.USERNAME + "");
-		Log.i(MailConstant.PASSWORD + "");
-		Log.i(MailConstant.HOST + "");
-		Log.i(MyConstant.A + "");
-		Log.i(MyConstant.B + "");
-		Log.i(MyConstant.C + "");
-		Log.i(MyConstant.D + "");
-		Log.i(MyConstant.E + "");
-		return "ok";
-	}
+    @GetMapping("")
+    public String index() {
+        Log.i(Constant.A + "");
+        Log.i(Constant.B + "");
+        Log.i(Constant.C + "");
+        Log.i(MailConstant.USERNAME + "");
+        Log.i(MailConstant.PASSWORD + "");
+        Log.i(MailConstant.HOST + "");
+        Log.i(MailConstant.PROTOCOL + "");
+        Log.i(MailConstant.DEFAULT_ENCODING + "");
+        Log.i(MyConstant.A + "");
+        Log.i(MyConstant.B + "");
+        Log.i(MyConstant.C + "");
+        Log.i(MyConstant.D + "");
+        Log.i(MyConstant.E + "");
+        return "ok";
+    }
 }

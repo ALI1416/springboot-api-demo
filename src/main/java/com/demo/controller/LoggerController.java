@@ -1,10 +1,13 @@
 package com.demo.controller;
 
+import com.demo.tool.ThreadPool;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.tool.Log;
+
+import java.util.concurrent.*;
 
 /**
  * <h1>日志测试api</h1>
@@ -19,55 +22,52 @@ import com.demo.tool.Log;
 @RestController
 public class LoggerController {
 
-	@GetMapping("")
-	public String index(String msg) {
-		Thread test1 = new Thread(new Runnable() {
-			public void run() {
-				try {
-					Thread.sleep(1000);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				Log.i("aaaaaaaaaaaa", msg + "111111111");
-			}
-		}, "Thread1");
-		Thread test2 = new Thread(new Runnable() {
-			public void run() {
-				Log.e(msg + "2222222222");
-			}
-		}, "Thread2");
-		test1.start();
-		test2.start();
-		return msg;
-	}
+    @GetMapping("")
+    public String index(String msg) {
+        Runnable test1 = () -> {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.i("aaaaaaaaaaaa", msg + "111111111");
+        };
+        Runnable test2 = () -> Log.e(msg + "2222222222");
+        ThreadPool.execute(test1);
+        ThreadPool.execute(test2);
+        ThreadPool.execute(test2);
+        ThreadPool.execute(test2);
+        ThreadPool.execute(test2);
+        return msg;
+    }
 
-	@GetMapping("/t")
-	public String t(String msg) {
-		Log.t(msg);
-		return msg;
-	}
+    @GetMapping("/t")
+    public String trace(String msg) {
+        Log.t(msg);
+        return msg;
+    }
 
-	@GetMapping("/d")
-	public String d(String msg) {
-		Log.d(msg);
-		return msg;
-	}
+    @GetMapping("/d")
+    public String debug(String msg) {
+        Log.d(msg);
+        return msg;
+    }
 
-	@GetMapping("/i")
-	public String i(String msg) {
-		Log.i(msg);
-		return msg;
-	}
+    @GetMapping("/i")
+    public String info(String msg) {
+        Log.i(msg);
+        return msg;
+    }
 
-	@GetMapping("/w")
-	public String w(String msg) {
-		Log.w(msg);
-		return msg;
-	}
+    @GetMapping("/w")
+    public String warning(String msg) {
+        Log.w(msg);
+        return msg;
+    }
 
-	@GetMapping("/e")
-	public String e(String msg) {
-		Log.e("aaaaaa", msg);
-		return msg;
-	}
+    @GetMapping("/e")
+    public String error(String msg) {
+        Log.e("eee", msg);
+        return msg;
+    }
 }

@@ -1,5 +1,7 @@
 package com.demo.util;
 
+import com.demo.tool.ThreadPool;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,22 +86,19 @@ public class DateUtils {
         System.out.println("getTime(timestamp)");
         System.out.println("\t" + getTime(timestamp));
 
-        Thread test1 = new Thread(new Runnable() {
-            public void run() {
-                for (int i = 0; i < 5; i++) {
-                    System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-                }
+        Runnable test1 = () -> {
+            for (int i = 0; i < 5; i++) {
+                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
             }
-        }, "getSyncTimestamp()线程1");
-        Thread test2 = new Thread(new Runnable() {
-            public void run() {
-                for (int i = 0; i < 5; i++) {
-                    System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-                }
+        };
+        Runnable test2 = () -> {
+            for (int i = 0; i < 5; i++) {
+                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
             }
-        }, "getSyncTimestamp()线程2");
-        test1.start();
-        test2.start();
+        };
+        ThreadPool.execute(test1);
+        ThreadPool.execute(test2);
+        ThreadPool.shutdown();
     }
 
     /**

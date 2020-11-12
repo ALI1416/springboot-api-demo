@@ -14,13 +14,13 @@ import com.demo.properties.Properties;
  **/
 public class MailConstant {
 
-	// 导入配置类
-	private final static MailProperty mailProperty = Properties.mailProperty;
+    // 导入配置类
+    private final static MailProperty mailProperty = Properties.mailProperty;
 
-	// 定义常量
-	public final static String HOST = mailProperty.getHost();
-	public final static String USERNAME = mailProperty.getUsername();
-	public final static String PASSWORD = mailProperty.getPassword();
-	public final static String PROTOCOL = mailProperty.getProtocol();
-	public final static String DEFAULT_ENCODING = mailProperty.getDefaultEncoding();
+    // 定义常量
+    public final static String HOST = mailProperty.getHost();
+    public final static String USERNAME = mailProperty.getUsername();
+    public final static String PASSWORD = mailProperty.getPassword();
+    public final static String PROTOCOL = mailProperty.getProtocol();
+    public final static String DEFAULT_ENCODING = mailProperty.getDefaultEncoding();
 }

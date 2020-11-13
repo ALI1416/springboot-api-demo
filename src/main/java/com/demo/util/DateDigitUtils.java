@@ -6,11 +6,11 @@ import java.util.Calendar;
  * <h1>数字日期工具类</h1>
  * 
  * <p>
- * 例如2020/11/13 10:40:06.123的数字日期是20201113104006123<br>
+ * 例如2020/11/13 15:40:26.123的数字日期是20201113154026123<br>
  * </p>
  *
  * <p>
- * createDate 2020/11/13 10:40:06
+ * createDate 2020/11/13 15:40:26
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
@@ -44,7 +44,7 @@ public class DateDigitUtils {
     }
 
     /**
-     * 获取(当前/指定原始)时间戳yyyyMMddhhmmssSSS形式<br>
+     * 获取(当前/指定原始)时间戳yyyyMMddHHmmssSSS形式<br>
      *
      * @param timestamp 原始时间戳(-1为当前时间)
      * @see java.util.Calendar
@@ -55,13 +55,13 @@ public class DateDigitUtils {
             calendar.setTimeInMillis(timestamp);
         }
         return calendar.get(Calendar.YEAR) * 10000000000000L + (calendar.get(Calendar.MONTH) + 1) * 100000000000L
-                + calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L + calendar.get(Calendar.HOUR) * 10000000
+                + calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L + calendar.get(Calendar.HOUR_OF_DAY) * 10000000
                 + calendar.get(Calendar.MINUTE) * 100000 + calendar.get(Calendar.SECOND) * 1000
                 + calendar.get(Calendar.MILLISECOND);
     }
 
     /**
-     * 获取当前时间戳yyyyMMddhhmmssSSS形式<br>
+     * 获取当前时间戳yyyyMMddHHmmssSSS形式<br>
      * 
      * @see #getTimestamp(long)
      */
@@ -70,7 +70,7 @@ public class DateDigitUtils {
     }
 
     /**
-     * 获取当前同步时间戳yyyyMMddhhmmssSSS形式
+     * 获取当前同步时间戳yyyyMMddHHmmssSSS形式
      *
      * @return 同步操作失败返回-1
      * 
@@ -88,12 +88,12 @@ public class DateDigitUtils {
     }
 
     /**
-     * 获取当前日期yyyyMMddhhmmss形式
+     * 获取当前日期yyyyMMddHHmmss形式
      */
     public static long getDatetime() {
         Calendar calendar = Calendar.getInstance();
         return calendar.get(Calendar.YEAR) * 10000000000L + (calendar.get(Calendar.MONTH) + 1) * 100000000L
-                + calendar.get(Calendar.DAY_OF_MONTH) * 1000000 + calendar.get(Calendar.HOUR) * 10000
+                + calendar.get(Calendar.DAY_OF_MONTH) * 1000000 + calendar.get(Calendar.HOUR_OF_DAY) * 10000
                 + calendar.get(Calendar.MINUTE) * 100 + calendar.get(Calendar.SECOND);
     }
 
@@ -107,11 +107,11 @@ public class DateDigitUtils {
     }
 
     /**
-     * 获取当前时间hhmmss形式
+     * 获取当前时间HHmmss形式
      */
     public static int getTime() {
         Calendar calendar = Calendar.getInstance();
-        return calendar.get(Calendar.HOUR) * 10000 + calendar.get(Calendar.MINUTE) * 100
+        return calendar.get(Calendar.HOUR_OF_DAY) * 10000 + calendar.get(Calendar.MINUTE) * 100
                 + calendar.get(Calendar.SECOND);
     }
 

@@ -39,8 +39,12 @@ public class MyProperty {
     private int[] intsType;
     private List<String> stringListType;
     private List<User> userListType;
-    // 持续时间
+    /**
+     * 持续时间
+     */
     private Duration durationType;
-    // 储存容量
+    /**
+     * 储存容量
+     */
     private DataSize dataSizeType;
 }

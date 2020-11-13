@@ -11,8 +11,16 @@ package com.demo.constant;
  **/
 public class Constant {
 
-	// 定义常量
-	public final static int A = 1;
-	public final static int B = 2;
-	public final static int C = 3;
+    /**
+     * 常量A
+     */
+    public final static int A = 1;
+    /**
+     * 常量B
+     */
+    public final static int B = 2;
+    /**
+     * 常量C
+     */
+    public final static int C = 3;
 }

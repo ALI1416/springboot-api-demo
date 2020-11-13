@@ -1,7 +1,5 @@
 package com.demo.util;
 
-import com.demo.tool.ThreadPool;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,30 +9,74 @@ import java.util.Date;
  *
  * <h2>日期格式</h2>
  * <table>
- * <tr><td><b>标记<td><b>解释
- * <tr><td>G<td>纪元标记
- * <tr><td>yyyy<td>年
- * <tr><td>MM<td>月
- * <tr><td>dd<td>日
- * <tr><td>hh<td>12小时制
- * <tr><td>HH<td>24小时制
- * <tr><td>mm<td>分
- * <tr><td>ss<td>秒
- * <tr><td>SS<td>毫秒
- * <tr><td>E<td>星期
- * <tr><td>z<td>时区
- * <tr><td>D<td>一年中第几天
- * <tr><td>F<td>一个月中第几天的周几
- * <tr><td>w<td>一年中的第几周
- * <tr><td>W<td>一个月中的第几周
- * <tr><td>a<td>AM/PM标记
- * <tr><td>k<td>一天中的第几小时(1-24)
- * <tr><td>K<td>AM/PM格式一天中的第几小时(0-11)
- * <tr><td>'<td>文本定界符
- * <tr><td>''<td>单引号
+ * <tr>
+ * <td><b>标记
+ * <td><b>解释
+ * <tr>
+ * <td>G
+ * <td>纪元标记
+ * <tr>
+ * <td>yyyy
+ * <td>年
+ * <tr>
+ * <td>MM
+ * <td>月
+ * <tr>
+ * <td>dd
+ * <td>日
+ * <tr>
+ * <td>hh
+ * <td>12小时制
+ * <tr>
+ * <td>HH
+ * <td>24小时制
+ * <tr>
+ * <td>mm
+ * <td>分
+ * <tr>
+ * <td>ss
+ * <td>秒
+ * <tr>
+ * <td>SSS
+ * <td>毫秒
+ * <tr>
+ * <td>E
+ * <td>星期
+ * <tr>
+ * <td>z
+ * <td>时区
+ * <tr>
+ * <td>D
+ * <td>一年中第几天
+ * <tr>
+ * <td>F
+ * <td>一个月中第几天的周几
+ * <tr>
+ * <td>w
+ * <td>一年中的第几周
+ * <tr>
+ * <td>W
+ * <td>一个月中的第几周
+ * <tr>
+ * <td>a
+ * <td>AM/PM标记
+ * <tr>
+ * <td>k
+ * <td>一天中的第几小时(1-24)
+ * <tr>
+ * <td>K
+ * <td>AM/PM格式一天中的第几小时(0-11)
+ * <tr>
+ * <td>'
+ * <td>文本定界符
+ * <tr>
+ * <td>''
+ * <td>单引号
  * </table>
  *
- * <p>createDate 2020/11/11 11:11:11</p>
+ * <p>
+ * createDate 2020/11/11 11:11:11
+ * </p>
  *
  * @author ALI[ali-k@foxmail.com]
  */
@@ -69,8 +111,8 @@ public class DateUtils {
         System.out.println("\t" + getEndTimestamp(10));
         System.out.println("getEndTimestamp(timestamp, 10)");
         System.out.println("\t" + getEndTimestamp(timestamp, 10));
-        System.out.println("getDatetime(timestamp, \"yyyyMMdd_HHmmss\")");
-        System.out.println("\t" + getDatetime(timestamp, "yyyyMMdd_HHmmss"));
+        System.out.println("getDatetime(timestamp, \"yyyyMMdd_HHmmss.SSS\")");
+        System.out.println("\t" + getDatetime(timestamp, "yyyyMMdd_HHmmss.SSS"));
         System.out.println("getDatetime(\"yyyyMMdd_HHmmss\")");
         System.out.println("\t" + getDatetime("yyyyMMdd_HHmmss"));
         System.out.println("getDatetime()");
@@ -86,19 +128,18 @@ public class DateUtils {
         System.out.println("getTime(timestamp)");
         System.out.println("\t" + getTime(timestamp));
 
-        Runnable test1 = () -> {
-            for (int i = 0; i < 5; i++) {
-                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-            }
-        };
-        Runnable test2 = () -> {
-            for (int i = 0; i < 5; i++) {
-                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-            }
-        };
-        ThreadPool.execute(test1);
-        ThreadPool.execute(test2);
-        ThreadPool.shutdown();
+//        Runnable test1 = () -> {
+//            for (int i = 0; i < 10; i++) {
+//                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
+//            }
+//        };
+//        Runnable test2 = () -> {
+//            for (int i = 0; i < 10; i++) {
+//                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
+//            }
+//        };
+//        ThreadPool.execute(test1);
+//        ThreadPool.execute(test2);
     }
 
     /**
@@ -239,11 +280,16 @@ public class DateUtils {
         if (timestamp != -1) {
             calendar.setTimeInMillis(timestamp);
         }
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         if (isStart) {
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         } else {
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), 23, 59, 59);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
             calendar.set(Calendar.MILLISECOND, 999);
         }
         if (offsetField != -1 && offsetAmount != 0) {
@@ -256,7 +302,7 @@ public class DateUtils {
      * 获取今天0时0分0秒0毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp() {
         return getTimestamp(true, -1, -1, 0);
@@ -267,7 +313,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(long timestamp) {
         return getTimestamp(true, timestamp, -1, 0);
@@ -278,7 +324,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(int dayOffset) {
         return getTimestamp(true, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -290,7 +336,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -300,7 +346,7 @@ public class DateUtils {
      * 获取今天23时59分59秒999毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getEndTimestamp() {
         return getTimestamp(false, -1, -1, 0);
@@ -311,7 +357,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getEndTimestamp(long timestamp) {
         return getTimestamp(false, timestamp, -1, 0);
@@ -322,7 +368,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getEndTimestamp(int dayOffset) {
         return getTimestamp(false, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -334,7 +380,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getEndTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);

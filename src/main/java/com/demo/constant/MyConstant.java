@@ -20,13 +20,29 @@ import com.demo.properties.Properties;
  **/
 public class MyConstant {
 
-    // 导入配置类
-    private final static MyProperty myProperty = Properties.myProperty;
+    /**
+     * 导入配置类
+     */
+    private static MyProperty myProperty = Properties.myProperty;
 
-    // 定义常量
+    /**
+     * 常量A
+     */
     public final static int A = myProperty.getIntType();
+    /**
+     * 常量B
+     */
     public final static User B = myProperty.getUserType();
+    /**
+     * 常量C
+     */
     public final static List<User> C = myProperty.getUserListType();
+    /**
+     * 常量D
+     */
     public final static Duration D = myProperty.getDurationType();
+    /**
+     * 常量E
+     */
     public final static DataSize E = myProperty.getDataSizeType();
 }

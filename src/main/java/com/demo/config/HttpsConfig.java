@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Bean;
  */
 //@Configuration
 public class HttpsConfig {
+
     /**
      * 配置connector的http协议80端口，跳转到443端口
      */
@@ -41,8 +42,6 @@ public class HttpsConfig {
 
     /**
      * 配置connector下所有路径监听
-     *
-     * @param connector connector
      */
     @Bean
     public TomcatServletWebServerFactory tomcatServletWebServerFactory(Connector connector) {

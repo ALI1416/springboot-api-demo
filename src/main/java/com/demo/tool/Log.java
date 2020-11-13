@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <h1>定制日志工具类</h1>
+ * <h1>日志</h1>
  *
  * <p>
  * 配置文件logging-level-root设置打印的日志等级<br>

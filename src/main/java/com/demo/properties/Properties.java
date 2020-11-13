@@ -15,11 +15,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class Properties {
 
-    // 声明公共静态方法
     public static MyProperty myProperty;
     public static MailProperty mailProperty;
 
-    // 自动注入静态方法
     @Autowired
     private Properties(MyProperty myProperty, MailProperty mailProperty) {
         Properties.myProperty = myProperty;

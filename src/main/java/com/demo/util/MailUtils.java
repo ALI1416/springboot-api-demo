@@ -1,7 +1,6 @@
 package com.demo.util;
 
-import javax.mail.internet.MimeMessage;
-
+import com.demo.constant.MailConstant;
 import com.demo.tool.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -9,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import com.demo.constant.MailConstant;
+import javax.mail.internet.MimeMessage;
 
 /**
  * <h1>邮件工具类</h1>

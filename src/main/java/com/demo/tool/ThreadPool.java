@@ -1,12 +1,7 @@
 package com.demo.tool;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * <h1>线程池</h1>
@@ -14,7 +9,7 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
  * <p>
  * 线程池不允许关闭！
  * </p>
- * 
+ *
  * <p>
  * createDate 2020/11/12 20:23:18
  * </p>
@@ -24,16 +19,9 @@ import com.google.common.util.concurrent.ThreadFactoryBuilder;
 public class ThreadPool {
 
     /**
-     * 线程池命名
-     */
-    private static final ThreadFactory NAMED_THREAD_FACTORY = new ThreadFactoryBuilder().setNameFormat("demo-pool-%d")
-            .build();
-
-    /**
      * 自定义线程池
      */
-    private static final ExecutorService POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(1024), NAMED_THREAD_FACTORY, new ThreadPoolExecutor.AbortPolicy());
+    private static final ExecutorService POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
     /**
      * 执行线程
@@ -44,4 +32,15 @@ public class ThreadPool {
         POOL.execute(command);
     }
 
+    /**
+     * 自定义线程名
+     */
+    private static class NameTreadFactory implements ThreadFactory {
+        private final AtomicInteger mThreadNumber = new AtomicInteger(0);
+
+        @Override
+        public Thread newThread(Runnable r) {
+            return new Thread(r, "ThreadPool-" + mThreadNumber.getAndIncrement());
+        }
+    }
 }

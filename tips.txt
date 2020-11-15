@@ -1,13 +1,16 @@
 Gradle配置
 
-repositories {
-    mavenLocal()
-    maven { url "http://maven.aliyun.com/nexus/content/groups/public/"}
-    mavenCentral()
-    jcenter()
-    maven { url "https://repo.spring.io/snapshot" }
-    maven { url "https://repo.spring.io/milestone" }
-    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' } // 转换pdf使用
+allprojects {
+    repositories {
+        // 本地仓库
+        mavenLocal()
+        // 阿里云central和jCenter仓库的聚合仓库
+        maven { url "https://maven.aliyun.com/repository/public" }
+        // central仓库
+        mavenCentral()
+        // jCenter仓库
+        jcenter()
+    }
 }
 
 

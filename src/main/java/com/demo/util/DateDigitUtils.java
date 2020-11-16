@@ -6,7 +6,7 @@ import java.util.Calendar;
  * <h1>数字日期工具类</h1>
  * 
  * <p>
- * 例如2020/11/13 15:40:26.123的数字日期是20201113154026123<br>
+ * 例如2020/11/13 15:40:26.123的数字日期是20201113154026123
  * </p>
  *
  * <p>
@@ -22,6 +22,8 @@ public class DateDigitUtils {
         System.out.println(getDatetime());
         System.out.println(getDate());
         System.out.println(getTime());
+        System.out.println(getTimestamp(1605542399999L));
+        System.out.println(getOriginTimestamp(20201116235959999L));
 //        Runnable test1 = () -> {
 //            for (int i = 0; i < 10; i++) {
 //                System.out.println(Thread.currentThread().getName() + " : " + getTimestamp());
@@ -36,15 +38,23 @@ public class DateDigitUtils {
 //        ThreadPool.execute(test2);
     }
 
-    public static int addDay(int date, int day) {
-        Calendar d = Calendar.getInstance();
-        d.set(date / 10000, ((date / 100) % 100 - 1), date % 100);
-        d.add(Calendar.DAY_OF_YEAR, day);
-        return d.get(Calendar.YEAR) * 10000 + (d.get(Calendar.MONTH) + 1) * 100 + d.get(Calendar.DATE);
+    /**
+     * 获取yyyyMMddHHmmssSSS形式时间戳的原始时间戳
+     *
+     * @param timestamp 时间戳
+     * @see java.util.Calendar
+     */
+    public static long getOriginTimestamp(long timestamp) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set((int) (timestamp / 10000000000000L), (int) (((timestamp / 100000000000L) % 100) - 1),
+                (int) ((timestamp / 1000000000L) % 100), (int) ((timestamp / 10000000) % 100),
+                (int) ((timestamp / 100000) % 100), (int) ((timestamp / 1000) % 100));
+        calendar.set(Calendar.MILLISECOND, (int) (timestamp % 1000));
+        return calendar.getTimeInMillis();
     }
 
     /**
-     * 获取(当前/指定原始)时间戳yyyyMMddHHmmssSSS形式<br>
+     * 获取(当前/指定原始)时间戳yyyyMMddHHmmssSSS形式
      *
      * @param timestamp 原始时间戳(-1为当前时间)
      * @see java.util.Calendar
@@ -61,7 +71,7 @@ public class DateDigitUtils {
     }
 
     /**
-     * 获取当前时间戳yyyyMMddHHmmssSSS形式<br>
+     * 获取当前时间戳yyyyMMddHHmmssSSS形式
      * 
      * @see #getTimestamp(long)
      */
@@ -115,6 +125,13 @@ public class DateDigitUtils {
                 + calendar.get(Calendar.SECOND);
     }
 
+    public static int addDay(int date, int day) {
+        Calendar d = Calendar.getInstance();
+        d.set(date / 10000, ((date / 100) % 100 - 1), date % 100);
+        d.add(Calendar.DAY_OF_YEAR, day);
+        return d.get(Calendar.YEAR) * 10000 + (d.get(Calendar.MONTH) + 1) * 100 + d.get(Calendar.DATE);
+    }
+
     /**
      * 获取(当前/指定)时间戳的(指定偏移字段、偏移大小)的(开始/结束)时间戳
      *
@@ -129,13 +146,16 @@ public class DateDigitUtils {
         if (timestamp != -1) {
             calendar.setTimeInMillis(timestamp);
         }
+        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         if (isStart) {
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    0, 0, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         } else {
-            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH),
-                    23, 59, 59);
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 59);
+            calendar.set(Calendar.SECOND, 59);
             calendar.set(Calendar.MILLISECOND, 999);
         }
         if (offsetField != -1 && offsetAmount != 0) {

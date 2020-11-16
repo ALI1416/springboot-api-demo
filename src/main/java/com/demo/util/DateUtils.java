@@ -85,46 +85,67 @@ public class DateUtils {
         long timestamp = getTimestamp() + MILLS_OF_DAY + MILLS_OF_HOUR;
         System.out.println("timestamp");
         System.out.println("\t" + timestamp);
+
         System.out.println("getTimestamp()");
         System.out.println("\t" + getTimestamp());
+
         System.out.println("getSyncTimestamp()");
         System.out.println("\t" + getSyncTimestamp());
+
         System.out.println("getTimestamp(\"2020-09-08\", \"yyyy-MM-dd\")");
         System.out.println("\t" + getTimestamp("2020-09-08", "yyyy-MM-dd"));
+
         System.out.println("getTimestamp(\"2019-01-02 03:04:05\")");
         System.out.println("\t" + getTimestamp("2019-01-02 03:04:05"));
+
         System.out.println("getTimestamp(true, timestamp, Calendar.MONTH, -13)");
         System.out.println("\t" + getTimestamp(true, timestamp, Calendar.MONTH, -13));
+
         System.out.println("getStartTimestamp()");
         System.out.println("\t" + getStartTimestamp());
+
         System.out.println("getStartTimestamp(timestamp)");
         System.out.println("\t" + getStartTimestamp(timestamp));
+
         System.out.println("getStartTimestamp(10)");
         System.out.println("\t" + getStartTimestamp(10));
+
         System.out.println("getStartTimestamp(timestamp, 10)");
         System.out.println("\t" + getStartTimestamp(timestamp, 10));
+
         System.out.println("getEndTimestamp()");
         System.out.println("\t" + getEndTimestamp());
+
         System.out.println("getEndTimestamp(timestamp)");
         System.out.println("\t" + getEndTimestamp(timestamp));
+
         System.out.println("getEndTimestamp(10)");
         System.out.println("\t" + getEndTimestamp(10));
+
         System.out.println("getEndTimestamp(timestamp, 10)");
         System.out.println("\t" + getEndTimestamp(timestamp, 10));
+
         System.out.println("getDatetime(timestamp, \"yyyyMMdd_HHmmss.SSS\")");
         System.out.println("\t" + getDatetime(timestamp, "yyyyMMdd_HHmmss.SSS"));
+
         System.out.println("getDatetime(\"yyyyMMdd_HHmmss\")");
         System.out.println("\t" + getDatetime("yyyyMMdd_HHmmss"));
+
         System.out.println("getDatetime()");
         System.out.println("\t" + getDatetime());
+
         System.out.println("getDatetime(timestamp)");
         System.out.println("\t" + getDatetime(timestamp));
+
         System.out.println("getDate()");
         System.out.println("\t" + getDate());
+
         System.out.println("getDate(timestamp)");
         System.out.println("\t" + getDate(timestamp));
+
         System.out.println("getTime()");
         System.out.println("\t" + getTime());
+
         System.out.println("getTime(timestamp)");
         System.out.println("\t" + getTime(timestamp));
 
@@ -295,7 +316,7 @@ public class DateUtils {
         if (offsetField != -1 && offsetAmount != 0) {
             calendar.add(offsetField, offsetAmount);
         }
-        return calendar.getTime().getTime();
+        return calendar.getTimeInMillis();
     }
 
     /**

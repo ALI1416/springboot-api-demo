@@ -1,11 +1,13 @@
 package com.demo.util;
 
-import com.demo.source.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.DigestUtils;
-
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.zip.CRC32;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
+import com.demo.source.bcrypt.BCryptPasswordEncoder;
 
 /**
  * <h1>编码工具类</h1>
@@ -29,10 +31,16 @@ public class EncoderUtils {
         String md5Password = EncoderUtils.md5(rawPassword);
         System.out.println(md5Password);
 
-        String bCryptEncodePassword = EncoderUtils.bCryptEncode(md5Password);
+        String sha1Password = EncoderUtils.sha1(rawPassword);
+        System.out.println(sha1Password);
+
+        String crc32Password = EncoderUtils.crc32(rawPassword);
+        System.out.println(crc32Password);
+
+        String bCryptEncodePassword = EncoderUtils.bCryptEncode(rawPassword);
         System.out.println(bCryptEncodePassword);
 
-        boolean bCryptMatchesResult = EncoderUtils.bCryptMatches(md5Password, bCryptEncodePassword);
+        boolean bCryptMatchesResult = EncoderUtils.bCryptMatches(rawPassword, bCryptEncodePassword);
         System.out.println(bCryptMatchesResult);
 
         String base64Password = EncoderUtils.base64Encoder(rawPassword);
@@ -41,33 +49,57 @@ public class EncoderUtils {
         String base64DecodePassword = EncoderUtils.base64Decoder(base64Password);
         System.out.println(base64DecodePassword);
 
-        // long base62LongRawPassword = 1570283088299L;
-        long base62LongRawPassword = 1234567890123456789L;
-        System.out.println(base62LongRawPassword);
+        long base62RawPassword = 1234567890123456789L;
+        System.out.println(base62RawPassword);
 
-        String base62LongEncoderPassword = EncoderUtils.base62LongEncoder(base62LongRawPassword);
-        System.out.println(base62LongEncoderPassword);
+        String base62EncoderPassword = EncoderUtils.base62Encoder(base62RawPassword);
+        System.out.println(base62EncoderPassword);
 
-        long base62DecoderPassword = EncoderUtils.base62LongDecoder(base62LongEncoderPassword);
+        long base62DecoderPassword = EncoderUtils.base62Decoder(base62EncoderPassword);
         System.out.println(base62DecoderPassword);
-
-        // long a = System.currentTimeMillis();
-        // for (int i = 0; i < 10000000; i++) {
-        //     EncoderUtils.base62LongDecoder("1TCKi1nFuNh");
-        // }
-        // long b = System.currentTimeMillis();
-        // System.out.println(b - a);
 
     }
 
     /**
      * UTF8字符集编码
      */
-    private static final Charset UTF8 = StandardCharsets.UTF_8;
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
+
     /**
      * BCrypt实例
      */
-    private static final BCryptPasswordEncoder B_CRYPT = new BCryptPasswordEncoder();
+    private final static BCryptPasswordEncoder B_CRYPT = new BCryptPasswordEncoder();
+
+    /**
+     * MD5加密
+     *
+     * @param rawPassword 原始数据
+     */
+    public static String md5(String rawPassword) {
+        return DigestUtils.md5Hex(rawPassword);
+    }
+
+    /**
+     * SHA1加密
+     * 
+     * @param rawPassword 原始数据
+     */
+    public static String sha1(String rawPassword) {
+        return DigestUtils.sha1Hex(rawPassword);
+    }
+
+    /**
+     * CRC32加密
+     * 
+     * @param rawPassword 原始数据
+     */
+    public static String crc32(String rawPassword) {
+        byte[] b = rawPassword.getBytes();
+        CRC32 c = new CRC32();
+        c.reset();
+        c.update(b, 0, b.length);
+        return Long.toHexString(c.getValue());
+    }
 
     /**
      * BCrypt加密
@@ -89,15 +121,6 @@ public class EncoderUtils {
     }
 
     /**
-     * MD5加密
-     *
-     * @param rawPassword 原始数据
-     */
-    public static String md5(String rawPassword) {
-        return DigestUtils.md5DigestAsHex(rawPassword.getBytes(UTF8));
-    }
-
-    /**
      * base64编码
      *
      * @param rawPassword 原始数据
@@ -116,12 +139,36 @@ public class EncoderUtils {
     }
 
     /**
-     * base62 Long型编码
-     *
-     * @param n long型原始数据
+     * base62字母表
      */
-    public static String base62LongEncoder(long n) {
-        if (n <= 0) {
+    private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    /**
+     * base62编码
+     * 
+     * @param n 原始数据
+     */
+    public static String base62Encoder(long n) {
+        if (n < 1) {
+            return "0";
+        }
+        StringBuilder s = new StringBuilder();
+        for (; n > 0; n /= 62) {
+            s.append(BASE62_ALPHABET.charAt((int) (n % 62)));
+        }
+        return s.reverse().toString();
+    }
+
+    /**
+     * base62编码2<br>
+     * 此方法速度较慢，不推荐使用
+     *
+     * @param n 原始数据
+     * 
+     * @see #base62Encoder(long n)
+     */
+    public static String base62Encoder2(long n) {
+        if (n < 1) {
             return "0";
         }
         StringBuilder s = new StringBuilder();
@@ -140,19 +187,22 @@ public class EncoderUtils {
     }
 
     /**
-     * base62 Long型解码
+     * base62解码
      *
      * @param s 加密后的数据
-     * @return long型
      */
-    public static long base62LongDecoder(String s) {
-        if (s == null || s.trim().length() == 0) {
+    public static long base62Decoder(String s) {
+        if (s == null) {
+            return 0;
+        }
+        int l = s.length();
+        if (s.length() == 0) {
             return 0;
         }
         long n = 0;
         long p = 1;
         int c;
-        for (int i = s.length() - 1; i >= 0; i--, p *= 62) {
+        for (int i = l - 1; i >= 0; i--, p *= 62) {
             c = s.charAt(i);
             if (c > 96) {
                 n += (c - 61) * p;// a-z转为数字
@@ -165,26 +215,25 @@ public class EncoderUtils {
         return n;
     }
 
-    public static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    private static String encoding(long n) {
-        if (n < 1) {
-            return "0";
+    /**
+     * base62解码2<br>
+     * 此方法速度较慢，不推荐使用
+     *
+     * @param s 加密后的数据
+     * @see #base62Decoder(String s)
+     */
+    public static long base62Decoder2(String s) {
+        if (s == null) {
+            return 0;
         }
-        StringBuilder s = new StringBuilder();
-        for (; n > 0; n /= 62) {
-            s.append(BASE62_ALPHABET.charAt((int) (n % 62)));
-        }
-        return s.toString();
-    }
-
-    private static long decoding(String s) {
-        if (s == null || s.trim().length() == 0) {
+        int l = s.length();
+        if (l == 0) {
             return 0;
         }
         long n = 0;
-        for (int i = 0; i < s.length(); i++) {
-            n += BASE62_ALPHABET.indexOf(s.charAt(i)) * Math.pow(62, i);
+        long p = 1;
+        for (int i = 0; i < l; i++, p *= 62) {
+            n += BASE62_ALPHABET.indexOf(s.charAt(l - i - 1)) * p;
         }
         return n;
     }

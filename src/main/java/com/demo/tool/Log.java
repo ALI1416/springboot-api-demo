@@ -32,7 +32,7 @@ public class Log {
      * @param tag 标签
      * @param msg 信息
      */
-    public static void t(String tag, String msg) {
+    public synchronized static void t(String tag, String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(tag);
         logger.trace(s[1] + msg);
@@ -44,7 +44,7 @@ public class Log {
      * @param tag 标签
      * @param msg 信息
      */
-    public static void d(String tag, String msg) {
+    public synchronized static void d(String tag, String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(tag);
         logger.debug(s[1] + msg);
@@ -56,7 +56,7 @@ public class Log {
      * @param tag 标签
      * @param msg 信息
      */
-    public static void i(String tag, String msg) {
+    public synchronized static void i(String tag, String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(tag);
         logger.info(s[1] + msg);
@@ -68,7 +68,7 @@ public class Log {
      * @param tag 标签
      * @param msg 信息
      */
-    public static void w(String tag, String msg) {
+    public synchronized static void w(String tag, String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(tag);
         logger.warn(s[1] + msg);
@@ -80,7 +80,7 @@ public class Log {
      * @param tag 标签
      * @param msg 信息
      */
-    public static void e(String tag, String msg) {
+    public synchronized static void e(String tag, String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(tag);
         logger.error(s[1] + msg);
@@ -91,7 +91,7 @@ public class Log {
      *
      * @param msg 信息
      */
-    public static void t(String msg) {
+    public synchronized static void t(String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(s[0]);
         logger.trace(s[1] + msg);
@@ -102,7 +102,7 @@ public class Log {
      *
      * @param msg 信息
      */
-    public static void d(String msg) {
+    public synchronized static void d(String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(s[0]);
         logger.debug(s[1] + msg);
@@ -113,7 +113,7 @@ public class Log {
      *
      * @param msg 信息
      */
-    public static void i(String msg) {
+    public synchronized static void i(String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(s[0]);
         logger.info(s[1] + msg);
@@ -124,7 +124,7 @@ public class Log {
      *
      * @param msg 信息
      */
-    public static void w(String msg) {
+    public synchronized static void w(String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(s[0]);
         logger.warn(s[1] + msg);
@@ -135,7 +135,7 @@ public class Log {
      *
      * @param msg 信息
      */
-    public static void e(String msg) {
+    public synchronized static void e(String msg) {
         String[] s = getTrace();
         logger = LoggerFactory.getLogger(s[0]);
         logger.error(s[1] + msg);

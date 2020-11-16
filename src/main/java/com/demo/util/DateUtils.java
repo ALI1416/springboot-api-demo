@@ -149,18 +149,18 @@ public class DateUtils {
         System.out.println("getTime(timestamp)");
         System.out.println("\t" + getTime(timestamp));
 
-//        Runnable test1 = () -> {
-//            for (int i = 0; i < 10; i++) {
-//                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-//            }
-//        };
-//        Runnable test2 = () -> {
-//            for (int i = 0; i < 10; i++) {
-//                System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
-//            }
-//        };
-//        ThreadPool.execute(test1);
-//        ThreadPool.execute(test2);
+        // Runnable test1 = () -> {
+        //     for (int i = 0; i < 10; i++) {
+        //         System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
+        //     }
+        // };
+        // Runnable test2 = () -> {
+        //     for (int i = 0; i < 10; i++) {
+        //         System.out.println(Thread.currentThread().getName() + " : " + getSyncTimestamp());
+        //     }
+        // };
+        // ThreadPool.execute(test1);
+        // ThreadPool.execute(test2);
     }
 
     /**
@@ -266,7 +266,7 @@ public class DateUtils {
      */
     public static long getTimestamp(String datetime, String format) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(format);
-        Date date = null;
+        Date date;
         try {
             date = dateFormat.parse(datetime);
         } catch (Exception e) {
@@ -323,7 +323,7 @@ public class DateUtils {
      * 获取今天0时0分0秒0毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getStartTimestamp() {
         return getTimestamp(true, -1, -1, 0);
@@ -334,7 +334,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getStartTimestamp(long timestamp) {
         return getTimestamp(true, timestamp, -1, 0);
@@ -345,7 +345,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getStartTimestamp(int dayOffset) {
         return getTimestamp(true, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -357,7 +357,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getStartTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -367,7 +367,7 @@ public class DateUtils {
      * 获取今天23时59分59秒999毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getEndTimestamp() {
         return getTimestamp(false, -1, -1, 0);
@@ -378,7 +378,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getEndTimestamp(long timestamp) {
         return getTimestamp(false, timestamp, -1, 0);
@@ -389,7 +389,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getEndTimestamp(int dayOffset) {
         return getTimestamp(false, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -401,7 +401,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     *      offsetAmount)
+     * offsetAmount)
      */
     public static long getEndTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -416,7 +416,7 @@ public class DateUtils {
      * @see java.text.DateFormat#format(Date date)
      */
     public static String getDatetime(long timestamp, String format) {
-        Date date = null;
+        Date date;
         if (timestamp == -1) {
             date = new Date();
         } else {

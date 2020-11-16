@@ -1,13 +1,12 @@
 package com.demo.util;
 
+import com.demo.source.bcrypt.BCryptPasswordEncoder;
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.zip.CRC32;
-
-import org.apache.commons.codec.digest.DigestUtils;
-
-import com.demo.source.bcrypt.BCryptPasswordEncoder;
 
 /**
  * <h1>编码工具类</h1>
@@ -66,9 +65,9 @@ public class EncoderUtils {
     private final static Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
-     * BCrypt实例
+     * base62字母表
      */
-    private final static BCryptPasswordEncoder B_CRYPT = new BCryptPasswordEncoder();
+    private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     /**
      * MD5加密
@@ -81,7 +80,7 @@ public class EncoderUtils {
 
     /**
      * SHA1加密
-     * 
+     *
      * @param rawPassword 原始数据
      */
     public static String sha1(String rawPassword) {
@@ -90,7 +89,7 @@ public class EncoderUtils {
 
     /**
      * CRC32加密
-     * 
+     *
      * @param rawPassword 原始数据
      */
     public static String crc32(String rawPassword) {
@@ -107,7 +106,7 @@ public class EncoderUtils {
      * @param rawPassword 原始数据
      */
     public static String bCryptEncode(CharSequence rawPassword) {
-        return B_CRYPT.encode(rawPassword);
+        return new BCryptPasswordEncoder().encode(rawPassword);
     }
 
     /**
@@ -117,7 +116,7 @@ public class EncoderUtils {
      * @param encodedPassword 加密后的数据
      */
     public static boolean bCryptMatches(CharSequence rawPassword, String encodedPassword) {
-        return B_CRYPT.matches(rawPassword, encodedPassword);
+        return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
     }
 
     /**
@@ -139,13 +138,8 @@ public class EncoderUtils {
     }
 
     /**
-     * base62字母表
-     */
-    private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    /**
      * base62编码
-     * 
+     *
      * @param n 原始数据
      */
     public static String base62Encoder(long n) {
@@ -164,7 +158,6 @@ public class EncoderUtils {
      * 此方法速度较慢，不推荐使用
      *
      * @param n 原始数据
-     * 
      * @see #base62Encoder(long n)
      */
     public static String base62Encoder2(long n) {
@@ -172,7 +165,7 @@ public class EncoderUtils {
             return "0";
         }
         StringBuilder s = new StringBuilder();
-        long a = 0;
+        long a;
         for (; n > 0; n /= 62) {
             a = (n % 62);
             if (a < 10) {

@@ -23,12 +23,13 @@ public class LoggerController {
 	@GetMapping("")
 	public String index(String msg) {
 		Runnable test1 = () -> {
+			Log.i("aaaaaaaaaaaa", msg + "111111111");
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Log.i("aaaaaaaaaaaa", msg + "111111111");
+			Log.i("bbbbbbbbbbbb", msg + "1");
 		};
 		Runnable test2 = () -> Log.e(msg + "2222222222");
 		ThreadPool.execute(test1);

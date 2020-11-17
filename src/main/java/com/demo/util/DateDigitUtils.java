@@ -17,37 +17,94 @@ import java.util.Calendar;
  */
 public class DateDigitUtils {
     public static void main(String[] args) {
-        System.out.println(getSyncTimestamp());
-        System.out.println(getTimestamp());
-        System.out.println(getDatetime());
-        System.out.println(getDate());
-        System.out.println(getTime());
-        System.out.println(getTimestamp(1605542399999L));
-        System.out.println(getOriginTimestamp(20201116235959999L));
-        // Runnable test1 = () -> {
-        //     for (int i = 0; i < 10; i++) {
-        //         System.out.println(Thread.currentThread().getName() + " : " + getTimestamp());
-        //     }
-        // };
-        // Runnable test2 = () -> {
-        //     for (int i = 0; i < 10; i++) {
-        //         System.out.println(Thread.currentThread().getName() + " : " + getTimestamp());
-        //     }
-        // };
-        // ThreadPool.execute(test1);
-        // ThreadPool.execute(test2);
+        long timestamp = getTimestamp() + 10000000000000L;
+        System.out.println("timestamp");
+        System.out.println("\t" + timestamp);
+
+        long originTimestamp = getOriginTimestamp(timestamp);
+        System.out.println("originTimestamp");
+        System.out.println("\t" + originTimestamp);
+
+        System.out.println("getOriginTimestamp(timestamp)");
+        System.out.println("\t" + getOriginTimestamp(timestamp));
+
+        System.out.println("getTimestamp(originTimestamp)");
+        System.out.println("\t" + getTimestamp(originTimestamp));
+
+        System.out.println("getTimestamp()");
+        System.out.println("\t" + getTimestamp());
+
+        System.out.println("getSyncTimestamp()");
+        System.out.println("\t" + getSyncTimestamp());
+
+        System.out.println("getDatetime()");
+        System.out.println("\t" + getDatetime());
+
+        System.out.println("getDate()");
+        System.out.println("\t" + getDate());
+
+        System.out.println("getTime()");
+        System.out.println("\t" + getTime());
+
+        System.out.println("getStartTimestamp()");
+        System.out.println("\t" + getStartTimestamp());
+
+        System.out.println("getStartTimestamp(timestamp)");
+        System.out.println("\t" + getStartTimestamp(timestamp));
+
+        System.out.println("getStartTimestampByOrigin()");
+        System.out.println("\t" + getStartTimestampByOrigin(originTimestamp));
+
+        System.out.println("getStartTimestamp(10)");
+        System.out.println("\t" + getStartTimestamp(10));
+
+        System.out.println("getStartTimestamp(timestamp, 10)");
+        System.out.println("\t" + getStartTimestamp(timestamp, 10));
+
+        System.out.println("getStartTimestampByOrigin(originTimestamp, 10)");
+        System.out.println("\t" + getStartTimestampByOrigin(originTimestamp, 10));
+
+        System.out.println("getEndTimestamp()");
+        System.out.println("\t" + getEndTimestamp());
+
+        System.out.println("getEndTimestamp(timestamp)");
+        System.out.println("\t" + getEndTimestamp(timestamp));
+
+        System.out.println("getEndTimestampByOrigin()");
+        System.out.println("\t" + getEndTimestampByOrigin(originTimestamp));
+
+        System.out.println("getEndTimestamp(10)");
+        System.out.println("\t" + getEndTimestamp(10));
+
+        System.out.println("getEndTimestamp(timestamp, 10)");
+        System.out.println("\t" + getEndTimestamp(timestamp, 10));
+
+        System.out.println("getEndTimestampByOrigin(originTimestamp, 10)");
+        System.out.println("\t" + getEndTimestampByOrigin(originTimestamp, 10));
+
     }
+
+    /**
+     * 1天的间隔={@value}单位
+     */
+    public final static long INTERVAL_DAY = 235959999;
 
     /**
      * 获取yyyyMMddHHmmssSSS形式时间戳的原始时间戳
      *
-     * @param timestamp 时间戳
+     * @param timestamp yyyyMMddHHmmssSSS形式时间戳
      * @see java.util.Calendar
      */
     public static long getOriginTimestamp(long timestamp) {
+        // 当前原始时间戳
         Calendar calendar = Calendar.getInstance();
-        calendar.set((int) (timestamp / 10000000000000L), (int) (((timestamp / 100000000000L) % 100) - 1), (int) ((timestamp / 1000000000L) % 100), (int) ((timestamp / 10000000) % 100), (int) ((timestamp / 100000) % 100), (int) ((timestamp / 1000) % 100));
+        // 设置年月日时分秒
+        calendar.set((int) (timestamp / 10000000000000L), (int) (((timestamp / 100000000000L) % 100) - 1),
+                (int) ((timestamp / 1000000000L) % 100), (int) ((timestamp / 10000000) % 100),
+                (int) ((timestamp / 100000) % 100), (int) ((timestamp / 1000) % 100));
+        // 设置毫秒
         calendar.set(Calendar.MILLISECOND, (int) (timestamp % 1000));
+        // 返回原始时间戳
         return calendar.getTimeInMillis();
     }
 
@@ -58,11 +115,17 @@ public class DateDigitUtils {
      * @see java.util.Calendar
      */
     public static long getTimestamp(long timestamp) {
+        // 当前原始时间戳
         Calendar calendar = Calendar.getInstance();
-        if (timestamp != -1) {
+        // 指定原始时间戳
+        if (timestamp > -1) {
             calendar.setTimeInMillis(timestamp);
         }
-        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L) + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000) + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000) + (calendar.get(Calendar.MILLISECOND));
+        // 返回时间戳
+        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L)
+                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000)
+                + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000)
+                + (calendar.get(Calendar.MILLISECOND));
     }
 
     /**
@@ -82,108 +145,154 @@ public class DateDigitUtils {
      * @see java.lang.Thread#sleep(long millis)
      */
     public synchronized static long getSyncTimestamp() {
+        // 延迟1毫秒
         try {
             Thread.sleep(1);
         } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
+        // 返回当前时间戳
         return getTimestamp(-1);
     }
 
     /**
      * 获取当前日期yyyyMMddHHmmss形式
+     * 
+     * @see java.util.Calendar
      */
     public static long getDatetime() {
+        // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.YEAR) * 10000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000L) + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
+        // 返回当前日期yyyyMMddHHmmss形式
+        return (calendar.get(Calendar.YEAR) * 10000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000L)
+                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000)
+                + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
     }
 
     /**
      * 获取当前日期yyyyMMdd形式
+     * 
+     * @see java.util.Calendar
      */
     public static int getDate() {
+        // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.YEAR) * 10000) + ((calendar.get(Calendar.MONTH) + 1) * 100) + (calendar.get(Calendar.DAY_OF_MONTH));
+        // 返回当前日期yyyyMMdd形式
+        return (calendar.get(Calendar.YEAR) * 10000) + ((calendar.get(Calendar.MONTH) + 1) * 100)
+                + (calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     /**
      * 获取当前时间HHmmss形式
+     * 
+     * @see java.util.Calendar
      */
     public static int getTime() {
+        // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
-        return (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
-    }
-
-    public static int addDay(int date, int day) {
-        Calendar d = Calendar.getInstance();
-        d.set((date / 10000), ((date / 100) % 100 - 1), (date % 100));
-        d.add(Calendar.DAY_OF_YEAR, day);
-        return (d.get(Calendar.YEAR) * 10000) + ((d.get(Calendar.MONTH) + 1) * 100) + (d.get(Calendar.DATE));
+        // 返回当前时间HHmmss形式
+        return (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100)
+                + (calendar.get(Calendar.SECOND));
     }
 
     /**
-     * 获取(当前/指定)时间戳的(指定偏移字段、偏移大小)的(开始/结束)时间戳
+     * 获取(当前/指定)(原始)时间戳的(指定偏移字段、偏移大小)的(开始/结束)时间戳
      *
      * @param isStart      开始/结束
+     * @param isOrigin     原始时间戳/时间戳(timestamp为-1时，此参数任意)
      * @param timestamp    指定日期时间戳(-1为当前时间)
-     * @param offsetField  偏移字段(-1为不偏移)
+     * @param offsetField  偏移字段(offsetAmount为0时，此参数任意)
      * @param offsetAmount 偏移大小(0为不偏移)
      * @see java.util.Calendar
+     * @see #getOriginTimestamp(long)
+     * @see #getTimestamp(long)
      */
-    public static long getTimestamp(boolean isStart, long timestamp, int offsetField, int offsetAmount) {
+    public static long getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int offsetField,
+            int offsetAmount) {
+        // 获取当前原始时间戳
         Calendar calendar = Calendar.getInstance();
-        if (timestamp != -1) {
-            calendar.setTimeInMillis(timestamp);
+        // 指定(原始)时间戳
+        if (timestamp > -1) {
+            if (isOrigin) {
+                // 指定原始时间戳
+                calendar.setTimeInMillis(timestamp);
+            } else {
+                // 指定时间戳，并转为原始时间戳
+                // 设置年月日时分秒
+                calendar.set((int) (timestamp / 10000000000000L), (int) (((timestamp / 100000000000L) % 100) - 1),
+                        (int) ((timestamp / 1000000000L) % 100), (int) ((timestamp / 10000000) % 100),
+                        (int) ((timestamp / 100000) % 100), (int) ((timestamp / 1000) % 100));
+                // 设置毫秒
+                calendar.set(Calendar.MILLISECOND, (int) (timestamp % 1000));
+            }
         }
-        calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        // 设置时分秒毫秒
         if (isStart) {
+            // 开始时间
             calendar.set(Calendar.HOUR_OF_DAY, 0);
             calendar.set(Calendar.MINUTE, 0);
             calendar.set(Calendar.SECOND, 0);
             calendar.set(Calendar.MILLISECOND, 0);
         } else {
+            // 结束时间
             calendar.set(Calendar.HOUR_OF_DAY, 23);
             calendar.set(Calendar.MINUTE, 59);
             calendar.set(Calendar.SECOND, 59);
             calendar.set(Calendar.MILLISECOND, 999);
         }
-        if (offsetField != -1 && offsetAmount != 0) {
+        // 指定偏移
+        if (offsetField > -1 && offsetAmount > 0) {
             calendar.add(offsetField, offsetAmount);
         }
-        return calendar.getTime().getTime();
+        // 返回时间戳
+        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L)
+                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000)
+                + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000)
+                + (calendar.get(Calendar.MILLISECOND));
     }
 
     /**
      * 获取今天0时0分0秒0毫秒的时间戳
      *
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
      */
     public static long getStartTimestamp() {
-        return getTimestamp(true, -1, -1, 0);
+        return getTimestamp(true, false, -1, -1, 0);
     }
 
     /**
      * 获取指定时间戳0时0分0秒0毫秒的时间戳
      *
      * @param timestamp 指定时间戳
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(long timestamp) {
-        return getTimestamp(true, timestamp, -1, 0);
+        return getTimestamp(true, false, timestamp, -1, 0);
+    }
+
+    /**
+     * 获取指定原始时间戳0时0分0秒0毫秒的时间戳
+     *
+     * @param timestamp 指定原始时间戳
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     */
+    public static long getStartTimestampByOrigin(long timestamp) {
+        return getTimestamp(true, true, timestamp, -1, 0);
     }
 
     /**
      * 获取今天+偏移天0时0分0秒0毫秒的时间戳
      *
      * @param dayOffset 相对于今天的偏移天
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(int dayOffset) {
-        return getTimestamp(true, -1, Calendar.DAY_OF_YEAR, dayOffset);
+        return getTimestamp(true, false, -1, Calendar.DAY_OF_YEAR, dayOffset);
     }
 
     /**
@@ -191,55 +300,108 @@ public class DateDigitUtils {
      *
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(long timestamp, int dayOffset) {
-        return getTimestamp(true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
+        return getTimestamp(true, false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
     }
 
     /**
-     * 获取今天23时59分59秒999毫秒的时间戳
+     * 获取指定原始时间戳+偏移天0时0分0秒0毫秒的时间戳
      *
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @param timestamp 指定原始时间戳
+     * @param dayOffset 相对于指定时间戳的偏移天
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     */
+    public static long getStartTimestampByOrigin(long timestamp, int dayOffset) {
+        return getTimestamp(true, true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
+    }
+
+    /**
+     * 获取今天23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
+     *
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestamp()
+     * @see #INTERVAL_DAY
      */
     public static long getEndTimestamp() {
-        return getTimestamp(false, -1, -1, 0);
+        return getTimestamp(false, false, -1, -1, 0);
     }
 
     /**
-     * 获取指定时间戳23时59分59秒999毫秒的时间戳
+     * 获取指定时间戳23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
      *
      * @param timestamp 指定时间戳
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestamp(long timestamp)
+     * @see #INTERVAL_DAY
      */
     public static long getEndTimestamp(long timestamp) {
-        return getTimestamp(false, timestamp, -1, 0);
+        return getTimestamp(false, false, timestamp, -1, 0);
     }
 
     /**
-     * 获取今天+偏移天23时59分59秒999毫秒的时间戳
+     * 获取指定原始时间戳23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
+     *
+     * @param timestamp 指定原始时间戳
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestampByOrigin(long timestamp)
+     * @see #INTERVAL_DAY
+     */
+    public static long getEndTimestampByOrigin(long timestamp) {
+        return getTimestamp(false, true, timestamp, -1, 0);
+    }
+
+    /**
+     * 获取今天+偏移天23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
      *
      * @param dayOffset 相对于今天的偏移天
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestamp(int dayOffset)
+     * @see #INTERVAL_DAY
      */
     public static long getEndTimestamp(int dayOffset) {
-        return getTimestamp(false, -1, Calendar.DAY_OF_YEAR, dayOffset);
+        return getTimestamp(false, false, -1, Calendar.DAY_OF_YEAR, dayOffset);
     }
 
     /**
-     * 获取指定时间戳+偏移天23时59分59秒999毫秒的时间戳
+     * 获取指定时间戳+偏移天23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
      *
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
-     * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestamp(long timestamp, int dayOffset)
+     * @see #INTERVAL_DAY
      */
     public static long getEndTimestamp(long timestamp, int dayOffset) {
-        return getTimestamp(false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
+        return getTimestamp(false, false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
+    }
+
+    /**
+     * 获取指定原始时间戳+偏移天23时59分59秒999毫秒的时间戳<br>
+     * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
+     *
+     * @param timestamp 指定原始时间戳
+     * @param dayOffset 相对于指定时间戳的偏移天
+     * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
+     *      offsetField, int offsetAmount)
+     * @see #getStartTimestampByOrigin(long timestamp, int dayOffset)
+     * @see #INTERVAL_DAY
+     */
+    public static long getEndTimestampByOrigin(long timestamp, int dayOffset) {
+        return getTimestamp(false, true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
     }
 
 }

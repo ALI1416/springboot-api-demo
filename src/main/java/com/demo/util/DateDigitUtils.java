@@ -82,6 +82,24 @@ public class DateDigitUtils {
         System.out.println("getEndTimestampByOrigin(originTimestamp, 10)");
         System.out.println("\t" + getEndTimestampByOrigin(originTimestamp, 10));
 
+        System.out.println(complement(201));
+        System.out.println(complement(2019));
+        System.out.println(complement(201902));
+        System.out.println(complement(20190203));
+        System.out.println(complement(2019010203));
+        System.out.println(complement(201901020304L));
+        System.out.println(complement(20190102030405L));
+        System.out.println(complement(20190102030405006L));
+        System.out.println(complement(201901020304050067L));
+        System.out.println(complement("201"));
+        System.out.println(complement("2019"));
+        System.out.println(complement("201902"));
+        System.out.println(complement("20190203"));
+        System.out.println(complement("2019010203"));
+        System.out.println(complement("201901020304"));
+        System.out.println(complement("20190102030405"));
+        System.out.println(complement("20190102030405006"));
+        System.out.println(complement("201901020304050067"));
     }
 
     /**
@@ -402,6 +420,80 @@ public class DateDigitUtils {
      */
     public static long getEndTimestampByOrigin(long timestamp, int dayOffset) {
         return getTimestamp(false, true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
+    }
+
+    /**
+     * 补全缺损时间戳<br>
+     * 需要保证长度为4/6/8/10/12/14/17位
+     * 
+     * @param timestamp 缺损时间戳
+     * @return 成功返回17位时间戳，失败返回-1
+     * @see #complement(String)
+     */
+    public static long complement(long timestamp) {
+        int len = 0;
+        // 计算长度
+        for (long temp = timestamp; temp > 0; len++) {
+            temp /= 10;
+        }
+        if (len == 4) {
+            // 年
+            timestamp = timestamp * 10000000000000L + 101000000000L;
+        } else if (len == 6) {
+            // 年月
+            timestamp = timestamp * 100000000000L + 1000000000L;
+        } else if (len == 8) {
+            // 年月日
+            timestamp *= 1000000000;
+        } else if (len == 10) {
+            // 年月日时
+            timestamp *= 10000000;
+        } else if (len == 12) {
+            // 年月日时分
+            timestamp *= 100000;
+        } else if (len == 14) {
+            // 年月日时分秒
+            timestamp *= 1000;
+        } else if (len != 17) {
+            // 错误
+            timestamp = -1;
+        }
+        return timestamp;
+    }
+
+    /**
+     * 补全缺损时间戳<br>
+     * 需要保证长度为4/6/8/10/12/14/17位
+     * 
+     * @param timestamp 缺损时间戳
+     * @return 成功返回17位时间戳，失败返回-1
+     * @see #complement(long)
+     */
+    public static String complement(String timestamp) {
+        int len = timestamp.length();
+        if (len == 4) {
+            // 年
+            timestamp += "0101000000000";
+        } else if (len == 6) {
+            // 年月
+            timestamp += "01000000000";
+        } else if (len == 8) {
+            // 年月日
+            timestamp += "000000000";
+        } else if (len == 10) {
+            // 年月日时
+            timestamp += "0000000";
+        } else if (len == 12) {
+            // 年月日时分
+            timestamp += "00000";
+        } else if (len == 14) {
+            // 年月日时分秒
+            timestamp += "000";
+        } else if (len != 17) {
+            // 错误
+            timestamp = "-1";
+        }
+        return timestamp;
     }
 
 }

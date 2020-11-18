@@ -36,6 +36,10 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
     // 加密算法
     implementation 'commons-codec:commons-codec:1.15'
+    // IP地址和地区转换
+    implementation 'org.lionsoul:ip2region:1.7.2'
+    // 手机号码归属地和其他信息（诈骗、骚扰等）
+    implementation 'org.xdty.phone.number:phone-number:0.7.13'
     // 简化getter/setter方法
     compileOnly 'org.projectlombok:lombok'
     // 热部署

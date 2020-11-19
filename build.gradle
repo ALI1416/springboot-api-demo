@@ -24,6 +24,7 @@ allprojects {
         mavenCentral()
         // jCenter仓库
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -34,12 +35,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // mybatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
-    // 加密算法
+    // MDx/SHAx加密算法
     implementation 'commons-codec:commons-codec:1.15'
+    // BCrypt加密算法
+    implementation 'org.mindrot:jbcrypt:0.4'
     // IP地址和地区转换
     implementation 'org.lionsoul:ip2region:1.7.2'
-    // 手机号码归属地和其他信息（诈骗、骚扰等）
-    implementation 'org.xdty.phone.number:phone-number:0.7.13'
+    // 手机号码归属地查询
+    implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
+    // 分词
+    implementation 'org.ansj:ansj_seg:5.1.6'
     // 简化getter/setter方法
     compileOnly 'org.projectlombok:lombok'
     // 热部署

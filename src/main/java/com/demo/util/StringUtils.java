@@ -49,6 +49,10 @@ public class StringUtils {
      * 数字+全部字母:{@value}
      */
     public final static String NUMBER_ALL_LETTER = NUMBER + ALL_LETTER;
+    /**
+     * 64进制:{@value}
+     */
+    public final static String BASE64_ALPHABET = NUMBER + ALL_LETTER + "+/";
 
     /**
      * 随机数实例
@@ -67,6 +71,7 @@ public class StringUtils {
      * @see #NUMBER_UPPER_LETTER
      * @see #NUMBER_LOWER_LETTER
      * @see #NUMBER_ALL_LETTER
+     * @see #BASE64_ALPHABET
      */
     public static String getRandom(String base, int len) {
         StringBuilder s = new StringBuilder();

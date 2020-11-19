@@ -1,7 +1,7 @@
 package com.demo.util;
 
-import com.demo.source.bcrypt.BCryptPasswordEncoder;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -10,10 +10,6 @@ import java.util.zip.CRC32;
 
 /**
  * <h1>编码工具类</h1>
- *
- * <p>
- * 其中BCrypt是提取Spring Security的代码<br>
- * </p>
  *
  * <p>
  * createDate 2020/11/14 21:20:10
@@ -36,10 +32,10 @@ public class EncoderUtils {
         String crc32Password = EncoderUtils.crc32(rawPassword);
         System.out.println(crc32Password);
 
-        String bCryptEncodePassword = EncoderUtils.bCryptEncode(rawPassword);
+        String bCryptEncodePassword = EncoderUtils.bCrypt(rawPassword);
         System.out.println(bCryptEncodePassword);
 
-        boolean bCryptMatchesResult = EncoderUtils.bCryptMatches(rawPassword, bCryptEncodePassword);
+        boolean bCryptMatchesResult = EncoderUtils.bCrypt(rawPassword, bCryptEncodePassword);
         System.out.println(bCryptMatchesResult);
 
         String base64Password = EncoderUtils.base64Encoder(rawPassword);
@@ -65,7 +61,7 @@ public class EncoderUtils {
     private final static Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
-     * base62字母表
+     * base62字母表，不要手动修改
      */
     private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -105,8 +101,8 @@ public class EncoderUtils {
      *
      * @param rawPassword 原始数据
      */
-    public static String bCryptEncode(CharSequence rawPassword) {
-        return new BCryptPasswordEncoder().encode(rawPassword);
+    public static String bCrypt(String rawPassword) {
+        return BCrypt.hashpw(rawPassword, BCrypt.gensalt());
     }
 
     /**
@@ -115,8 +111,8 @@ public class EncoderUtils {
      * @param rawPassword     原始数据
      * @param encodedPassword 加密后的数据
      */
-    public static boolean bCryptMatches(CharSequence rawPassword, String encodedPassword) {
-        return new BCryptPasswordEncoder().matches(rawPassword, encodedPassword);
+    public static boolean bCrypt(String rawPassword, String encodedPassword) {
+        return BCrypt.checkpw(rawPassword, encodedPassword);
     }
 
     /**
@@ -160,6 +156,7 @@ public class EncoderUtils {
      * @param n 原始数据
      * @see #base62Encoder(long n)
      */
+    @Deprecated
     public static String base62Encoder2(long n) {
         if (n < 1) {
             return "0";
@@ -215,6 +212,7 @@ public class EncoderUtils {
      * @param s 加密后的数据
      * @see #base62Decoder(String s)
      */
+    @Deprecated
     public static long base62Decoder2(String s) {
         if (s == null) {
             return 0;

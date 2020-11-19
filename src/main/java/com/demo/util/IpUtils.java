@@ -21,8 +21,8 @@ public class IpUtils {
 
     public static void main(String[] args) {
         String ip = "202.108.22.5";
-//        String ip = "255.255.255.255";
-//        String ip = "0.0.0.0";
+        //        String ip = "255.255.255.255";
+        //        String ip = "0.0.0.0";
         System.out.println(ip);
 
         boolean isIp = isIp(ip);
@@ -47,21 +47,17 @@ public class IpUtils {
     private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
     /**
      * ip2region数据库路径
-     * 最新版https://github.com/lionsoul2014/ip2region/raw/master/data/ip2region.db
      */
-    private static String ip2regionDbPath = IpUtils.class.getResource("/ip2region.db").getPath();
+    private static final String ip2regionDbPath = IpUtils.class.getResource("/file/ip2region/data.db").getPath();
     /**
-     * ip2region配置
-     */
-    private static DbConfig ip2regionConfig = null;
-    /**
-     * ip2region搜索
+     * ip2region搜索实例
      */
     private static DbSearcher ip2regionSearcher = null;
+
+    // 初始化DbSearcher实例
     static {
         try {
-            ip2regionConfig = new DbConfig();
-            ip2regionSearcher = new DbSearcher(ip2regionConfig, ip2regionDbPath);
+            ip2regionSearcher = new DbSearcher(new DbConfig(), ip2regionDbPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,7 +74,7 @@ public class IpUtils {
 
     /**
      * 是字符串IP地址
-     * 
+     *
      * @param str 字符串IP地址
      */
     public static boolean isIp(String str) {
@@ -87,7 +83,7 @@ public class IpUtils {
 
     /**
      * 是数字IP地址
-     * 
+     *
      * @param n 数字IP地址
      */
     public static boolean isIp(long n) {
@@ -96,22 +92,20 @@ public class IpUtils {
 
     /**
      * IP地址字符串转数字
-     * 
+     *
      * @param str 字符串IP地址
      */
     public static long ip2Long(String str) {
         String[] s = str.split("\\.");
-        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8)
-                | Integer.parseInt(s[3]);
+        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
     }
 
     /**
      * IP地址数字转字符串
-     * 
+     *
      * @param n 数字IP地址
      */
     public static String long2Ip(long n) {
-        return new StringBuilder().append(n >> 24).append('.').append(n >> 16 & 0xFF).append('.').append(n >> 8 & 0xFF)
-                .append('.').append(n & 0xFF).toString();
+        return (n >> 24) + "." + (n >> 16 & 0xFF) + "." + (n >> 8 & 0xFF) + "." + (n & 0xFF);
     }
 }

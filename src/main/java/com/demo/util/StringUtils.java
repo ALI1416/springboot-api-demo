@@ -1,7 +1,11 @@
 package com.demo.util;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
+import org.ansj.splitWord.analysis.ToAnalysis;
 import org.springframework.stereotype.Component;
 
 /**
@@ -16,9 +20,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class StringUtils {
     public static void main(String[] args) {
-        System.out.println(getRandom(NUMBER_ALL_LETTER, 100));
+        System.out.println(getRandom(BASE64_ALPHABET, 100));
         System.out.println(getRandomNum4());
         System.out.println(getRandomNum6());
+        System.out.println(getRandomNum8());
+        System.out.println(getAnsj("广西壮族自治区桂林市七星区桂林航天工业学院南校区"));
     }
 
     /**
@@ -61,7 +67,7 @@ public class StringUtils {
 
     /**
      * 获取随机字符串
-     * 
+     *
      * @param base 源字符串
      * @param len  长度
      * @see #NUMBER
@@ -83,7 +89,7 @@ public class StringUtils {
 
     /**
      * 获取随机数字字符串
-     * 
+     *
      * @param len 长度
      */
     public static String getRandomNum4(int len) {
@@ -109,6 +115,104 @@ public class StringUtils {
      */
     public static String getRandomNum8() {
         return getRandom(NUMBER, 8);
+    }
+
+    /**
+     * 获取ansj分词
+     *
+     * @param s 要分词的字符串
+     */
+    public static String getAnsj(String s) {
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]", "").replaceAll(" +", " ");
+    }
+
+    /**
+     * 获取64位uuid
+     */
+    public static String getUuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 字符串打码
+     *
+     * @param str 要打码的字符串
+     */
+    public static String getMask(String str) {
+        String mask = "***";
+        StringBuilder sb = new StringBuilder(str);
+        if (sb.length() > 2) {
+            return sb.replace(1, sb.length() - 1, mask).toString();
+        }
+        return mask;
+    }
+
+    /**
+     * 获取文件后缀
+     *
+     * @param fileName 文件名
+     */
+    public static String getSuffix(String fileName) {
+        int a = fileName.lastIndexOf(".") + 1;
+        return a == 0 ? "" : fileName.substring(a);
+    }
+
+    /**
+     * 重命名字符串
+     *
+     * @param str 字符串列表
+     */
+    public static List<String> duplicateRenameStr(List<String> str) {
+        return duplicateRename(str, false);
+    }
+
+    /**
+     * 重命名文件名
+     *
+     * @param fileName 文件名列表
+     */
+    public static List<String> duplicateRenameFile(List<String> fileName) {
+        return duplicateRename(fileName, true);
+    }
+
+    /**
+     * 重命名
+     *
+     * @param str    字符串或文件名列表
+     * @param isFile 是文件
+     */
+    public static List<String> duplicateRename(List<String> str, boolean isFile) {
+        List<String> strTemp = new ArrayList<>();
+        List<String> strResult = new ArrayList<>();
+        List<Integer> strCount = new ArrayList<>();
+        for (String s : str) {
+            if (!strResult.contains(s)) {
+                strTemp.add(s);
+                strResult.add(s);
+                strCount.add(1);
+            } else {
+                int index = strTemp.indexOf(s);
+                Integer count = strCount.get(index);
+                String countStr;
+                if (isFile) {
+                    int dot = s.lastIndexOf(".");
+                    if (dot == -1) {
+                        countStr = s + "(" + count + ")";
+                    } else {
+                        countStr = s.substring(0, dot) + "(" + count + ")" + s.substring(dot);
+                    }
+                } else {
+                    countStr = s + "(" + count + ")";
+                }
+                strCount.set(index, count + 1);
+                strResult.add(countStr);
+            }
+        }
+        // 没有重复的
+        if (str.size() == strTemp.size()) {
+            return str;
+        }
+        return strResult;
     }
 
 }

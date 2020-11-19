@@ -166,11 +166,14 @@ public class EncoderUtils {
         for (; n > 0; n /= 62) {
             a = (n % 62);
             if (a < 10) {
-                s.append((char) (a + 48));// 转为0-9
+                // 转为0-9
+                s.append((char) (a + 48));
             } else if (a < 36) {
-                s.append((char) (a + 55));// 转为A-Z
+                // 转为A-Z
+                s.append((char) (a + 55));
             } else {
-                s.append((char) (a + 61));// 转为a-z
+                // 转为a-z
+                s.append((char) (a + 61));
             }
         }
         return s.reverse().toString();
@@ -195,11 +198,14 @@ public class EncoderUtils {
         for (int i = l - 1; i >= 0; i--, p *= 62) {
             c = s.charAt(i);
             if (c > 96) {
-                n += (c - 61) * p;// a-z转为数字
+                // a-z转为数字
+                n += (c - 61) * p;
             } else if (c > 64) {
-                n += (c - 55) * p;// A-Z转为数字
+                // A-Z转为数字
+                n += (c - 55) * p;
             } else {
-                n += (c - 48) * p;// 0-9转为数字
+                // 0-9转为数字
+                n += (c - 48) * p;
             }
         }
         return n;

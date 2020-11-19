@@ -24,6 +24,7 @@ allprojects {
         mavenCentral()
         // jCenter仓库
         jcenter()
+        // jitPack仓库
         maven { url "https://jitpack.io" }
     }
 }
@@ -45,7 +46,7 @@ dependencies {
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
     // 分词
     implementation 'org.ansj:ansj_seg:5.1.6'
-    // 简化getter/setter方法
+    // 对象方法简化
     compileOnly 'org.projectlombok:lombok'
     // 热部署
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -53,7 +54,7 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     // 配置加载
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    // 简化getter/setter方法
+    // 对象方法简化
     annotationProcessor 'org.projectlombok:lombok'
     // 测试
     testImplementation('org.springframework.boot:spring-boot-starter-test') {

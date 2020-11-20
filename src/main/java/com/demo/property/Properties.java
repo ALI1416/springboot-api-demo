@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Properties {
-    public static LibaryProperties libaryProperties;
+    public static LibraryProperties libraryProperties;
 
     @Autowired
-    private Properties(LibaryProperties libaryProperties) {
-        Properties.libaryProperties = libaryProperties;
+    private Properties(LibraryProperties libraryProperties) {
+        Properties.libraryProperties = libraryProperties;
     }
 
 }

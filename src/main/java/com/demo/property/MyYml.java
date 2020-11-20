@@ -21,7 +21,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  */
 //@PropertySource读取外部配置文件。因为只能读取properties类型，所以需要使用PropertySourceLoadYamlFactory将yaml文件转换为properties
-@PropertySource(value = { "classpath:my.yml" }, factory = PropertySourceLoadYamlFactory.class)
+@PropertySource(value = {"classpath:my.yml"}, factory = PropertySourceLoadYamlFactory.class)
 // prefix前缀
 // ignoreInvalidFields = true忽略类型不匹配或不存在的字段，没有指定默认值的会自动赋值(基本类型：默认值；包装类型：null)
 // ignoreUnknownFields = false配置中有不能绑定的字段，会报错(ignoreInvalidFields = true时无效)

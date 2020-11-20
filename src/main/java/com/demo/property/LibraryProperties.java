@@ -19,7 +19,7 @@ import lombok.Data;
 @ConfigurationProperties(ignoreInvalidFields = true)
 @Component
 @Data
-public class LibaryProperties {
+public class LibraryProperties {
     /**
      * 自定义词典
      */

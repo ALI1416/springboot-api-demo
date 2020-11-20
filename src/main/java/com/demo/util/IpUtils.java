@@ -1,11 +1,12 @@
 package com.demo.util;
 
-import java.util.regex.Pattern;
-
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
 import org.springframework.stereotype.Component;
+
+import java.io.InputStream;
+import java.util.regex.Pattern;
 
 /**
  * <h1>IP工具类</h1>
@@ -46,10 +47,6 @@ public class IpUtils {
      */
     private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
     /**
-     * ip2region数据库路径
-     */
-    private static final String ip2regionDbPath = IpUtils.class.getResource("/file/ip2region/data.db").getPath();
-    /**
      * ip2region搜索实例
      */
     private static DbSearcher ip2regionSearcher = null;
@@ -57,7 +54,9 @@ public class IpUtils {
     // 初始化DbSearcher实例
     static {
         try {
-            ip2regionSearcher = new DbSearcher(new DbConfig(), ip2regionDbPath);
+            InputStream a = FileUtils.loadResourceFile2InputStream("file/ip2region/data.db");
+            byte[] b = FileUtils.inputStream2Bytes(a);
+            ip2regionSearcher = new DbSearcher(new DbConfig(), b);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +64,7 @@ public class IpUtils {
 
     public static void a(String ip) {
         try {
-            DataBlock block = ip2regionSearcher.btreeSearch(ip);
+            DataBlock block = ip2regionSearcher.memorySearch(ip);
             System.out.println(block);
         } catch (Exception e) {
             e.printStackTrace();

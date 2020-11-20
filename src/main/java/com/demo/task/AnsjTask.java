@@ -11,6 +11,15 @@ import com.demo.constant.AnsjConstant;
 import com.demo.util.FileUtils;
 import com.demo.util.StringUtils;
 
+/**
+ * <h1>Ansj任务类</h1>
+ *
+ * <p>
+ * createDate 2020/11/20 19:42:59
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ **/
 public class AnsjTask {
     private final static Logger logger = LoggerFactory.getLogger(AnsjTask.class);
 
@@ -28,28 +37,29 @@ public class AnsjTask {
             File libraryAmbiguityFile = new File(AnsjConstant.LIBRARY_PATH + AnsjConstant.LIBRARY_AMBIGUITY_FILE);
             File libraryDefaultFile = new File(AnsjConstant.LIBRARY_PATH + AnsjConstant.LIBRARY_DEFAULT_FILE);
             if (!libraryPath.exists()) {
-                libraryPath.mkdir();
-                logger.info("词典文件夹缺失，创建在" + libraryPath.getPath());
+                if (libraryPath.mkdir()) {
+                    logger.info("词典文件夹缺失，创建在{}", libraryPath.getPath());
+                } else {
+                    logger.error("词典文件夹缺失，在{}创建失败！", libraryPath.getPath());
+                }
             } else {
-                logger.info("词典文件夹已存在，在" + libraryPath.getPath());
+                logger.info("词典文件夹已存在，在{}", libraryPath.getPath());
             }
             if (!libraryAmbiguityFile.exists()) {
-                ClassPathResource ambiguityDicR = new ClassPathResource(
-                        AnsjConstant.FOLDER_PATH + AnsjConstant.LIBRARY_AMBIGUITY_FILE);
+                ClassPathResource ambiguityDicR = new ClassPathResource(AnsjConstant.FOLDER_PATH + AnsjConstant.LIBRARY_AMBIGUITY_FILE);
                 InputStream ambiguityDicI = ambiguityDicR.getInputStream();
                 FileUtils.inputStream2File(ambiguityDicI, libraryAmbiguityFile.getPath());
-                logger.info("歧义词典ambiguity.dic缺失，创建在" + libraryAmbiguityFile.getPath());
+                logger.info("歧义词典ambiguity.dic缺失，创建在{}", libraryAmbiguityFile.getPath());
             } else {
-                logger.info("歧义词典ambiguity.dic已存在，在" + libraryAmbiguityFile.getPath());
+                logger.info("歧义词典ambiguity.dic已存在，在{}", libraryAmbiguityFile.getPath());
             }
             if (!libraryDefaultFile.exists()) {
-                ClassPathResource defaultDicR = new ClassPathResource(
-                        AnsjConstant.FOLDER_PATH + AnsjConstant.LIBRARY_DEFAULT_FILE);
+                ClassPathResource defaultDicR = new ClassPathResource(AnsjConstant.FOLDER_PATH + AnsjConstant.LIBRARY_DEFAULT_FILE);
                 InputStream defaultDicI = defaultDicR.getInputStream();
                 FileUtils.inputStream2File(defaultDicI, libraryDefaultFile.getPath());
-                logger.info("自定义词典default.dic缺失，创建在" + libraryDefaultFile.getPath());
+                logger.info("自定义词典default.dic缺失，创建在{}", libraryDefaultFile.getPath());
             } else {
-                logger.info("自定义词典default.dic已存在，在" + libraryDefaultFile.getPath());
+                logger.info("自定义词典default.dic已存在，在{}", libraryDefaultFile.getPath());
             }
             logger.info("检查并创建词典文件结束。");
         } catch (Exception e) {

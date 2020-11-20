@@ -1,4 +1,4 @@
-package com.demo.properties;
+package com.demo.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -28,7 +28,7 @@ import java.util.List;
 @ConfigurationProperties(prefix = "test", ignoreInvalidFields = true)
 @Component
 @Data
-public class MyProperty {
+public class MyYml {
     private boolean booleanType;
     private int intType = 4;
     private long longType;

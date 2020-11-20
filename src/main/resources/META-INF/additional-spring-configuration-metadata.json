@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "ansj.folder-path",
+  "type": "java.lang.String",
+  "description": "ansj词典文件夹在本项目中resources目录下的路径"
+}]}

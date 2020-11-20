@@ -24,7 +24,7 @@ public class StringUtils {
         System.out.println(getRandomNum4());
         System.out.println(getRandomNum6());
         System.out.println(getRandomNum8());
-        System.out.println(getAnsj("广西壮族自治区桂林市七星区桂林航天工业学院南校区"));
+        System.out.println(getAnsj("%&Y公告HY*82人98发顺丰39&发%……&#人￥&发（）——*）（&（%……@广西壮族自治区桂林市七星区桂林航天工业学院南校区{【】{}“：》《？"));
     }
 
     /**
@@ -123,7 +123,7 @@ public class StringUtils {
      * @param s 要分词的字符串
      */
     public static String getAnsj(String s) {
-        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]", "").replaceAll(" +", " ");
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]", "").replaceAll(" +", " ").trim();
     }
 
     /**

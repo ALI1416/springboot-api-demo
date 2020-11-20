@@ -1,7 +1,7 @@
 package com.demo.constant;
 
-import com.demo.properties.MailProperty;
-import com.demo.properties.Properties;
+import com.demo.property.Yml;
+import com.demo.property.yml.MailDefaultYml;
 
 /**
  * <h1>邮件常量类</h1>
@@ -17,26 +17,26 @@ public class MailConstant {
     /**
      * 导入配置类
      */
-    private static MailProperty mailProperty = Properties.mailProperty;
+    private static MailDefaultYml mail = Yml.mailDefaultYml;
 
     /**
      * 主机
      */
-    public final static String HOST = mailProperty.getHost();
+    public final static String HOST = mail.getHost();
     /**
      * 用户名
      */
-    public final static String USERNAME = mailProperty.getUsername();
+    public final static String USERNAME = mail.getUsername();
     /**
      * 密码
      */
-    public final static String PASSWORD = mailProperty.getPassword();
+    public final static String PASSWORD = mail.getPassword();
     /**
      * 协议
      */
-    public final static String PROTOCOL = mailProperty.getProtocol();
+    public final static String PROTOCOL = mail.getProtocol();
     /**
      * 字符集
      */
-    public final static String DEFAULT_ENCODING = mailProperty.getDefaultEncoding();
+    public final static String DEFAULT_ENCODING = mail.getDefaultEncoding();
 }

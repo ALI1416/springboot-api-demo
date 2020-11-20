@@ -3,6 +3,8 @@ package com.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.demo.task.AnsjTask;
+
 /**
  * <h1>启动类</h1>
  *
@@ -17,6 +19,7 @@ public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
+        AnsjTask.initial();
     }
 
 }

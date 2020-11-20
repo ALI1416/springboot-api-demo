@@ -1,4 +1,4 @@
-package com.demo.properties;
+package com.demo.property.yml;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "spring.mail", ignoreInvalidFields = true)
 @Component
 @Data
-public class MailProperty {
+public class MailDefaultYml {
     private String host;
     private String username;
     private String password;

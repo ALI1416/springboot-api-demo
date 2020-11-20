@@ -34,3 +34,5 @@ logging:
   level:
     root: info
 #    com.utopia.dao: trace
+ansj:
+  folder-path: /file/ansj/

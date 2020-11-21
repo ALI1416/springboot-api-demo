@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class Properties {
+
     public static LibraryProperties libraryProperties;
 
     @Autowired

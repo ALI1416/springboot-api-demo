@@ -1,12 +1,11 @@
 package com.demo.util;
 
+import java.util.regex.Pattern;
+
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
 import org.springframework.stereotype.Component;
-
-import java.io.InputStream;
-import java.util.regex.Pattern;
 
 /**
  * <h1>IP工具类</h1>
@@ -22,8 +21,8 @@ public class IpUtils {
 
     public static void main(String[] args) {
         String ip = "202.108.22.5";
-        //        String ip = "255.255.255.255";
-        //        String ip = "0.0.0.0";
+        // String ip = "255.255.255.255";
+        // String ip = "0.0.0.0";
         System.out.println(ip);
 
         boolean isIp = isIp(ip);
@@ -37,9 +36,13 @@ public class IpUtils {
 
         String strIp = long2Ip(longIp);
         System.out.println(strIp);
-        a(ip);
-        a("157.122.178.42");
-        a("8.8.8.8");
+        ip2RegionInitial();
+
+        DataBlock a = a("157.122.178.42");
+        System.out.println(a);
+        System.out.println(a.getRegion());
+//        a("157.122.178.42");
+//        a("8.8.8.8");
     }
 
     /**
@@ -51,24 +54,32 @@ public class IpUtils {
      */
     private static DbSearcher ip2regionSearcher = null;
 
-    // 初始化DbSearcher实例
-    static {
-        try {
-            InputStream a = FileUtils.loadResourceFile2InputStream("file/ip2region/data.db");
-            byte[] b = FileUtils.inputStream2Bytes(a);
-            ip2regionSearcher = new DbSearcher(new DbConfig(), b);
-        } catch (Exception e) {
-            e.printStackTrace();
+    /**
+     * 初始化DbSearcher实例
+     */
+    public static void ip2RegionInitial() {
+        if (ip2regionSearcher == null) {
+            synchronized (IpUtils.class) {
+                if (ip2regionSearcher == null) {
+                    try {
+//                        ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
+                        ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data.db");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
     }
 
-    public static void a(String ip) {
+    public static DataBlock a(String ip) {
+        DataBlock block = null;
         try {
-            DataBlock block = ip2regionSearcher.memorySearch(ip);
-            System.out.println(block);
+            block = ip2regionSearcher.memorySearch(ip);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return block;
     }
 
     /**
@@ -96,7 +107,8 @@ public class IpUtils {
      */
     public static long ip2Long(String str) {
         String[] s = str.split("\\.");
-        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
+        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8)
+                | Integer.parseInt(s[3]);
     }
 
     /**

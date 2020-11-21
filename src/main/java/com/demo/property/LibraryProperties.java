@@ -20,12 +20,6 @@ import lombok.Data;
 @Component
 @Data
 public class LibraryProperties {
-    /**
-     * 自定义词典
-     */
-    private String dic;
-    /**
-     * 歧义词典
-     */
-    private String ambiguity;
+    private String dic = "D:/springboot-api-demo/ansj/default.dic";
+    private String ambiguity = "D:/springboot-api-demo/ansj/ambiguity.dic";
 }

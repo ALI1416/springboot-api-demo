@@ -19,7 +19,6 @@ import java.net.URL;
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  * GNU General Public License for more details.
  * <p>
- * BytesEncodingDetect.java<br>
  *
  * @author Billows.Van modify-by Yeno.hhr 2012-06-26
  * @version 1.0

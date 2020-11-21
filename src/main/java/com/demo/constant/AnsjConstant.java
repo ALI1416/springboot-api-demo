@@ -5,29 +5,35 @@ import com.demo.property.Properties;
 import com.demo.property.Yml;
 import com.demo.property.yml.AnsjDefaultYml;
 
+/**
+ * <h1>Ansj常量类</h1>
+ *
+ * <p>
+ * createDate 2020/11/21 09:29:16
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ **/
 public class AnsjConstant {
-    /**
-     * 导入配置类
-     */
+
     private static LibraryProperties library = Properties.libraryProperties;
     private static AnsjDefaultYml ansj = Yml.ansjDefaultYml;
 
     /**
-     * 词典文件在本项目中的路径
+     * 自定义词典文件在本项目中resources文件夹下的路径
      */
-    public static final String FOLDER_PATH = ansj.getFolderPath();
-
+    public static final String DEFAULT_RESOURCE_PATH = ansj.getDefaultResourcePath();
     /**
-     * 词典文件夹路径
+     * 歧义词典文件在本项目中resources文件夹下的路径
      */
-    public static final String LIBRARY_PATH = library.getDic().substring(0, library.getDic().lastIndexOf("/") + 1);
+    public static final String AMBIGUITY_RESOURCE_PATH = ansj.getAmbiguityResourcePath();
     /**
-     * 自定义词典文件名default.dic
+     * 自定义词典文件引用路径(本机绝对地址)
      */
-    public static final String LIBRARY_DEFAULT_FILE = library.getDic().substring(library.getDic().lastIndexOf("/") + 1);
+    public static final String DEFAULT_REFERENCE_PATH = library.getDic();
     /**
-     * 歧义词典文件名ambiguity.dic
+     * 歧义词典文件引用路径(本机绝对地址)
      */
-    public static final String LIBRARY_AMBIGUITY_FILE = library.getAmbiguity().substring(library.getAmbiguity().lastIndexOf("/") + 1);
+    public static final String AMBIGUITY_REFERENCE_PATH = library.getAmbiguity();
 
 }

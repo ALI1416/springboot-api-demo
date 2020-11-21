@@ -20,9 +20,6 @@ import com.demo.property.Yml;
  **/
 public class MyConstant {
 
-    /**
-     * 导入配置类
-     */
     private static MyYml myYml = Yml.myYml;
 
     /**

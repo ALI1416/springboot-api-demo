@@ -14,9 +14,6 @@ import com.demo.property.yml.MailDefaultYml;
  **/
 public class MailConstant {
 
-    /**
-     * 导入配置类
-     */
     private static MailDefaultYml mail = Yml.mailDefaultYml;
 
     /**

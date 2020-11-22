@@ -14,8 +14,9 @@ import lombok.Data;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
-@PropertySource(value = { "classpath:library.properties" })
+@PropertySource(value = {"classpath:library.properties"})
 @ConfigurationProperties(ignoreInvalidFields = true)
 @Component
 @Data

@@ -4,6 +4,8 @@ import com.demo.source.EncodingDetect;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * <h1>文件工具类</h1>
@@ -13,32 +15,30 @@ import java.io.*;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 public class FileUtils {
 
-    public static void main(String argc[]) {
-        //		try {
-        ////			FileUtils.saveAsUTF8("D:/7.txt", "D:/11.txt");
-        //			FileUtils.saveAsUTF8LimitSize("D:/7.txt", "D:/11.txt", 100);
-        //		} catch (Exception e) {
-        //			e.printStackTrace();
-        //		}
-        System.out.println(loadResourceFile2String("file/ansj/ambiguity.dic"));
+    public static void main(String[] args) {
+        System.out.println(resource2String("file/ansj/ambiguity.dic"));
     }
+
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
      * 加载资源文件到InputStream
      *
      * @param path 资源文件路径
+     * @return 请手动关闭InputStream
      */
-    public static InputStream loadResourceFile2InputStream(String path) {
+    public static InputStream resource2InputStream(String path) {
         try {
-            ClassPathResource resourceFile = new ClassPathResource(path);
-            return resourceFile.getInputStream();
+            ClassPathResource resource = new ClassPathResource(path);
+            return resource.getInputStream();
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
@@ -47,10 +47,11 @@ public class FileUtils {
      * @param path     资源文件路径
      * @param filePath 输出文件路径
      */
-    public static void loadResourceFile2File(String path, String filePath) {
+    public static void resource2File(String path, String filePath) {
         try {
-            ClassPathResource resourceFile = new ClassPathResource(path);
-            InputStream inputStream = resourceFile.getInputStream();
+            ClassPathResource resource = new ClassPathResource(path);
+            // 不能使用resource.getFilename()，如果打包成jar，会报错
+            InputStream inputStream = resource.getInputStream();
             inputStream2File(inputStream, filePath);
             inputStream.close();
         } catch (Exception e) {
@@ -63,92 +64,203 @@ public class FileUtils {
      *
      * @param path 资源文件路径
      */
-    public static String loadResourceFile2String(String path) {
+    public static String resource2String(String path) {
         try {
-            ClassPathResource resourceFile = new ClassPathResource(path);
-            InputStream inputStream = resourceFile.getInputStream();
-            String str = inputStream2String(inputStream);
+            ClassPathResource resource = new ClassPathResource(path);
+            InputStream inputStream = resource.getInputStream();
+            String string = inputStream2String(inputStream);
             inputStream.close();
-            return str;
+            return string;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+        }
+        return null;
+    }
+
+    /**
+     * 加载资源文件到bytes
+     *
+     * @param path 资源文件路径
+     */
+    public static byte[] resource2Bytes(String path) {
+        try {
+            ClassPathResource resource = new ClassPathResource(path);
+            InputStream inputStream = resource.getInputStream();
+            byte[] bytes = inputStream2Bytes(inputStream);
+            inputStream.close();
+            return bytes;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * File转InputStream
+     *
+     * @param filePath 文件路径
+     */
+    public static InputStream file2InputStream(String filePath) {
+        try {
+            org.apache.commons.io.FileUtils.openInputStream(new File(filePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * File转String
+     *
+     * @param filePath 文件路径
+     */
+    public static String file2String(String filePath) {
+        try {
+            org.apache.commons.io.FileUtils.readFileToString(new File(filePath), UTF8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * File转bytes
+     *
+     * @param filePath 文件路径
+     */
+    public static byte[] file2Bytes(String filePath) {
+        try {
+            return org.apache.commons.io.FileUtils.readFileToByteArray(new File(filePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * InputStream转File
+     *
+     * @param inputStream 请手动关闭InputStream
+     * @param filePath    输出文件路径
+     */
+    public static void inputStream2File(InputStream inputStream, String filePath) {
+        try {
+            org.apache.commons.io.FileUtils.copyInputStreamToFile(inputStream, new File(filePath));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     /**
      * InputStream转String
      *
-     * @param inputStream inputStream
+     * @param inputStream 请手动关闭InputStream
      */
     public static String inputStream2String(InputStream inputStream) {
         try {
-            byte[] bytes = new byte[inputStream.available()];
-            inputStream.read(bytes);
-            String str = new String(bytes);
-            inputStream.close();
-            return str;
+            return org.apache.commons.io.IOUtils.toString(inputStream, UTF8);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
-     * InputStream转File
+     * InputStream转bytes
      *
-     * @param inputStream         inputStream
-     * @param destinationFilePath 文件路径
+     * @param inputStream 请手动关闭InputStream
      */
-    public static void inputStream2File(InputStream inputStream, String destinationFilePath) {
+    public static byte[] inputStream2Bytes(InputStream inputStream) {
         try {
-            int index;
-            byte[] bytes = new byte[1024];
-            FileOutputStream destinationFile;
-            destinationFile = new FileOutputStream(destinationFilePath);
-            while ((index = inputStream.read(bytes)) != -1) {
-                destinationFile.write(bytes, 0, index);
-                destinationFile.flush();
-            }
-            destinationFile.close();
-            inputStream.close();
+            return org.apache.commons.io.IOUtils.toByteArray(inputStream);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    /**
+     * bytes转InputStream
+     *
+     * @param bytes bytes
+     */
+    public static InputStream bytes2InputStream(byte[] bytes) {
+        try {
+            return new ByteArrayInputStream(bytes);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
      * bytes转File
      *
-     * @param bytes               bytes
-     * @param destinationFilePath 文件路径
+     * @param bytes    bytes
+     * @param filePath 输出文件路径
      */
-    public static void bytes2File(byte[] bytes, String destinationFilePath) {
+    public static void bytes2File(byte[] bytes, String filePath) {
         try {
-            FileOutputStream destinationFile = new FileOutputStream(destinationFilePath);
-            destinationFile.write(bytes);
-            destinationFile.flush();
-            destinationFile.close();
+            org.apache.commons.io.FileUtils.writeByteArrayToFile(new File(filePath), bytes);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    public static byte[] inputStream2Bytes(InputStream input) {
-        ByteArrayOutputStream output = new ByteArrayOutputStream();
-        byte[] buffer = new byte[4096];
-        int n = 0;
-        while (true) {
-            try {
-                if (!(-1 != (n = input.read(buffer))))
-                    break;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            output.write(buffer, 0, n);
+    /**
+     * bytes转String
+     *
+     * @param bytes bytes
+     */
+    public static String bytes2String(byte[] bytes) {
+        try {
+            return new String(bytes, UTF8);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return output.toByteArray();
+        return null;
+    }
+
+    /**
+     * String转InputStream
+     *
+     * @param string 字符串
+     */
+    public static InputStream string2InputStream(String string) {
+        try {
+            return new ByteArrayInputStream(string.getBytes(UTF8));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * String转File
+     *
+     * @param string   字符串
+     * @param filePath 输出文件路径
+     */
+    public static void string2File(String string, String filePath) {
+        try {
+            org.apache.commons.io.FileUtils.write(new File(filePath), string, UTF8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * String转bytes
+     *
+     * @param string 字符串
+     */
+    public static byte[] string2Bytes(String string) {
+        try {
+            return string.getBytes(UTF8);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void saveAsUTF8LimitSize(String inputFilePath, String outputFilePath, int size) {
@@ -178,7 +290,7 @@ public class FileUtils {
     public static void saveAsUTF8(String inputFilePath, String outputFilePath) {
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath), getJavaEncode(inputFilePath)));
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), "UTF-8"));
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 bufferedWriter.write(line + "\r\n");

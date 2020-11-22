@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMessage;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 @Component
 public class MailUtils {

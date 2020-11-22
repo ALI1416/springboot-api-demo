@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
 public class Log {
 

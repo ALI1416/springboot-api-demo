@@ -19,6 +19,7 @@ import com.demo.util.IpUtils;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 public class Ip2RegionTask {
 
@@ -40,8 +41,7 @@ public class Ip2RegionTask {
         try {
             logger.info("Ip2Region检查并创建文件...");
             // 文件夹
-            File libraryPath = new File(Ip2RegionConstant.REFERENCE_PATH.substring(0,
-                    Ip2RegionConstant.REFERENCE_PATH.lastIndexOf("/") + 1));
+            File libraryPath = new File(Ip2RegionConstant.REFERENCE_PATH.substring(0, Ip2RegionConstant.REFERENCE_PATH.lastIndexOf("/") + 1));
             if (!libraryPath.exists()) {
                 if (libraryPath.mkdirs()) {
                     logger.info("Ip2Region文件夹缺失，创建在{}", libraryPath.getPath());
@@ -69,7 +69,7 @@ public class Ip2RegionTask {
 
     private static void start() {
         logger.info("Ip2Region开始加载...");
-        logger.info("Ip2Region测试：" + IpUtils.a("202.108.22.5").toString());
+        logger.info("Ip2Region测试：" + IpUtils.getIpInfo("202.108.22.5"));
         logger.info("Ip2Region加载结束。");
     }
 

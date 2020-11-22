@@ -23,6 +23,7 @@ import org.springframework.context.annotation.Bean;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
 //@Configuration
 public class HttpsConfig {

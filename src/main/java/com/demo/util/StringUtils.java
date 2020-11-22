@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 @Component
 public class StringUtils {

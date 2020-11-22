@@ -11,29 +11,30 @@ import com.demo.property.yml.MailDefaultYml;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 public class MailConstant {
 
-    private static MailDefaultYml mail = Yml.mailDefaultYml;
+    private static final MailDefaultYml MAIL = Yml.mailDefaultYml;
 
     /**
      * 主机
      */
-    public final static String HOST = mail.getHost();
+    public final static String HOST = MAIL.getHost();
     /**
      * 用户名
      */
-    public final static String USERNAME = mail.getUsername();
+    public final static String USERNAME = MAIL.getUsername();
     /**
      * 密码
      */
-    public final static String PASSWORD = mail.getPassword();
+    public final static String PASSWORD = MAIL.getPassword();
     /**
      * 协议
      */
-    public final static String PROTOCOL = mail.getProtocol();
+    public final static String PROTOCOL = MAIL.getProtocol();
     /**
      * 字符集
      */
-    public final static String DEFAULT_ENCODING = mail.getDefaultEncoding();
+    public final static String DEFAULT_ENCODING = MAIL.getDefaultEncoding();
 }

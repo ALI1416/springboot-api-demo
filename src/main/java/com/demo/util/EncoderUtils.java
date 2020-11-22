@@ -16,6 +16,7 @@ import java.util.zip.CRC32;
  * </p>
  *
  * @author ALI[1416978277@qq.com]
+ * @since 1.0.0
  **/
 public class EncoderUtils {
 

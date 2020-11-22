@@ -15,6 +15,7 @@ import java.io.IOException;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
 public class PropertySourceLoadYamlFactory implements PropertySourceFactory {
     /**

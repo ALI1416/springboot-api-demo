@@ -17,6 +17,7 @@ import com.demo.tool.Log;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 @RequestMapping("/const")
 @RestController

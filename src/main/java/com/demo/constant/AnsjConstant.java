@@ -13,27 +13,28 @@ import com.demo.property.yml.AnsjDefaultYml;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 public class AnsjConstant {
 
-    private static LibraryProperties library = Properties.libraryProperties;
-    private static AnsjDefaultYml ansj = Yml.ansjDefaultYml;
+    private static final LibraryProperties LIBRARY = Properties.libraryProperties;
+    private static final AnsjDefaultYml ANSJ = Yml.ansjDefaultYml;
 
     /**
      * 自定义词典文件在本项目中resources文件夹下的路径
      */
-    public static final String DEFAULT_RESOURCE_PATH = ansj.getDefaultResourcePath();
+    public static final String DEFAULT_RESOURCE_PATH = ANSJ.getDefaultResourcePath();
     /**
      * 歧义词典文件在本项目中resources文件夹下的路径
      */
-    public static final String AMBIGUITY_RESOURCE_PATH = ansj.getAmbiguityResourcePath();
+    public static final String AMBIGUITY_RESOURCE_PATH = ANSJ.getAmbiguityResourcePath();
     /**
      * 自定义词典文件引用路径(本机绝对地址)
      */
-    public static final String DEFAULT_REFERENCE_PATH = library.getDic();
+    public static final String DEFAULT_REFERENCE_PATH = LIBRARY.getDic();
     /**
      * 歧义词典文件引用路径(本机绝对地址)
      */
-    public static final String AMBIGUITY_REFERENCE_PATH = library.getAmbiguity();
+    public static final String AMBIGUITY_REFERENCE_PATH = LIBRARY.getAmbiguity();
 
 }

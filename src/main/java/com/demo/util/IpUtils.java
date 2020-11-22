@@ -1,11 +1,13 @@
 package com.demo.util;
 
-import java.util.regex.Pattern;
-
+import com.demo.constant.Ip2RegionConstant;
+import com.demo.po.Ip;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
 import org.springframework.stereotype.Component;
+
+import java.util.regex.Pattern;
 
 /**
  * <h1>IP工具类</h1>
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 @Component
 public class IpUtils {
@@ -36,13 +39,10 @@ public class IpUtils {
 
         String strIp = long2Ip(longIp);
         System.out.println(strIp);
-        ip2RegionInitial();
 
-        DataBlock a = a("157.122.178.42");
-        System.out.println(a);
-        System.out.println(a.getRegion());
-//        a("157.122.178.42");
-//        a("8.8.8.8");
+        ip2RegionInitial();
+        System.out.println(getIpInfo("157.122.178.42"));
+        System.out.println(getIpInfo(null));
     }
 
     /**
@@ -62,7 +62,7 @@ public class IpUtils {
             synchronized (IpUtils.class) {
                 if (ip2regionSearcher == null) {
                     try {
-//                        ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
+                        // ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
                         ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data.db");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -72,14 +72,24 @@ public class IpUtils {
         }
     }
 
-    public static DataBlock a(String ip) {
+    /**
+     * 获取IP信息
+     *
+     * @param ip IP地址
+     * @return 错误：属性全为null
+     */
+    public static Ip getIpInfo(String ip) {
         DataBlock block = null;
         try {
             block = ip2regionSearcher.memorySearch(ip);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return block;
+        if (block != null) {
+            return new Ip(block.getRegion());
+        } else {
+            return new Ip();
+        }
     }
 
     /**
@@ -107,8 +117,7 @@ public class IpUtils {
      */
     public static long ip2Long(String str) {
         String[] s = str.split("\\.");
-        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8)
-                | Integer.parseInt(s[3]);
+        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
     }
 
     /**

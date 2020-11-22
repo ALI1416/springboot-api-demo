@@ -1,20 +1,32 @@
+// 插件
 plugins {
+    // SpringBoot框架版本
     id 'org.springframework.boot' version '2.3.5.RELEASE'
+    // Spring依赖管理
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    // Java语言
     id 'java'
 }
 
+// 项目唯一标识符
 group = 'com.demo'
+// 版本号
 version = '0.0.1-SNAPSHOT'
+// 编译版本
 sourceCompatibility = '11'
 
+// 配置
 configurations {
+    // 仅编译时
     compileOnly {
+        // 拓展 从 注解处理器
         extendsFrom annotationProcessor
     }
 }
 
+// 所有项目
 allprojects {
+    // 仓库配置
     repositories {
         // 本地仓库
         mavenLocal()
@@ -29,8 +41,10 @@ allprojects {
     }
 }
 
+// 依赖
 dependencies {
-    // 必备
+/*普通依赖*/
+    // SpringBoot框架
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -38,6 +52,8 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
     // MDx/SHAx加密算法
     implementation 'commons-codec:commons-codec:1.15'
+    // 文件操作
+    implementation 'commons-io:commons-io:2.8.0'
     // BCrypt加密算法
     implementation 'org.mindrot:jbcrypt:0.4'
     // IP地址和地区转换
@@ -46,22 +62,30 @@ dependencies {
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
     // 分词
     implementation 'org.ansj:ansj_seg:5.1.6'
-    // 对象方法简化
+/*仅编译时*/
+    // 实体层注解
     compileOnly 'org.projectlombok:lombok'
+/*仅开发时*/
     // 热部署
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    // mysql驱动
+/*仅运行时*/
+    // mysql
     runtimeOnly 'mysql:mysql-connector-java'
-    // 配置加载
+/*注解处理器*/
+    // 配置
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    // 对象方法简化
+    // 实体层注解
     annotationProcessor 'org.projectlombok:lombok'
-    // 测试
+/*测试*/
+    // 普通测试依赖
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        // 排除
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 }
 
+// 测试
 test {
+    // 使用JUnit平台
     useJUnitPlatform()
 }

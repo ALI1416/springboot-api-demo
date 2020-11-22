@@ -15,6 +15,7 @@ import com.demo.property.yml.MailDefaultYml;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
 @Component
 public class Yml {

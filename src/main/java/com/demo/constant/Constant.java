@@ -8,6 +8,7 @@ package com.demo.constant;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 public class Constant {
 

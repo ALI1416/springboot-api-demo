@@ -13,6 +13,7 @@ import lombok.Data;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  */
 @ConfigurationProperties(prefix = "ip2region")
 @Component

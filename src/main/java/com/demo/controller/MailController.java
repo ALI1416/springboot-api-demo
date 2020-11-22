@@ -14,6 +14,7 @@ import com.demo.util.MailUtils;
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
  **/
 @RequestMapping("/mail")
 @RestController

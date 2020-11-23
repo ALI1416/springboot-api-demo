@@ -70,6 +70,7 @@ public class EncoderUtils {
      * MD5加密
      *
      * @param rawPassword 原始数据
+     * @see org.apache.commons.codec.digest.DigestUtils#md5Hex(String data)
      */
     public static String md5(String rawPassword) {
         return DigestUtils.md5Hex(rawPassword);
@@ -79,6 +80,7 @@ public class EncoderUtils {
      * SHA1加密
      *
      * @param rawPassword 原始数据
+     * @see org.apache.commons.codec.digest.DigestUtils.sha1Hex(String data)
      */
     public static String sha1(String rawPassword) {
         return DigestUtils.sha1Hex(rawPassword);
@@ -88,6 +90,7 @@ public class EncoderUtils {
      * CRC32加密
      *
      * @param rawPassword 原始数据
+     * @see java.util.zip.CRC32
      */
     public static String crc32(String rawPassword) {
         byte[] b = rawPassword.getBytes();
@@ -101,6 +104,8 @@ public class EncoderUtils {
      * BCrypt加密
      *
      * @param rawPassword 原始数据
+     * @see org.mindrot.jbcrypt.BCrypt#hashpw(String password, String salt)
+     * @see org.mindrot.jbcrypt.BCrypt#gensalt()
      */
     public static String bCrypt(String rawPassword) {
         return BCrypt.hashpw(rawPassword, BCrypt.gensalt());
@@ -111,6 +116,7 @@ public class EncoderUtils {
      *
      * @param rawPassword     原始数据
      * @param encodedPassword 加密后的数据
+     * @see org.mindrot.jbcrypt.BCrypt#checkpw(String plaintext, String hashed)
      */
     public static boolean bCrypt(String rawPassword, String encodedPassword) {
         return BCrypt.checkpw(rawPassword, encodedPassword);
@@ -120,6 +126,7 @@ public class EncoderUtils {
      * base64编码
      *
      * @param rawPassword 原始数据
+     * @see java.util.Base64.Encoder#encodeToString(byte[] src)
      */
     public static String base64Encoder(String rawPassword) {
         return Base64.getEncoder().encodeToString(rawPassword.getBytes(UTF8));
@@ -129,6 +136,7 @@ public class EncoderUtils {
      * base64解码
      *
      * @param encodedPassword 加密后的数据
+     * @see java.util.Base64.Decoder#decode(String src)
      */
     public static String base64Decoder(String encodedPassword) {
         return new String(Base64.getDecoder().decode(encodedPassword), UTF8);
@@ -138,6 +146,7 @@ public class EncoderUtils {
      * base62编码
      *
      * @param n 原始数据
+     * @see #BASE62_ALPHABET
      */
     public static String base62Encoder(long n) {
         if (n < 1) {
@@ -152,7 +161,8 @@ public class EncoderUtils {
 
     /**
      * base62编码2<br>
-     * 此方法速度较慢，不推荐使用
+     * 此方法速度较慢，不推荐使用<br>
+     * 请使用{@link #base62Encoder(long n)}
      *
      * @param n 原始数据
      * @see #base62Encoder(long n)
@@ -214,9 +224,11 @@ public class EncoderUtils {
 
     /**
      * base62解码2<br>
-     * 此方法速度较慢，不推荐使用
+     * 此方法速度较慢，不推荐使用<br>
+     * 请使用{@link #base62Decoder(String s)}
      *
      * @param s 加密后的数据
+     * @see #BASE62_ALPHABET
      * @see #base62Decoder(String s)
      */
     @Deprecated

@@ -188,7 +188,7 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Aruguments: URL Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
+     * Function : detectEncoding Arguments: URL Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
      * EUC_TW, ASCII, or OTHER) Description: This function looks at the URL contents and assigns it a probability score for each
      * encoding type. The encoding type with the highest probability is returned.
      */
@@ -213,7 +213,7 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Aruguments: File Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
+     * Function : detectEncoding Arguments: File Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
      * EUC_TW, ASCII, or OTHER) Description: This function looks at the file and assigns it a probability score for each encoding
      * type. The encoding type with the highest probability is returned.
      */
@@ -232,7 +232,7 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Aruguments: byte array Returns : One of the encodings from the Encoding enumeration (GB2312, HZ,
+     * Function : detectEncoding Arguments: byte array Returns : One of the encodings from the Encoding enumeration (GB2312, HZ,
      * BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the byte array and assigns it a probability score for
      * each encoding type. The encoding type with the highest probability is returned.
      */
@@ -266,8 +266,9 @@ public class EncodingDetect {
         scores[OTHER] = 0;
         // Tabulate Scores
         for (index = 0; index < TOTALTYPES; index++) {
-            if (debug)
+            if (debug) {
                 System.err.println("Encoding " + nicename[index] + " score " + scores[index]);
+            }
             if (scores[index] > maxscore) {
                 encoding_guess = index;
                 maxscore = scores[index];

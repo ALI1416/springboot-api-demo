@@ -56,14 +56,18 @@ public class IpUtils {
 
     /**
      * 初始化DbSearcher实例
+     * 
+     * @see org.lionsoul.ip2region.DbConfig#DbConfig()
+     * @see org.lionsoul.ip2region#DbSearcher3DbSearcher(DbConfig dbConfig, String
+     *      dbFile)
      */
     public static void ip2RegionInitial() {
         if (ip2regionSearcher == null) {
             synchronized (IpUtils.class) {
                 if (ip2regionSearcher == null) {
                     try {
-                        // ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
-                        ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data.db");
+                        ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
+                        // ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data.db");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -77,6 +81,7 @@ public class IpUtils {
      *
      * @param ip IP地址
      * @return 错误：属性全为null
+     * @see org.lionsoul.ip2region.DbSearcher#memorySearch(String ip)
      */
     public static Ip getIpInfo(String ip) {
         DataBlock block = null;
@@ -96,6 +101,8 @@ public class IpUtils {
      * 是字符串IP地址
      *
      * @param str 字符串IP地址
+     * @see java.util.regex.Pattern#matches(String regex, CharSequence input)
+     * @see #IP_PATTERN
      */
     public static boolean isIp(String str) {
         return Pattern.matches(IP_PATTERN, str);
@@ -117,7 +124,8 @@ public class IpUtils {
      */
     public static long ip2Long(String str) {
         String[] s = str.split("\\.");
-        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
+        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8)
+                | Integer.parseInt(s[3]);
     }
 
     /**

@@ -155,6 +155,7 @@ import java.util.Date;
  * @since 1.0.0
  */
 public class DateUtils {
+
     public static void main(String[] args) {
         long timestamp = getTimestamp() + MILLS_OF_DAY + MILLS_OF_HOUR;
         System.out.println("timestamp");
@@ -316,7 +317,7 @@ public class DateUtils {
     /**
      * 获取当前时间戳
      *
-     * @see java.lang.System#currentTimeMillis
+     * @see java.lang.System#currentTimeMillis()
      */
     public static long getTimestamp() {
         // 返回时间戳
@@ -417,7 +418,7 @@ public class DateUtils {
      * 获取今天0时0分0秒0毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp() {
         return getTimestamp(true, -1, -1, 0);
@@ -428,7 +429,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(long timestamp) {
         return getTimestamp(true, timestamp, -1, 0);
@@ -439,7 +440,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(int dayOffset) {
         return getTimestamp(true, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -451,7 +452,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      */
     public static long getStartTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -462,7 +463,7 @@ public class DateUtils {
      * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
      *
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      * @see #getStartTimestamp()
      * @see #INTERVAL_DAY
      */
@@ -476,7 +477,7 @@ public class DateUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      * @see #getStartTimestamp(long timestamp)
      * @see #INTERVAL_DAY
      */
@@ -490,7 +491,7 @@ public class DateUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      * @see #getStartTimestamp(int dayOffset)
      * @see #INTERVAL_DAY
      */
@@ -505,7 +506,7 @@ public class DateUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, long timestamp, int offsetField, int
-     * offsetAmount)
+     *      offsetAmount)
      * @see #getStartTimestamp(long timestamp, int dayOffset)
      * @see #INTERVAL_DAY
      */

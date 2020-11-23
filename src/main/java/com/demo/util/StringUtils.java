@@ -20,12 +20,11 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 public class StringUtils {
+
     public static void main(String[] args) {
         System.out.println(getRandom(BASE64_ALPHABET, 100));
-        System.out.println(getRandomNum4());
-        System.out.println(getRandomNum6());
-        System.out.println(getRandomNum8());
-        System.out.println(getAnsj("%&Y公告HY*82人98发顺丰39&发%……&#人￥&发（）——*）（&（%……@广西壮族自治区桂林市七星区桂林航天工业学院南校区{【】{}“：》《？"));
+        System.out.println(getAnsj("`1234567890-=[]\\;',./~!@#$%^&*()_+{}|:\"<>?广西壮族自治区桂林市七星区桂林航天工业学院南校区"));
+        System.out.println(getMask("123456"));
     }
 
     /**
@@ -92,13 +91,18 @@ public class StringUtils {
      * 获取随机数字字符串
      *
      * @param len 长度
+     * @see #getRandom(String, int)
+     * @see #NUMBER
      */
-    public static String getRandomNum4(int len) {
+    public static String getRandomNum(int len) {
         return getRandom(NUMBER, len);
     }
 
     /**
      * 获取4位随机数字字符串
+     * 
+     * @see #getRandom(String, int)
+     * @see #NUMBER
      */
     public static String getRandomNum4() {
         return getRandom(NUMBER, 4);
@@ -106,6 +110,9 @@ public class StringUtils {
 
     /**
      * 获取6位随机数字字符串
+     * 
+     * @see #getRandom(String, int)
+     * @see #NUMBER
      */
     public static String getRandomNum6() {
         return getRandom(NUMBER, 6);
@@ -113,6 +120,9 @@ public class StringUtils {
 
     /**
      * 获取8位随机数字字符串
+     * 
+     * @see #getRandom(String, int)
+     * @see #NUMBER
      */
     public static String getRandomNum8() {
         return getRandom(NUMBER, 8);
@@ -122,30 +132,70 @@ public class StringUtils {
      * 获取ansj分词
      *
      * @param s 要分词的字符串
+     * @see org.ansj.splitWord.analysis.ToAnalysis#parse(String)
      */
     public static String getAnsj(String s) {
-        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP+~$`^=|<>～｀＄＾＋＝｜＜＞￥×]", "").replaceAll(" +", " ").trim();
+        // 标准分词 没有词性 去掉英文标点符号 多个空格合成1个 去除首尾空格
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ")
+                .trim();
     }
 
     /**
      * 获取64位uuid
+     * 
+     * @see java.util.UUID#randomUUID()
      */
     public static String getUuid() {
+        // 去除-
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     /**
+     * 马赛克字符 星号:{@value}
+     */
+    public static final char MASK_ASTERISK = '*';
+    /**
+     * 马赛克字符 井号:{@value}
+     */
+    public static final char MASK_HASH = '#';
+
+    /**
      * 字符串打码
-     *
-     * @param str 要打码的字符串
+     * 
+     * @param str        原始字符串
+     * @param mask       马赛克字符
+     * @param maskLength 马赛克长度
+     * @param start      字符串保留首部长度
+     * @param end        字符串保留尾部长度
+     * @see java.lang.StringBuilder#replace(int start, int end, String str)
+     * @see #MASK_ASTERISK
+     * @see #MASK_HASH
+     */
+    public static String getMask(String str, char mask, int maskLength, int start, int end) {
+        StringBuilder sb = new StringBuilder(str);
+        StringBuilder maskSb = new StringBuilder();
+        // 马赛克字符串
+        for (int i = 0; i < maskLength; i++) {
+            maskSb.append(mask);
+        }
+        // 字符串长度
+        int len = sb.length();
+        if (len <= start + end) {
+            // 字符串长度<=首部保留长度+尾部保留长度
+            return maskSb.toString();
+        } else {
+            return sb.replace(start, len - end, maskSb.toString()).toString();
+        }
+    }
+
+    /**
+     * 字符串打码(保留首尾1位，马赛克字符是{@value #MASK_ASTERISK}，长度3位)
+     * 
+     * @param str 原始字符串
+     * @see #getMask(String str, char mask, int maskLength, int start, int end)
      */
     public static String getMask(String str) {
-        String mask = "***";
-        StringBuilder sb = new StringBuilder(str);
-        if (sb.length() > 2) {
-            return sb.replace(1, sb.length() - 1, mask).toString();
-        }
-        return mask;
+        return getMask(str, MASK_ASTERISK, 3, 1, 1);
     }
 
     /**

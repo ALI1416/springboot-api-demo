@@ -42,6 +42,8 @@ public class MailUtils {
      * @param to      发送到
      * @param subject 主题
      * @param text    内容
+     * @see org.springframework.mail.SimpleMailMessage
+     * @see com.demo.tool.ThreadPool#execute(Runnable command)
      */
     public static void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -59,6 +61,9 @@ public class MailUtils {
      * @param to      发送到
      * @param subject 主题
      * @param text    内容
+     * @see javax.mail.internet.MimeMessage
+     * @see org.springframework.mail.javamail.MimeMessageHelper
+     * @see com.demo.tool.ThreadPool#execute(Runnable command)
      */
     public static void sendMailHtml(String to, String subject, String text) {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();

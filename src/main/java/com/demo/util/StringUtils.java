@@ -1,12 +1,12 @@
 package com.demo.util;
 
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.springframework.stereotype.Component;
 
 /**
  * <h1>字符串工具类</h1>
@@ -100,7 +100,7 @@ public class StringUtils {
 
     /**
      * 获取4位随机数字字符串
-     * 
+     *
      * @see #getRandom(String, int)
      * @see #NUMBER
      */
@@ -110,7 +110,7 @@ public class StringUtils {
 
     /**
      * 获取6位随机数字字符串
-     * 
+     *
      * @see #getRandom(String, int)
      * @see #NUMBER
      */
@@ -120,7 +120,7 @@ public class StringUtils {
 
     /**
      * 获取8位随机数字字符串
-     * 
+     *
      * @see #getRandom(String, int)
      * @see #NUMBER
      */
@@ -136,13 +136,12 @@ public class StringUtils {
      */
     public static String getAnsj(String s) {
         // 标准分词 没有词性 去掉英文标点符号 多个空格合成1个 去除首尾空格
-        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ")
-                .trim();
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ").trim();
     }
 
     /**
      * 获取64位uuid
-     * 
+     *
      * @see java.util.UUID#randomUUID()
      */
     public static String getUuid() {
@@ -161,7 +160,7 @@ public class StringUtils {
 
     /**
      * 字符串打码
-     * 
+     *
      * @param str        原始字符串
      * @param mask       马赛克字符
      * @param maskLength 马赛克长度
@@ -190,7 +189,7 @@ public class StringUtils {
 
     /**
      * 字符串打码(保留首尾1位，马赛克字符是{@value #MASK_ASTERISK}，长度3位)
-     * 
+     *
      * @param str 原始字符串
      * @see #getMask(String str, char mask, int maskLength, int start, int end)
      */

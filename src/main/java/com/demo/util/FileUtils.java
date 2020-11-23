@@ -70,7 +70,7 @@ public class FileUtils {
         bytes2File(bytes, filePath3);
         System.out.println(file2String(filePath3));
 
-        InputStream inputStream = null;
+        InputStream inputStream;
         // string2InputStream
         // inputStream2String
         System.out.println("string2InputStream-inputStream2String");
@@ -89,6 +89,18 @@ public class FileUtils {
         inputStream = string2InputStream(string);
         String filePath4 = "D:/temp/banner4.txt";
         inputStream2File(inputStream, filePath4);
+        System.out.println(file2String(filePath4));
+
+        // file2InputStream
+        // inputStream2String
+        System.out.println("file2InputStream-inputStream2String");
+        System.out.println(inputStream2String(file2InputStream(filePath4)));
+        // file2Bytes
+        // bytes2String
+        System.out.println("file2Bytes-bytes2String");
+        System.out.println(bytes2String(file2Bytes(filePath4)));
+        // file2String
+        System.out.println("file2String");
         System.out.println(file2String(filePath4));
     }
 
@@ -181,7 +193,7 @@ public class FileUtils {
      *
      * @param filePath 文件路径
      * @see org.apache.commons.io.FileUtils#readFileToString(File file, Charset
-     *      charsetName)
+     * charsetName)
      */
     public static String file2String(String filePath) {
         try {
@@ -213,7 +225,7 @@ public class FileUtils {
      * @param inputStream 会被关闭
      * @param filePath    输出文件路径
      * @see org.apache.commons.io.FileUtils#copyInputStreamToFile(InputStream
-     *      source, File destination)
+     * source, File destination)
      */
     public static void inputStream2File(InputStream inputStream, String filePath) {
         try {
@@ -234,7 +246,7 @@ public class FileUtils {
      *
      * @param inputStream 会被关闭
      * @see org.apache.commons.io.IOUtils#toString(InputStream input, Charset
-     *      charset)
+     * charset)
      */
     public static String inputStream2String(InputStream inputStream) {
         try {
@@ -293,7 +305,7 @@ public class FileUtils {
      * @param bytes    bytes
      * @param filePath 输出文件路径
      * @see org.apache.commons.io.FileUtils#writeByteArrayToFile(File file, byte[]
-     *      data)
+     * data)
      */
     public static void bytes2File(byte[] bytes, String filePath) {
         try {
@@ -340,7 +352,7 @@ public class FileUtils {
      * @param string   字符串
      * @param filePath 输出文件路径
      * @see org.apache.commons.io.FileUtils#write(File file, CharSequence data,
-     *      Charset charset)
+     * Charset charset)
      */
     public static void string2File(String string, String filePath) {
         try {
@@ -391,10 +403,8 @@ public class FileUtils {
 
     public static void saveAsUTF8(String inputFilePath, String outputFilePath) {
         try {
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(new FileInputStream(inputFilePath), getJavaEncode(inputFilePath)));
-            BufferedWriter bufferedWriter = new BufferedWriter(
-                    new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath), getJavaEncode(inputFilePath)));
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 bufferedWriter.write(line + "\r\n");
@@ -409,7 +419,6 @@ public class FileUtils {
 
     public static String getJavaEncode(String filePath) {
         EncodingDetect s = new EncodingDetect();
-        String fileCode = EncodingDetect.javaname[s.detectEncoding(new File(filePath))];
-        return fileCode;
+        return EncodingDetect.javaname[s.detectEncoding(new File(filePath))];
     }
 }

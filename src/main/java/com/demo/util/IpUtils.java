@@ -56,10 +56,10 @@ public class IpUtils {
 
     /**
      * 初始化DbSearcher实例
-     * 
+     *
      * @see org.lionsoul.ip2region.DbConfig#DbConfig()
-     * @see org.lionsoul.ip2region#DbSearcher3DbSearcher(DbConfig dbConfig, String
-     *      dbFile)
+     * @see org.lionsoul.ip2region.DbSearcher#DbSearcher(DbConfig dbConfig, String
+     * dbFile)
      */
     public static void ip2RegionInitial() {
         if (ip2regionSearcher == null) {
@@ -124,8 +124,7 @@ public class IpUtils {
      */
     public static long ip2Long(String str) {
         String[] s = str.split("\\.");
-        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8)
-                | Integer.parseInt(s[3]);
+        return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
     }
 
     /**

@@ -37,11 +37,11 @@ public class Ip {
         if (region != null) {
             String[] s = region.split("\\|");
             if (s.length == 5) {
-                this.country = s[0].equals("0") ? null : s[0];
-                this.area = s[1].equals("0") ? null : s[1];
-                this.province = s[2].equals("0") ? null : s[2];
-                this.city = s[3].equals("0") ? null : s[3];
-                this.isp = s[4].equals("0") ? null : s[4];
+                this.country = "0".equals(s[0]) ? null : s[0];
+                this.area = "0".equals(s[1]) ? null : s[1];
+                this.province = "0".equals(s[2]) ? null : s[2];
+                this.city = "0".equals(s[3]) ? null : s[3];
+                this.isp = "0".equals(s[4]) ? null : s[4];
             }
         }
     }

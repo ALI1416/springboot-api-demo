@@ -61,13 +61,13 @@ public class EncodingDetect {
     public static String[] htmlname;
     // Frequency tables to hold the GB, Big5, and EUC-TW character
     // frequencies
-    int GBFreq[][];
-    int GBKFreq[][];
-    int Big5Freq[][];
-    int Big5PFreq[][];
-    int EUC_TWFreq[][];
-    int KRFreq[][];
-    int JPFreq[][];
+    int[][] GBFreq;
+    int[][] GBKFreq;
+    int[][] Big5Freq;
+    int[][] Big5PFreq;
+    int[][] EUC_TWFreq;
+    int[][] KRFreq;
+    int[][] JPFreq;
     // int UnicodeFreq[94][128];
     // public static String[] nicename;
     // public static String[] codings;
@@ -165,23 +165,23 @@ public class EncodingDetect {
         initialize_frequencies();
     }
 
-    public static void main(String argc[]) {
+    public static void main(String[] args) {
         EncodingDetect sinodetector;
         int result = OTHER;
         int i;
         sinodetector = new EncodingDetect();
-        for (i = 0; i < argc.length; i++) {
-            if (argc[i].startsWith("http://") == true) {
+        for (i = 0; i < args.length; i++) {
+            if (args[i].startsWith("http://")) {
                 try {
-                    result = sinodetector.detectEncoding(new URL(argc[i]));
+                    result = sinodetector.detectEncoding(new URL(args[i]));
                 } catch (Exception e) {
                     System.err.println("Bad URL " + e.toString());
                 }
-            } else if (argc[i].equals("-d")) {
+            } else if (args[i].equals("-d")) {
                 sinodetector.debug = true;
                 continue;
             } else {
-                result = sinodetector.detectEncoding(new File(argc[i]));
+                result = sinodetector.detectEncoding(new File(args[i]));
             }
             System.out.println(nicename[result]);
         }

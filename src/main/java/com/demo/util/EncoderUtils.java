@@ -80,7 +80,7 @@ public class EncoderUtils {
      * SHA1加密
      *
      * @param rawPassword 原始数据
-     * @see org.apache.commons.codec.digest.DigestUtils.sha1Hex(String data)
+     * @see org.apache.commons.codec.digest.DigestUtils#sha1Hex(String data)
      */
     public static String sha1(String rawPassword) {
         return DigestUtils.sha1Hex(rawPassword);

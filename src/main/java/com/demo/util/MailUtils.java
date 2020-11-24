@@ -2,6 +2,7 @@ package com.demo.util;
 
 import com.demo.constant.MailConstant;
 import com.demo.tool.ThreadPool;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -29,9 +30,9 @@ public class MailUtils {
     private static JavaMailSender javaMailSender;
 
     /**
-     * JavaMailSender自动注入可能会报错，请不要删除@Autowired
+     * 静态注入
      */
-    @Autowired
+    @Autowired(required = false)
     private MailUtils(JavaMailSender javaMailSender) {
         MailUtils.javaMailSender = javaMailSender;
     }

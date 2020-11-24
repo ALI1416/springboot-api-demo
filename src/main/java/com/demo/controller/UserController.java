@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,15 +24,15 @@ import com.demo.service.UserService;
  **/
 @RestController
 @RequestMapping("user")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    @Autowired
+    // @Autowired
     private UserService userService;
 
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getName() == null
-                || user.getAccount().length() <= 0 || user.getPwd().length() != 32 || user.getName().length() <= 0) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getName() == null || user.getAccount().length() <= 0 || user.getPwd().length() != 32 || user.getName().length() <= 0) {
             return Result.e(ResultCode.PARAM_IS_ERROR);
         }
         // 用户已存在
@@ -47,7 +48,7 @@ public class UserController {
         if (user.getIsDelete() == null) {
             user.setIsDelete(0);
         }
-        User u = userService.inster(user);
+        User u = userService.insert(user);
         if (u != null) {
             return Result.ok(u);
         } else {

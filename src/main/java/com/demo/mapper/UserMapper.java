@@ -17,18 +17,18 @@ import com.demo.vo.UserVo;
  **/
 public interface UserMapper {
 
-    public int insert(User user);
+    int insert(User user);
 
-    public User findById(int id);
+    User findById(int id);
 
-    public List<User> findAll();
+    List<User> findAll();
 
-    public List<User> findExact(User user);
+    List<User> findExact(User user);
 
-    public List<User> find(UserVo user);
+    List<User> find(UserVo user);
 
-    public int updateById(User user);
+    int updateById(User user);
 
-    public int deleteById(int id);
+    int deleteById(int id);
 
 }

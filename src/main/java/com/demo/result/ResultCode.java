@@ -67,35 +67,35 @@ public enum ResultCode {
     /**
      * 状态码
      */
-    private int code;
+    private final int CODE;
     /**
      * 状态信息
      */
-    private String msg;
+    private final String MSG;
 
     /**
      * 构造函数
-     * 
+     *
      * @param code 状态码
      * @param msg  信息
      */
     ResultCode(int code, String msg) {
-        this.code = code;
-        this.msg = msg;
+        this.CODE = code;
+        this.MSG = msg;
     }
 
     /**
      * 获取状态码
      */
     public int code() {
-        return this.code;
+        return this.CODE;
     }
 
     /**
      * 获取状态信息
      */
     public String msg() {
-        return this.msg;
+        return this.MSG;
     }
 
 }

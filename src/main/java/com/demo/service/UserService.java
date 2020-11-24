@@ -2,6 +2,7 @@ package com.demo.service;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,9 +21,10 @@ import com.demo.mapper.UserMapper;
  * @since 1.0.0
  **/
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
 
-    @Autowired
+    // @Autowired
     private UserMapper userMapper;
 
     @Transactional
@@ -30,15 +32,11 @@ public class UserService {
         User u = new User();
         u.setAccount(account);
         List<User> us = userMapper.findExact(u);
-        if (us.size() == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return us.size() != 0;
     }
 
     @Transactional
-    public User inster(User user) {
+    public User insert(User user) {
         if (userMapper.insert(user) == 1) {
             return user;
         } else {

@@ -3,6 +3,16 @@ package com.demo;
 import com.demo.entity.User;
 import com.demo.vo.UserVo;
 
+/**
+ * <h1>测试类</h1>
+ *
+ * <p>
+ * createDate 2020/11/11 11:11:11
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
+ **/
 public class Test {
 
     public static void main(String[] args) {

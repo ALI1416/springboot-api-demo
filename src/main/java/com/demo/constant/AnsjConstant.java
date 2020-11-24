@@ -1,9 +1,9 @@
 package com.demo.constant;
 
+import com.demo.property.AnsjAppYml;
 import com.demo.property.LibraryProperties;
 import com.demo.property.Properties;
 import com.demo.property.Yml;
-import com.demo.property.yml.AnsjDefaultYml;
 
 /**
  * <h1>Ansj常量类</h1>
@@ -18,7 +18,7 @@ import com.demo.property.yml.AnsjDefaultYml;
 public class AnsjConstant {
 
     private static final LibraryProperties LIBRARY = Properties.libraryProperties;
-    private static final AnsjDefaultYml ANSJ = Yml.ansjDefaultYml;
+    private static final AnsjAppYml ANSJ = Yml.ansjAppYml;
 
     /**
      * 自定义词典文件在本项目中resources文件夹下的路径

@@ -1,9 +1,8 @@
 package com.demo;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import com.demo.task.Task;
 
 /**
  * <h1>启动类</h1>
@@ -30,12 +29,13 @@ import com.demo.task.Task;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@MapperScan("com.demo.mapper")
 @SpringBootApplication
 public class App {
 
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
-        Task.initial();
+//        Task.initial();
     }
 
 }

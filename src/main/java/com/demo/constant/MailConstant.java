@@ -1,7 +1,7 @@
 package com.demo.constant;
 
+import com.demo.property.MailAppYml;
 import com.demo.property.Yml;
-import com.demo.property.yml.MailDefaultYml;
 
 /**
  * <h1>邮件常量类</h1>
@@ -15,7 +15,7 @@ import com.demo.property.yml.MailDefaultYml;
  **/
 public class MailConstant {
 
-    private static final MailDefaultYml MAIL = Yml.mailDefaultYml;
+    private static final MailAppYml MAIL = Yml.mailAppYml;
 
     /**
      * 主机

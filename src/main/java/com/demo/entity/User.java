@@ -1,6 +1,8 @@
-package com.demo.po;
+package com.demo.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <h1>User实体类</h1>
@@ -12,9 +14,15 @@ import lombok.Data;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Data
+@Getter
+@Setter
+@ToString
 public class User {
     private Integer id;
+    private String account;
+    private String pwd;
     private String name;
     private Integer gender;
+    private Integer year;
+    private Integer isDelete;
 }

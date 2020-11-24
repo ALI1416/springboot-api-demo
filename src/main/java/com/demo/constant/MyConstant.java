@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.util.unit.DataSize;
 
-import com.demo.po.User;
+import com.demo.entity.User;
 import com.demo.property.MyYml;
 import com.demo.property.Yml;
 

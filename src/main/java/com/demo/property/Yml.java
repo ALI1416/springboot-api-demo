@@ -3,10 +3,6 @@ package com.demo.property;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.demo.property.yml.AnsjDefaultYml;
-import com.demo.property.yml.Ip2RegionDefaultYml;
-import com.demo.property.yml.MailDefaultYml;
-
 /**
  * <h1>Yml总配置类</h1>
  *
@@ -21,15 +17,15 @@ import com.demo.property.yml.MailDefaultYml;
 public class Yml {
 
     public static MyYml myYml;
-    public static MailDefaultYml mailDefaultYml;
-    public static AnsjDefaultYml ansjDefaultYml;
-    public static Ip2RegionDefaultYml ip2RegionDefaultYml;
+    public static MailAppYml mailAppYml;
+    public static AnsjAppYml ansjAppYml;
+    public static Ip2RegionAppYml ip2RegionAppYml;
 
     @Autowired
-    private Yml(MyYml myYml, MailDefaultYml mailDefaultYml, AnsjDefaultYml ansjDefaultYml, Ip2RegionDefaultYml ip2RegionDefaultYml) {
+    private Yml(MyYml myYml, MailAppYml mailAppYml, AnsjAppYml ansjAppYml, Ip2RegionAppYml ip2RegionAppYml) {
         Yml.myYml = myYml;
-        Yml.mailDefaultYml = mailDefaultYml;
-        Yml.ansjDefaultYml = ansjDefaultYml;
-        Yml.ip2RegionDefaultYml = ip2RegionDefaultYml;
+        Yml.mailAppYml = mailAppYml;
+        Yml.ansjAppYml = ansjAppYml;
+        Yml.ip2RegionAppYml = ip2RegionAppYml;
     }
 }

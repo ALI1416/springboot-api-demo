@@ -1,4 +1,4 @@
-package com.demo.property.yml;
+package com.demo.property;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,10 @@ import lombok.Data;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "ip2region")
+@ConfigurationProperties(prefix = "ip2region", ignoreInvalidFields = true)
 @Component
 @Data
-public class Ip2RegionDefaultYml {
+public class Ip2RegionAppYml {
     private String resourcePath = "/file/ip2region/data.db";
     private String referencePath = "D:/springboot-api-demo/ip2region/data.db";
 }

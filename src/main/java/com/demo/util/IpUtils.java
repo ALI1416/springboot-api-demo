@@ -1,7 +1,8 @@
 package com.demo.util;
 
 import com.demo.constant.Ip2RegionConstant;
-import com.demo.po.Ip;
+import com.demo.entity.Ip;
+
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;

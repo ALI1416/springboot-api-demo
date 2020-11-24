@@ -1,7 +1,7 @@
 package com.demo.constant;
 
+import com.demo.property.Ip2RegionAppYml;
 import com.demo.property.Yml;
-import com.demo.property.yml.Ip2RegionDefaultYml;
 
 /**
  * <h1>ip2region常量类</h1>
@@ -15,7 +15,7 @@ import com.demo.property.yml.Ip2RegionDefaultYml;
  **/
 public class Ip2RegionConstant {
 
-    private static final Ip2RegionDefaultYml IP_2_REGION = Yml.ip2RegionDefaultYml;
+    private static final Ip2RegionAppYml IP_2_REGION = Yml.ip2RegionAppYml;
 
     /**
      * 数据文件在本项目中resources文件夹下的路径

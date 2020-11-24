@@ -1,6 +1,8 @@
-package com.demo.po;
+package com.demo.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <h1>Ip实体类</h1>
@@ -12,7 +14,9 @@ import lombok.Data;
  * @author ALI[1416978277@qq.com]
  * @since 1.0.0
  **/
-@Data
+@Getter
+@Setter
+@ToString
 public class Ip {
     private String country;
     private String province;

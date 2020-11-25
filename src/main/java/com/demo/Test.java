@@ -35,12 +35,6 @@ public class Test {
         uv.setYearNot(0);
         uv.setYearEnd(2000);
         System.out.println(uv);
-        
-        Result r1=Result.ok();
-        Result r2=Result.e(ResultCode.USER_HAS_EXISTED);
-        System.out.println(r1.isOk());
-        System.out.println(r2.isOk());
-        System.out.println(r2.getCODE());
     }
 
 }

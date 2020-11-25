@@ -44,6 +44,7 @@ public class UserService {
      * 查找用户，通过id
      */
     public Result findById(int id) {
+        System.out.println(id);
         // 查找用户，通过id
         User u = USER.findById(id);
         if (u == null) {

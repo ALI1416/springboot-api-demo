@@ -84,7 +84,7 @@
             </if>
             <choose>
                 <!-- 忽略 -->
-                <when test="year == null and yearEnd == null"></when>
+                <when test="year == null and yearEnd == null"/>
                 <!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
                 <!-- 等于 -->
                 <when test="year == yearEnd and yearNot == null">

@@ -1,9 +1,9 @@
 package com.demo.mapper;
 
-import java.util.List;
-
 import com.demo.entity.User;
 import com.demo.vo.UserVo;
+
+import java.util.List;
 
 /**
  * <h1>UserMapper接口层</h1>
@@ -25,7 +25,7 @@ public interface UserMapper {
     /**
      * 查询，通过id
      */
-    User findById(int id);
+    User findById(Integer id);
 
     /**
      * 查询，通过account

@@ -58,11 +58,11 @@ public enum ResultCode {
      */
     USER_HAS_EXISTED(1005, "账号已存在"),
 
-    /* 未知错误-1 */
+    /* 错误-1 */
     /**
-     * 未知错误-1
+     * 错误-1
      */
-    ERROR(-1, "未知错误");
+    ERROR(-1, "错误");
 
     /**
      * 状态码
@@ -80,22 +80,22 @@ public enum ResultCode {
      * @param msg  信息
      */
     ResultCode(int code, String msg) {
-        this.CODE = code;
-        this.MSG = msg;
+        CODE = code;
+        MSG = msg;
     }
 
     /**
      * 获取状态码
      */
     public int code() {
-        return this.CODE;
+        return CODE;
     }
 
     /**
      * 获取状态信息
      */
     public String msg() {
-        return this.MSG;
+        return MSG;
     }
 
 }

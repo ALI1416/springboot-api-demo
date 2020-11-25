@@ -17,18 +17,44 @@ import com.demo.vo.UserVo;
  **/
 public interface UserMapper {
 
+    /**
+     * 插入
+     */
     int insert(User user);
 
+    /**
+     * 查询，通过id
+     */
     User findById(int id);
 
+    /**
+     * 查询，通过account
+     */
+    User findByAccount(String account);
+
+    /**
+     * 查询所有
+     */
     List<User> findAll();
 
+    /**
+     * 精确查询
+     */
     List<User> findExact(User user);
 
+    /**
+     * 查询
+     */
     List<User> find(UserVo user);
 
+    /**
+     * 更新
+     */
     int updateById(User user);
 
+    /**
+     * 删除，通过id
+     */
     int deleteById(int id);
 
 }

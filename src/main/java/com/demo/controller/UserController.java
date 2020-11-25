@@ -1,6 +1,5 @@
 package com.demo.controller;
 
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,6 +10,10 @@ import com.demo.entity.User;
 import com.demo.result.Result;
 import com.demo.result.ResultCode;
 import com.demo.service.UserService;
+import com.demo.util.EncoderUtils;
+import com.demo.vo.UserVo;
+
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>User控制层</h1>
@@ -27,18 +30,29 @@ import com.demo.service.UserService;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    // @Autowired
-    private UserService userService;
+    private final UserService USER;
 
-    @PostMapping("/register")
-    public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getName() == null || user.getAccount().length() <= 0 || user.getPwd().length() != 32 || user.getName().length() <= 0) {
+    /**
+     * 是否存在该账号
+     */
+    @PostMapping("/existAccount")
+    public Result existAccount(String account) {
+        if (account == null || account.length() == 0) {
             return Result.e(ResultCode.PARAM_IS_ERROR);
         }
-        // 用户已存在
-        if (userService.exist(user.getAccount())) {
-            return Result.e(ResultCode.USER_HAS_EXISTED);
+        return USER.existAccount(account);
+    }
+
+    /**
+     * 注册
+     */
+    @PostMapping("/register")
+    public Result register(@RequestBody User user) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getName() == null
+                || user.getAccount().length() == 0 || user.getPwd().length() != 32 || user.getName().length() == 0) {
+            return Result.e(ResultCode.PARAM_IS_ERROR);
         }
+        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
         if (user.getGender() == null) {
             user.setGender(0);
         }
@@ -48,11 +62,57 @@ public class UserController {
         if (user.getIsDelete() == null) {
             user.setIsDelete(0);
         }
-        User u = userService.insert(user);
-        if (u != null) {
-            return Result.ok(u);
-        } else {
-            return Result.e();
+        return USER.register(user);
+    }
+
+    /**
+     * 查找用户，通过id
+     */
+    @PostMapping("/findById")
+    public Result findById(int id) {
+        return USER.findById(id);
+    }
+
+    /**
+     * 查找用户，通过account
+     */
+    @PostMapping("/findByAccount")
+    public Result findById(String account) {
+        return USER.findByAccount(account);
+    }
+
+    /**
+     * 登录
+     */
+    @PostMapping("/login")
+    public Result login(@RequestBody User user) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
+                || user.getPwd().length() != 32) {
+            return Result.e(ResultCode.PARAM_IS_ERROR);
         }
+        return USER.login(user);
+    }
+
+    /**
+     * 修改用户信息
+     */
+    @PostMapping("/changeInfo")
+    public Result changeInfo(@RequestBody User user) {
+        if (user.getId() == null || user.getPwd() != null) {
+            return Result.e(ResultCode.PARAM_IS_ERROR);
+        }
+        return USER.changeInfo(user);
+    }
+
+    /**
+     * 修改密码
+     */
+    @PostMapping("/changePwd")
+    public Result changePwd(@RequestBody UserVo user) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
+            return Result.e(ResultCode.PARAM_IS_ERROR);
+        }
+        return USER.changePwd(user);
     }
 }

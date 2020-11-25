@@ -21,6 +21,16 @@
 		id=#{id}
 	</select>
 
+	<select id="findByAccount" parameterType="String"
+		resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+		WHERE
+		account=#{account}
+	</select>
+
 	<select id="findAll" resultType="User">
 		SELECT
 		<include refid="col" />

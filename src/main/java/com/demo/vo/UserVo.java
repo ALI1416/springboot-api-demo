@@ -20,6 +20,7 @@ import lombok.ToString;
 @Setter
 @ToString(callSuper = true)
 public class UserVo extends User {
+    private String newPwd;
     private Integer yearNot;
     private Integer yearEnd;
 }

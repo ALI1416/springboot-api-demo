@@ -1,15 +1,16 @@
 package com.demo.util;
 
-import com.demo.constant.MailConstant;
-import com.demo.tool.ThreadPool;
-import lombok.AllArgsConstructor;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
-import javax.mail.internet.MimeMessage;
+import com.demo.constant.MailConstant;
+import com.demo.tool.ThreadPool;
 
 /**
  * <h1>邮件工具类</h1>
@@ -21,21 +22,21 @@ import javax.mail.internet.MimeMessage;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Component
+//@Component
 public class MailUtils {
 
     /**
      * 发送邮件实例
      */
-    private static JavaMailSender javaMailSender;
+    private static final JavaMailSender javaMailSender=new JavaMailSenderImpl();
 
     /**
      * 静态注入
      */
-    @Autowired(required = false)
-    private MailUtils(JavaMailSender javaMailSender) {
-        MailUtils.javaMailSender = javaMailSender;
-    }
+//    @Autowired(required = false)
+//    private MailUtils(JavaMailSender javaMailSender) {
+//        MailUtils.javaMailSender = javaMailSender;
+//    }
 
     /**
      * 发送普通邮件

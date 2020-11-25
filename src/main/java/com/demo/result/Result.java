@@ -22,15 +22,15 @@ public class Result {
     /**
      * 状态码
      */
-    private int code;
+    private final int CODE;
     /**
      * 状态信息
      */
-    private String msg;
+    private final String MSG;
     /**
      * 数据
      */
-    private Object data;
+    private final Object DATA;
 
     /**
      * 构造函数
@@ -39,9 +39,9 @@ public class Result {
      * @param data       数据
      */
     private Result(ResultCode resultCode, Object data) {
-        this.code = resultCode.code();
-        this.msg = resultCode.msg();
-        this.data = data;
+        CODE = resultCode.code();
+        MSG = resultCode.msg();
+        DATA = data;
     }
 
     /**
@@ -61,14 +61,14 @@ public class Result {
     }
 
     /**
-     * 未知错误
+     * 错误
      */
     public static Result e() {
         return new Result(ResultCode.ERROR, null);
     }
 
     /**
-     * 未知错误
+     * 错误
      * 
      * @param data 数据
      */
@@ -94,4 +94,5 @@ public class Result {
     public static Result e(ResultCode resultCode, Object data) {
         return new Result(resultCode, data);
     }
+
 }

@@ -1,157 +1,167 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.demo.mapper.UserMapper">
+<mapper namespace="com.demo.dao.UserDao">
 
-    <sql id="col">id,account,pwd,name,gender,year</sql>
+	<sql id="col">id,account,pwd,name,gender,year,is_delete</sql>
 
-    <insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
+	<insert id="insert" parameterType="User" keyProperty="id"
+		useGeneratedKeys="true">
 		INSERT user (
 		account,pwd,name,gender,year,is_delete
 		)VALUES(#{account},#{pwd},#{name},#{gender},#{year},#{isDelete})
 	</insert>
 
-    <select id="findById" parameterType="Integer" resultType="User">
-        SELECT
-        <include refid="col"/>
-        FROM
-        user
-        WHERE
-        id=#{id}
-    </select>
-
-    <select id="findByAccount" parameterType="String" resultType="User">
-        SELECT
-        <include refid="col"/>
-        FROM
-        user
-        WHERE
-        account=#{value}
-    </select>
-
-    <select id="findAll" resultType="User">
-        SELECT
-        <include refid="col"/>
-        FROM
-        user
-    </select>
-
-    <select id="findExact" parameterType="User" resultType="User">
-        SELECT
-        <include refid="col"/>
-        FROM
-        user
-        <where>
-            <if test="id != null">
-                and id=#{id}
-            </if>
-            <if test="account != null and account != ''">
-                and account=#{account}
-            </if>
-            <if test="name != null and name != ''">
-                and name=#{name}
-            </if>
-            <if test="gender != null">
-                and gender=#{gender}
-            </if>
-            <if test="year != null">
-                and year=#{year}
-            </if>
-            <if test="isDelete != null">
-                and is_delete=#{isDelete}
-            </if>
-        </where>
-    </select>
-
-    <select id="find" parameterType="UserVo" resultType="User">
-        SELECT
-        <include refid="col"/>
-        FROM
-        user
-        <where>
-            <if test="id != null">
-                and id=#{id}
-            </if>
-            <if test="account != null and account != ''">
-                <bind name="account1" value="'%'+ account +'%'"/>
-                and account like #{account1}
-            </if>
-            <if test="name != null and name != ''">
-                <bind name="name1" value="'%'+ name +'%'"/>
-                and name like #{name1}
-            </if>
-            <if test="gender != null">
-                and gender=#{gender}
-            </if>
-            <choose>
-                <!-- 忽略 -->
-                <when test="year == null and yearEnd == null"/>
-                <!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
-                <!-- 等于 -->
-                <when test="year == yearEnd and yearNot == null">
-                    and year = #{year}
-                </when>
-                <!-- 不等 -->
-                <when test="year == yearEnd and yearNot != null">
-                    and year != #{year}
-                </when>
-                <!-- 首尾不会同时为null，也不会同时相等。根据首尾为null的情况决定<和>。 -->
-                <!-- 小于 -->
-                <when test="year == null">
-                    and year &lt;= #{yearEnd}
-                </when>
-                <!-- 大于 -->
-                <when test="yearEnd == null">
-                    and year &gt;= #{year}
-                </when>
-                <!-- 首尾都不会为null，也不会相等。根据Not是否为null决定between和not between。 -->
-                <!-- 在...与...之间 -->
-                <when test="yearNot == null">
-                    and year between #{year} and #{yearEnd}
-                </when>
-                <!-- 不在...与...之间 -->
-                <when test="yearNot != null">
-                    and year not between #{year} and #{yearEnd}
-                </when>
-            </choose>
-            <if test="isDelete != null">
-                and is_delete=#{isDelete}
-            </if>
-        </where>
-    </select>
-
-    <update id="updateById" parameterType="User">
-        UPDATE user
-        <set>
-            <if test="id != null">
-                id=#{id},
-            </if>
-            <if test="account != null and account != ''">
-                account=#{account},
-            </if>
-            <if test="pwd != null and pwd != ''">
-                pwd=#{pwd},
-            </if>
-            <if test="name != null and name != ''">
-                name=#{name},
-            </if>
-            <if test="gender != null">
-                gender=#{gender},
-            </if>
-            <if test="year != null">
-                year=#{year},
-            </if>
-            <if test="isDelete != null">
-                is_delete=#{isDelete},
-            </if>
-        </set>
-        WHERE
-        id=#{id}
-    </update>
-
-    <delete id="deleteById" parameterType="Integer">
-		DELETE FROM user
+	<select id="findById" parameterType="Integer" resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
 		WHERE
 		id=#{id}
-	</delete>
+	</select>
+
+	<select id="findByAccount" parameterType="String"
+		resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+		WHERE
+		account=#{account}
+	</select>
+
+	<select id="findAll" resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+	</select>
+
+	<select id="findExact" parameterType="User" resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+		<where>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="account != null and account != ''">
+				and account=#{account}
+			</if>
+			<if test="name != null and name != ''">
+				and name=#{name}
+			</if>
+			<if test="gender != null">
+				and gender=#{gender}
+			</if>
+			<if test="year != null">
+				and year=#{year}
+			</if>
+			<if test="isDelete != null">
+				and is_delete=#{isDelete}
+			</if>
+		</where>
+	</select>
+
+	<select id="find" parameterType="UserVo" resultType="User">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+		<where>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="account != null and account != ''">
+				<bind name="account1" value="'%'+ account +'%'" />
+				and account like #{account1}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="name1" value="'%'+ name +'%'" />
+				and name like #{name1}
+			</if>
+			<if test="gender != null">
+				and gender=#{gender}
+			</if>
+			<choose>
+				<!-- 忽略 -->
+				<when test="year == null and yearEnd == null" />
+				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
+				<!-- 等于 -->
+				<when test="year == yearEnd and yearNot == null">
+					and year = #{year}
+				</when>
+				<!-- 不等 -->
+				<when test="year == yearEnd and yearNot != null">
+					and year != #{year}
+				</when>
+				<!-- 首尾不会同时为null，也不会同时相等。根据首尾为null的情况决定<和>。 -->
+				<!-- 小于 -->
+				<when test="year == null">
+					and year &lt;= #{yearEnd}
+				</when>
+				<!-- 大于 -->
+				<when test="yearEnd == null">
+					and year &gt;= #{year}
+				</when>
+				<!-- 首尾都不会为null，也不会相等。根据Not是否为null决定between和not between。 -->
+				<!-- 在...与...之间 -->
+				<when test="yearNot == null">
+					and year between #{year} and #{yearEnd}
+				</when>
+				<!-- 不在...与...之间 -->
+				<when test="yearNot != null">
+					and year not between #{year} and #{yearEnd}
+				</when>
+			</choose>
+			<if test="isDelete != null">
+				and is_delete=#{isDelete}
+			</if>
+		</where>
+	</select>
+
+	<update id="updateById" parameterType="User">
+		UPDATE user
+		<set>
+			<if test="id != null">
+				id=#{id},
+			</if>
+			<if test="account != null and account != ''">
+				account=#{account},
+			</if>
+			<if test="pwd != null and pwd != ''">
+				pwd=#{pwd},
+			</if>
+			<if test="name != null and name != ''">
+				name=#{name},
+			</if>
+			<if test="gender != null">
+				gender=#{gender},
+			</if>
+			<if test="year != null">
+				year=#{year},
+			</if>
+			<if test="isDelete != null">
+				is_delete=#{isDelete},
+			</if>
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+
+	<!-- <delete id="deleteById" parameterType="Integer"> -->
+	<!-- DELETE FROM user -->
+	<!-- WHERE -->
+	<!-- id=#{id} -->
+	<!-- </delete> -->
+
+	<update id="deleteById" parameterType="Integer">
+		UPDATE user
+		SET
+		is_delete=1
+		WHERE
+		id=#{id}
+	</update>
 
 </mapper>

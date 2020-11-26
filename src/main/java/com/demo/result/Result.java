@@ -61,19 +61,24 @@ public class Result {
     }
 
     /**
-     * 错误
+     * 错误100参数错误
      */
-    public static Result e() {
-        return new Result(ResultCode.ERROR, null);
+    public static Result e1() {
+        return new Result(ResultCode.PARAM_IS_ERROR, null);
     }
 
     /**
-     * 错误
-     * 
-     * @param data 数据
+     * 错误200系统繁忙
      */
-    public static Result e(Object data) {
-        return new Result(ResultCode.ERROR, data);
+    public static Result e2() {
+        return new Result(ResultCode.SYSTEM_INNER_ERROR, null);
+    }
+
+    /**
+     * 错误300非法操作
+     */
+    public static Result e3() {
+        return new Result(ResultCode.INVALID_OPERATION, null);
     }
 
     /**

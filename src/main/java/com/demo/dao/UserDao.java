@@ -1,4 +1,4 @@
-package com.demo.mapper;
+package com.demo.dao;
 
 import com.demo.entity.User;
 import com.demo.vo.UserVo;
@@ -6,7 +6,7 @@ import com.demo.vo.UserVo;
 import java.util.List;
 
 /**
- * <h1>UserMapper接口层</h1>
+ * <h1>User业务逻辑接口层</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -15,7 +15,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface UserMapper {
+public interface UserDao {
 
     /**
      * 插入

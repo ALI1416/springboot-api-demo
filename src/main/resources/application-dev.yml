@@ -37,7 +37,7 @@ logging:
     root: info
     com:
       demo:
-        mapper: trace
+        dao: trace
 ansj:
   default-resource-path: /file/ansj/default.dic
   ambiguity-resource-path: /file/ansj/ambiguity.dic

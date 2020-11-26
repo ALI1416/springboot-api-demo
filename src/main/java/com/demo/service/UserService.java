@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.demo.dao.UserDao;
 import com.demo.entity.User;
-import com.demo.mapper.UserMapper;
 import com.demo.result.Result;
 import com.demo.result.ResultCode;
 import com.demo.util.EncoderUtils;
@@ -27,15 +27,26 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
 
-    private final UserMapper USER;
+    private final UserDao USER;
 
     /**
-     * 是否存在该账号
+     * 存在id
+     */
+    public Result existId(int id) {
+        // 查找用户，通过id。用户不存在
+        if (USER.findById(id) == null) {
+            return Result.e(ResultCode.USER_NOT_EXIST);
+        }
+        return Result.ok();
+    }
+
+    /**
+     * 存在account
      */
     public Result existAccount(String account) {
-        // 查找用户，通过account
-        if (USER.findByAccount(account) != null) {
-            return Result.e(ResultCode.USER_HAS_EXISTED);
+        // 查找用户，通过account。用户不存在
+        if (USER.findByAccount(account) == null) {
+            return Result.e(ResultCode.USER_NOT_EXIST);
         }
         return Result.ok();
     }
@@ -44,11 +55,11 @@ public class UserService {
      * 查找用户，通过id
      */
     public Result findById(int id) {
-        System.out.println(id);
         // 查找用户，通过id
         User u = USER.findById(id);
+        // 用户不存在
         if (u == null) {
-            return Result.e(ResultCode.USER_LOGIN_ERROR);
+            return Result.e(ResultCode.USER_NOT_EXIST);
         }
         return Result.ok(u);
     }
@@ -59,8 +70,9 @@ public class UserService {
     public Result findByAccount(String account) {
         // 查找用户，通过account
         User u = USER.findByAccount(account);
+        // 用户不存在
         if (u == null) {
-            return Result.e(ResultCode.USER_LOGIN_ERROR);
+            return Result.e(ResultCode.USER_NOT_EXIST);
         }
         return Result.ok(u);
     }
@@ -70,14 +82,13 @@ public class UserService {
      */
     @Transactional
     public Result register(User user) {
-        // 查找账号是否存在
-        Result r = existAccount(user.getAccount());
-        if (r.getCODE() != 0) {
-            return r;
-        }
-        // 插入账号
-        if (USER.insert(user) != 1) {
+        // 查找用户，通过account。用户不存在
+        if (USER.findByAccount(user.getAccount()) != null) {
             return Result.e(ResultCode.USER_HAS_EXISTED);
+        }
+        // 插入账号。插入失败
+        if (USER.insert(user) != 1) {
+            return Result.e2();
         }
         user.setPwd(null);
         return Result.ok(user);
@@ -88,15 +99,10 @@ public class UserService {
      */
     @Transactional
     public Result login(User user) {
-        // 查找账号
-        Result r = findByAccount(user.getAccount());
-        // 账号不存在
-        if (r.getCODE() != 0) {
-            return r;
-        }
-        User u = (User) r.getDATA();
-        // 密码错误
-        if (!EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
+        // 查找用户，通过account
+        User u = USER.findByAccount(user.getAccount());
+        // 用户不存在或密码错误
+        if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             return Result.e(ResultCode.USER_LOGIN_ERROR);
         }
         u.setPwd(null);
@@ -104,14 +110,24 @@ public class UserService {
     }
 
     /**
-     * 修改信息
+     * 修改信息（除id和密码）
      */
     @Transactional
     public Result changeInfo(User user) {
-        // 更新
-        int n = USER.updateById(user);
-        if (n != 1) {
-            return Result.e(ResultCode.SYSTEM_INNER_ERROR);
+        // 查找用户，通过id
+        User u = USER.findById(user.getId());
+        // 用户不存在
+        if (u == null) {
+            return Result.e(ResultCode.USER_NOT_EXIST);
+        }
+        // 查找用户，通过account。用户存在（修改account）
+        if (USER.findByAccount(user.getAccount()) != null) {
+            return Result.e(ResultCode.USER_HAS_EXISTED);
+        }
+        user.setPwd(null);
+        // 更新。更新失败
+        if (USER.updateById(user) != 1) {
+            return Result.e2();
         }
         return Result.ok(user);
     }
@@ -121,17 +137,40 @@ public class UserService {
      */
     @Transactional
     public Result changePwd(UserVo user) {
-        // 登录
-        Result r = login(user);
-        if (r.getCODE() != 0) {
-            return r;
+        // 查找用户，通过id
+        User u = USER.findById(user.getId());
+        // 用户不存在
+        if (u == null) {
+            return Result.e(ResultCode.USER_NOT_EXIST);
         }
-        user.setPwd(user.getNewPwd());
-        // 修改信息
-        Result r2 = changeInfo(user);
-        if (r2.getCODE() != 0) {
-            return r2;
+        // 旧密码错误
+        if (!EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
+            return Result.e(ResultCode.USER_LOGIN_ERROR);
+        }
+        User u2 = new User();
+        u2.setId(user.getId());
+        u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
+        // 更新。更新失败
+        if (USER.updateById(u2) != 1) {
+            return Result.e2();
         }
         return Result.ok();
     }
+
+    /**
+     * 删除
+     */
+    @Transactional
+    public Result deleteById(int id) {
+        // 查找用户，通过id。用户不存在
+        if (USER.findById(id) == null) {
+            return Result.e(ResultCode.USER_NOT_EXIST);
+        }
+        // 删除。删除失败
+        if (USER.deleteById(id) != 1) {
+            return Result.e2();
+        }
+        return Result.ok();
+    }
+
 }

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.entity.User;
 import com.demo.result.Result;
-import com.demo.result.ResultCode;
 import com.demo.service.UserService;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
@@ -38,7 +37,7 @@ public class UserController {
     @PostMapping("/existAccount")
     public Result existAccount(String account) {
         if (account == null || account.length() == 0) {
-            return Result.e(ResultCode.PARAM_IS_ERROR);
+            return Result.e1();
         }
         return USER.existAccount(account);
     }
@@ -50,7 +49,7 @@ public class UserController {
     public Result register(@RequestBody User user) {
         if (user.getAccount() == null || user.getPwd() == null || user.getName() == null
                 || user.getAccount().length() == 0 || user.getPwd().length() != 32 || user.getName().length() == 0) {
-            return Result.e(ResultCode.PARAM_IS_ERROR);
+            return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
         if (user.getGender() == null) {
@@ -88,7 +87,7 @@ public class UserController {
     public Result login(@RequestBody User user) {
         if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
                 || user.getPwd().length() != 32) {
-            return Result.e(ResultCode.PARAM_IS_ERROR);
+            return Result.e1();
         }
         return USER.login(user);
     }
@@ -98,8 +97,8 @@ public class UserController {
      */
     @PostMapping("/changeInfo")
     public Result changeInfo(@RequestBody User user) {
-        if (user.getId() == null || user.getPwd() != null) {
-            return Result.e(ResultCode.PARAM_IS_ERROR);
+        if (user.getId() == null) {
+            return Result.e1();
         }
         return USER.changeInfo(user);
     }
@@ -111,8 +110,17 @@ public class UserController {
     public Result changePwd(@RequestBody UserVo user) {
         if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
                 || user.getNewPwd().length() != 32) {
-            return Result.e(ResultCode.PARAM_IS_ERROR);
+            return Result.e1();
         }
         return USER.changePwd(user);
     }
+
+    /**
+     * 删除
+     */
+    @PostMapping("/deleteById")
+    public Result deleteById(int id) {
+        return USER.deleteById(id);
+    }
+
 }

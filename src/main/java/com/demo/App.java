@@ -29,7 +29,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@MapperScan("com.demo.mapper")
+@MapperScan("com.demo.dao")
 @SpringBootApplication
 public class App {
 

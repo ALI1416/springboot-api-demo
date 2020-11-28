@@ -3,6 +3,7 @@ package com.demo.dao;
 import com.demo.entity.User;
 import com.demo.vo.UserVo;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 /**

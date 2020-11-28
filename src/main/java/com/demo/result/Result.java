@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <h1>返回结果</h1>
+ * <h1>返回结果类</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -34,7 +34,7 @@ public class Result {
 
     /**
      * 构造函数
-     * 
+     *
      * @param resultCode 状态
      * @param data       数据
      */
@@ -53,7 +53,7 @@ public class Result {
 
     /**
      * 成功
-     * 
+     *
      * @param data 数据
      */
     public static Result ok(Object data) {
@@ -61,29 +61,8 @@ public class Result {
     }
 
     /**
-     * 错误100参数错误
-     */
-    public static Result e1() {
-        return new Result(ResultCode.PARAM_IS_ERROR, null);
-    }
-
-    /**
-     * 错误200系统繁忙
-     */
-    public static Result e2() {
-        return new Result(ResultCode.SYSTEM_INNER_ERROR, null);
-    }
-
-    /**
-     * 错误300非法操作
-     */
-    public static Result e3() {
-        return new Result(ResultCode.INVALID_OPERATION, null);
-    }
-
-    /**
      * 错误
-     * 
+     *
      * @param resultCode 状态
      */
     public static Result e(ResultCode resultCode) {
@@ -92,12 +71,37 @@ public class Result {
 
     /**
      * 错误
-     * 
+     *
      * @param resultCode 状态
      * @param data       数据
      */
     public static Result e(ResultCode resultCode, Object data) {
         return new Result(resultCode, data);
+    }
+
+    /**
+     * 错误100系统繁忙
+     */
+    public static Result e() {
+        return new Result(ResultCode.SYSTEM_INNER_ERROR, null);
+    }
+
+    /**
+     * 错误101参数错误
+     */
+    public static Result e1() {
+        return new Result(ResultCode.PARAM_IS_ERROR, null);
+    }
+
+    /**
+     * 错误102非法操作
+     */
+    public static Result e2() {
+        return new Result(ResultCode.INVALID_OPERATION, null);
+    }
+
+    public boolean success() {
+        return CODE == 0;
     }
 
 }

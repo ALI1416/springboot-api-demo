@@ -26,7 +26,8 @@ spring:
     protocol: smtp
     default-encoding: UTF-8
 mybatis:
-  mapper-locations: classpath:**/mapper/*.xml
+#  mapper-locations: classpath:**/mapper/*.xml
+  mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.demo.entity,com.demo.vo
   configuration:
     map-underscore-to-camel-case: true

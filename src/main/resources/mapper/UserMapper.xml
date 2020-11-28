@@ -4,8 +4,7 @@
 
 	<sql id="col">id,account,pwd,name,gender,year,is_delete</sql>
 
-	<insert id="insert" parameterType="User" keyProperty="id"
-		useGeneratedKeys="true">
+	<insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
 		INSERT user (
 		account,pwd,name,gender,year,is_delete
 		)VALUES(#{account},#{pwd},#{name},#{gender},#{year},#{isDelete})
@@ -13,17 +12,16 @@
 
 	<select id="findById" parameterType="Integer" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
 		id=#{id}
 	</select>
 
-	<select id="findByAccount" parameterType="String"
-		resultType="User">
+	<select id="findByAccount" parameterType="String" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
@@ -32,14 +30,14 @@
 
 	<select id="findAll" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 	</select>
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -66,7 +64,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -74,11 +72,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'" />
+				<bind name="account1" value="'%'+ account +'%'"/>
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'" />
+				<bind name="name1" value="'%'+ name +'%'"/>
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -86,7 +84,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null" />
+				<when test="year == null and yearEnd == null"/>
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">
@@ -150,11 +148,11 @@
 		id=#{id}
 	</update>
 
-	<!-- <delete id="deleteById" parameterType="Integer"> -->
-	<!-- DELETE FROM user -->
-	<!-- WHERE -->
-	<!-- id=#{id} -->
-	<!-- </delete> -->
+	<!--	<delete id="deleteById" parameterType="Integer">-->
+	<!--		DELETE FROM user-->
+	<!--		WHERE-->
+	<!--		id=#{id}-->
+	<!--	</delete>-->
 
 	<update id="deleteById" parameterType="Integer">
 		UPDATE user

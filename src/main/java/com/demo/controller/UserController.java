@@ -1,5 +1,7 @@
 package com.demo.controller;
 
+import com.demo.result.BatchResult;
+import com.demo.result.ResultCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,8 @@ import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
 
 /**
  * <h1>User控制层</h1>
@@ -29,7 +33,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    private final UserService USER;
+    private UserService userService;
 
     /**
      * 是否存在该账号
@@ -39,7 +43,7 @@ public class UserController {
         if (account == null || account.length() == 0) {
             return Result.e1();
         }
-        return USER.existAccount(account);
+        return userService.existAccount(account);
     }
 
     /**
@@ -47,11 +51,13 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getName() == null
-                || user.getAccount().length() == 0 || user.getPwd().length() != 32 || user.getName().length() == 0) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0 || user.getPwd().length() != 32) {
             return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
+        if (user.getName() == null || user.getName().length() == 0) {
+            user.setName(user.getAccount());
+        }
         if (user.getGender() == null) {
             user.setGender(0);
         }
@@ -61,7 +67,7 @@ public class UserController {
         if (user.getIsDelete() == null) {
             user.setIsDelete(0);
         }
-        return USER.register(user);
+        return userService.register(user);
     }
 
     /**
@@ -69,7 +75,7 @@ public class UserController {
      */
     @PostMapping("/findById")
     public Result findById(int id) {
-        return USER.findById(id);
+        return userService.findById(id);
     }
 
     /**
@@ -77,7 +83,7 @@ public class UserController {
      */
     @PostMapping("/findByAccount")
     public Result findById(String account) {
-        return USER.findByAccount(account);
+        return userService.findByAccount(account);
     }
 
     /**
@@ -85,11 +91,10 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
-                || user.getPwd().length() != 32) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0 || user.getPwd().length() != 32) {
             return Result.e1();
         }
-        return USER.login(user);
+        return userService.login(user);
     }
 
     /**
@@ -100,7 +105,7 @@ public class UserController {
         if (user.getId() == null) {
             return Result.e1();
         }
-        return USER.changeInfo(user);
+        return userService.changeInfo(user);
     }
 
     /**
@@ -108,11 +113,10 @@ public class UserController {
      */
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
-        return USER.changePwd(user);
+        return userService.changePwd(user);
     }
 
     /**
@@ -120,7 +124,43 @@ public class UserController {
      */
     @PostMapping("/deleteById")
     public Result deleteById(int id) {
-        return USER.deleteById(id);
+        return userService.deleteById(id);
+    }
+
+    /**
+     * 批量插入(明文密码)
+     */
+    @PostMapping("/batchRegister")
+    public Result batchRegister(@RequestBody List<User> user) {
+        // 输入数据完整性检查
+        BatchResult<User> result = new BatchResult<>();
+        for (User u : user) {
+            if (u.getAccount() == null || u.getPwd() == null || u.getAccount().length() == 0 || u.getPwd().length() == 0) {
+                result.add(false, u);
+            } else {
+                result.add(u);
+            }
+        }
+        if (!result.isOk()) {
+            return Result.e(ResultCode.USER_BATCH_REGISTER_ERROR, result);
+        }
+        // 补充缺失信息
+        for (User u : user) {
+            u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
+            if (u.getName() == null || u.getName().length() == 0) {
+                u.setName(u.getAccount());
+            }
+            if (u.getGender() == null) {
+                u.setGender(0);
+            }
+            if (u.getYear() == null) {
+                u.setYear(2000);
+            }
+            if (u.getIsDelete() == null) {
+                u.setIsDelete(0);
+            }
+        }
+        return userService.batchRegister(user);
     }
 
 }

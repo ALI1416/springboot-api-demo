@@ -1,7 +1,7 @@
 package com.demo.exception;
 
 /**
- * <h1>函数类</h1>
+ * <h1>简化异常处理函数类</h1>
  *
  * <p>
  * createDate 2020/11/28 20:25:11
@@ -11,6 +11,6 @@ package com.demo.exception;
  * @since 1.0.0
  **/
 @FunctionalInterface
-public interface Function {
+public interface SimplifyExceptionFunction {
     boolean run();
 }

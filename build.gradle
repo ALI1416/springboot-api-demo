@@ -64,8 +64,6 @@ dependencies {
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
     // 分词
     implementation 'org.ansj:ansj_seg:5.1.6'
-    // 元组
-    implementation 'org.javatuples:javatuples:1.2'
 /*仅编译时*/
     // 实体层注解
     compileOnly 'org.projectlombok:lombok'

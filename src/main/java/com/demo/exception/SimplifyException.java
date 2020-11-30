@@ -20,7 +20,7 @@ public class SimplifyException {
      *
      * @param function 执行函数
      */
-    public static Result tryif(Function function) {
+    public static Result tryif(SimplifyExceptionFunction function) {
         return tryif(true, function);
     }
 
@@ -30,7 +30,7 @@ public class SimplifyException {
      * @param rollbackIf 不符合function条件的是否回滚
      * @param function   执行函数
      */
-    public static Result tryif(boolean rollbackIf, Function function) {
+    public static Result tryif(boolean rollbackIf, SimplifyExceptionFunction function) {
         try {
             if (!function.run()) {
                 if (rollbackIf) {
@@ -42,7 +42,7 @@ public class SimplifyException {
             e.printStackTrace();
             return Result.e();
         }
-        return Result.ok();
+        return Result.o();
     }
 }
 

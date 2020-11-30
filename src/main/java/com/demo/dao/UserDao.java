@@ -1,10 +1,9 @@
 package com.demo.dao;
 
+import java.util.List;
+
 import com.demo.entity.User;
 import com.demo.vo.UserVo;
-
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.List;
 
 /**
  * <h1>User业务逻辑接口层</h1>

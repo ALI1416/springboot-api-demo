@@ -37,10 +37,10 @@ public class Test {
         uv.setYearEnd(2000);
         System.out.println(uv);
 
-        Result r1 = Result.ok(ResultCode.OK);
-        System.out.println(r1.success());
+        Result r1 = Result.o(ResultCode.OK);
+        System.out.println(r1.ok());
         Result r2 = Result.e(ResultCode.ERROR);
-        System.out.println(r2.success());
+        System.out.println(r2.ok());
 
         BatchResult<User> batchResult = new BatchResult<>();
         batchResult.add(u);
@@ -48,6 +48,7 @@ public class Test {
         batchResult.add(false, u);
         batchResult.add(false, u);
         System.out.println(batchResult);
+        System.out.println(batchResult.ok());
     }
 
 }

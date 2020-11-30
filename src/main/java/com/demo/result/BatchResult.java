@@ -1,9 +1,10 @@
 package com.demo.result;
 
-import lombok.Data;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Getter;
+import lombok.ToString;
 
 /**
  * <h1>批量返回结果类</h1>
@@ -15,13 +16,14 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Data
+@Getter
+@ToString
 public class BatchResult<T> {
 
     /**
      * 全部都为true
      */
-    private boolean ok = true;
+    private boolean allOk = true;
     /**
      * 全部的个数
      */
@@ -65,10 +67,16 @@ public class BatchResult<T> {
         } else {
             listFalse.add(t);
             totalFalse += 1;
-            this.ok = false;
+            allOk = false;
         }
         total += 1;
     }
 
-}
+    /**
+     * 全部都为true
+     */
+    public boolean ok() {
+        return allOk;
+    }
 
+}

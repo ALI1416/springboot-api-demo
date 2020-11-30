@@ -39,7 +39,7 @@ public class UserService {
         if (userDao.findById(id) == null) {
             return Result.e(ResultCode.USER_NOT_EXIST);
         }
-        return Result.ok();
+        return Result.o();
     }
 
     /**
@@ -50,7 +50,7 @@ public class UserService {
         if (userDao.findByAccount(account) == null) {
             return Result.e(ResultCode.USER_NOT_EXIST);
         }
-        return Result.ok();
+        return Result.o();
     }
 
     /**
@@ -63,7 +63,7 @@ public class UserService {
         if (u == null) {
             return Result.e(ResultCode.USER_NOT_EXIST);
         }
-        return Result.ok(u);
+        return Result.o(u);
     }
 
     /**
@@ -76,7 +76,7 @@ public class UserService {
         if (u == null) {
             return Result.e(ResultCode.USER_NOT_EXIST);
         }
-        return Result.ok(u);
+        return Result.o(u);
     }
 
     /**
@@ -90,11 +90,11 @@ public class UserService {
         }
         // 插入
         Result ok = SimplifyException.tryif(() -> (userDao.insert(user) == 1));
-        if (ok.success()) {
+        if (ok.ok()) {
             return ok;
         }
         user.setPwd(null);
-        return Result.ok(user);
+        return Result.o(user);
     }
 
     /**
@@ -108,7 +108,7 @@ public class UserService {
             return Result.e(ResultCode.USER_LOGIN_ERROR);
         }
         u.setPwd(null);
-        return Result.ok(u);
+        return Result.o(u);
     }
 
     /**
@@ -129,10 +129,10 @@ public class UserService {
         user.setPwd(null);
         // 更新
         Result ok = SimplifyException.tryif(() -> (userDao.updateById(user) == 1));
-        if (ok.success()) {
+        if (ok.ok()) {
             return ok;
         }
-        return Result.ok(user);
+        return Result.o(user);
     }
 
     /**
@@ -155,10 +155,10 @@ public class UserService {
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
         // 更新
         Result ok = SimplifyException.tryif(() -> (userDao.updateById(u2) == 1));
-        if (ok.success()) {
+        if (ok.ok()) {
             return ok;
         }
-        return Result.ok();
+        return Result.o();
     }
 
     /**
@@ -172,10 +172,10 @@ public class UserService {
         }
         // 删除
         Result ok = SimplifyException.tryif(() -> (userDao.deleteById(id) == 1));
-        if (ok.success()) {
+        if (ok.ok()) {
             return ok;
         }
-        return Result.ok();
+        return Result.o();
     }
 
     /**
@@ -187,9 +187,9 @@ public class UserService {
         for (User user : list) {
             // 插入
             Result ok = SimplifyException.tryif(false, () -> (userDao.insert(user) == 1));
-            result.add(ok.success(), user);
+            result.add(ok.ok(), user);
         }
-        return Result.ok(result);
+        return Result.o(result);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.demo.result;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 
 /**
@@ -15,49 +14,48 @@ import lombok.ToString;
  * @since 1.0.0
  **/
 @Getter
-@Setter
 @ToString
 public class Result {
 
     /**
      * 状态码
      */
-    private final int CODE;
+    private int code;
     /**
      * 状态信息
      */
-    private final String MSG;
+    private String msg;
     /**
      * 数据
      */
-    private final Object DATA;
+    private Object data;
 
     /**
      * 构造函数
      *
      * @param resultCode 状态
-     * @param data       数据
+     * @param obj        数据
      */
-    private Result(ResultCode resultCode, Object data) {
-        CODE = resultCode.code();
-        MSG = resultCode.msg();
-        DATA = data;
+    private Result(ResultCode resultCode, Object obj) {
+        code = resultCode.code();
+        msg = resultCode.msg();
+        data = obj;
     }
 
     /**
      * 成功
      */
-    public static Result ok() {
+    public static Result o() {
         return new Result(ResultCode.OK, null);
     }
 
     /**
      * 成功
      *
-     * @param data 数据
+     * @param obj 数据
      */
-    public static Result ok(Object data) {
-        return new Result(ResultCode.OK, data);
+    public static Result o(Object obj) {
+        return new Result(ResultCode.OK, obj);
     }
 
     /**
@@ -73,10 +71,10 @@ public class Result {
      * 错误
      *
      * @param resultCode 状态
-     * @param data       数据
+     * @param obj        数据
      */
-    public static Result e(ResultCode resultCode, Object data) {
-        return new Result(resultCode, data);
+    public static Result e(ResultCode resultCode, Object obj) {
+        return new Result(resultCode, obj);
     }
 
     /**
@@ -100,8 +98,11 @@ public class Result {
         return new Result(ResultCode.INVALID_OPERATION, null);
     }
 
-    public boolean success() {
-        return CODE == 0;
+    /**
+     * 成功(状态码为0)
+     */
+    public boolean ok() {
+        return code == 0;
     }
 
 }

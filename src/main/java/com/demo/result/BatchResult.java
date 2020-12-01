@@ -21,10 +21,6 @@ import lombok.ToString;
 public class BatchResult<T> {
 
     /**
-     * 全部都为true
-     */
-    private boolean allOk = true;
-    /**
      * 全部的个数
      */
     private int total = 0;
@@ -46,7 +42,7 @@ public class BatchResult<T> {
     private List<T> listFalse = new ArrayList<>();
 
     /**
-     * 新增一个true的对象
+     * 新增一个为true的对象
      *
      * @param t 对象
      */
@@ -67,16 +63,15 @@ public class BatchResult<T> {
         } else {
             listFalse.add(t);
             totalFalse += 1;
-            allOk = false;
         }
         total += 1;
     }
 
     /**
-     * 全部都为true
+     * 成功(全部都为true)
      */
     public boolean ok() {
-        return allOk;
+        return totalFalse == 0;
     }
 
 }

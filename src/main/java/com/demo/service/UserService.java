@@ -8,6 +8,9 @@ import com.demo.result.Result;
 import com.demo.result.ResultCode;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -190,6 +193,34 @@ public class UserService {
             result.add(ok.ok(), user);
         }
         return Result.o(result);
+    }
+
+    /**
+     * 查找全部
+     * 
+     * @param pages   页码
+     * @param rows    每页条数(为0时查询全部)
+     * @param orderBy 排序(为null时默认排序)
+     */
+    public Result findAll(int pages, int rows, String orderBy) {
+        // orderBy == null && rows == 0：查询全部，默认排序
+        if (orderBy == null) {
+            if (rows != 0) {
+                // 分页查询，默认排序
+                PageHelper.startPage(pages, rows);
+            }
+        } else {
+            if (rows == 0) {
+                // 查询全部，排序
+                PageHelper.orderBy(orderBy);
+            } else {
+                // 分页查询，排序
+                PageHelper.startPage(pages, rows, orderBy);
+            }
+        }
+        List<User> user = userDao.findAll();
+        PageInfo<User> pageInfo = new PageInfo<>(user);
+        return Result.o(pageInfo);
     }
 
 }

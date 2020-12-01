@@ -20,15 +20,15 @@ public class Result {
     /**
      * 状态码
      */
-    private int code;
+    private final int code;
     /**
      * 状态信息
      */
-    private String msg;
+    private final String msg;
     /**
      * 数据
      */
-    private Object data;
+    private final Object data;
 
     /**
      * 构造函数

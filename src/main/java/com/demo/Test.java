@@ -38,9 +38,9 @@ public class Test {
         System.out.println(uv);
 
         Result r1 = Result.o(ResultCode.OK);
-        System.out.println(r1.ok());
+        System.out.println(r1.isOk());
         Result r2 = Result.e(ResultCode.ERROR);
-        System.out.println(r2.ok());
+        System.out.println(r2.isOk());
 
         BatchResult<User> batchResult = new BatchResult<>();
         batchResult.add(u);
@@ -48,7 +48,7 @@ public class Test {
         batchResult.add(false, u);
         batchResult.add(false, u);
         System.out.println(batchResult);
-        System.out.println(batchResult.ok());
+        System.out.println(batchResult.isOk());
     }
 
 }

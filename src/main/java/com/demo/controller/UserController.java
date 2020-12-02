@@ -146,7 +146,7 @@ public class UserController {
                 result.add(u);
             }
         }
-        if (!result.ok()) {
+        if (!result.isOk()) {
             return Result.e(ResultCode.USER_BATCH_REGISTER_ERROR, result);
         }
         // 补充缺失信息

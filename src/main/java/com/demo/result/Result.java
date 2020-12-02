@@ -18,6 +18,10 @@ import lombok.ToString;
 public class Result {
 
     /**
+     * 成功(状态码为0)
+     */
+    private boolean ok;
+    /**
      * 状态码
      */
     private int code;
@@ -37,9 +41,10 @@ public class Result {
      * @param obj        数据
      */
     private Result(ResultCode resultCode, Object obj) {
-        code = resultCode.code();
-        msg = resultCode.msg();
+        code = resultCode.code;
+        msg = resultCode.msg;
         data = obj;
+        ok = (code == ResultCode.OK.code);
     }
 
     /**
@@ -96,13 +101,6 @@ public class Result {
      */
     public static Result e2() {
         return new Result(ResultCode.INVALID_OPERATION, null);
-    }
-
-    /**
-     * 成功(状态码为0)
-     */
-    public boolean ok() {
-        return code == 0;
     }
 
 }

@@ -93,7 +93,7 @@ public class UserService {
         }
         // 插入
         Result ok = SimplifyException.tryif(() -> (userDao.insert(user) == 1));
-        if (ok.ok()) {
+        if (ok.isOk()) {
             return ok;
         }
         user.setPwd(null);
@@ -132,7 +132,7 @@ public class UserService {
         user.setPwd(null);
         // 更新
         Result ok = SimplifyException.tryif(() -> (userDao.updateById(user) == 1));
-        if (ok.ok()) {
+        if (ok.isOk()) {
             return ok;
         }
         return Result.o(user);
@@ -158,7 +158,7 @@ public class UserService {
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
         // 更新
         Result ok = SimplifyException.tryif(() -> (userDao.updateById(u2) == 1));
-        if (ok.ok()) {
+        if (ok.isOk()) {
             return ok;
         }
         return Result.o();
@@ -175,7 +175,7 @@ public class UserService {
         }
         // 删除
         Result ok = SimplifyException.tryif(() -> (userDao.deleteById(id) == 1));
-        if (ok.ok()) {
+        if (ok.isOk()) {
             return ok;
         }
         return Result.o();
@@ -190,7 +190,7 @@ public class UserService {
         for (User user : list) {
             // 插入
             Result ok = SimplifyException.tryif(false, () -> (userDao.insert(user) == 1));
-            result.add(ok.ok(), user);
+            result.add(ok.isOk(), user);
         }
         return Result.o(result);
     }

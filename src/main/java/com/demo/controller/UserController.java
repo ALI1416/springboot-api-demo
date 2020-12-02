@@ -34,7 +34,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     /**
      * 是否存在该账号

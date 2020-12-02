@@ -39,11 +39,11 @@ public class BatchResult<T> {
     /**
      * 为true的列表
      */
-    private List<T> listTrue = new ArrayList<>();
+    private final List<T> listTrue = new ArrayList<>();
     /**
      * 为false的列表
      */
-    private List<T> listFalse = new ArrayList<>();
+    private final List<T> listFalse = new ArrayList<>();
 
     /**
      * 新增一个为true的对象

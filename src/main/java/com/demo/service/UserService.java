@@ -32,7 +32,7 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService {
 
-    private UserDao userDao;
+    private final UserDao userDao;
 
     /**
      * 存在id

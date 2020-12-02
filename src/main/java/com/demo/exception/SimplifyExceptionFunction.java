@@ -12,5 +12,8 @@ package com.demo.exception;
  **/
 @FunctionalInterface
 public interface SimplifyExceptionFunction {
+    /**
+     * 运行
+     */
     boolean run();
 }

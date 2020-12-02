@@ -1,4 +1,4 @@
-package com.demo.exception;
+package com.demo.tool;
 
 import com.demo.result.Result;
 import com.demo.result.ResultCode;

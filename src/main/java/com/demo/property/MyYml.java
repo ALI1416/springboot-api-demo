@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.unit.DataSize;
 
 import com.demo.entity.User;
-import com.demo.factory.PropertySourceLoadYamlFactory;
+import com.demo.tool.PropertySourceLoadYamlFactory;
 
 import java.time.Duration;
 import java.util.List;

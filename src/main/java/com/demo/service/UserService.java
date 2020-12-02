@@ -2,15 +2,14 @@ package com.demo.service;
 
 import com.demo.dao.UserDao;
 import com.demo.entity.User;
-import com.demo.exception.SimplifyException;
 import com.demo.result.BatchResult;
 import com.demo.result.Result;
 import com.demo.result.ResultCode;
+import com.demo.tool.SimplifyException;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -197,12 +196,13 @@ public class UserService {
 
     /**
      * 查找全部
-     * 
+     *
      * @param pages   页码
      * @param rows    每页条数(为0时查询全部)
      * @param orderBy 排序(为null时默认排序)
      */
     public Result findAll(int pages, int rows, String orderBy) {
+        // SimplifyPageHelper.pagination(pages, rows, orderBy);
         // orderBy == null && rows == 0：查询全部，默认排序
         if (orderBy == null) {
             if (rows != 0) {

@@ -10,7 +10,7 @@ import com.demo.property.MyYml;
 import com.demo.property.Yml;
 
 /**
- * <h1>My常量类</h1>
+ * <h1>My常量</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

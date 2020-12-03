@@ -4,7 +4,7 @@ import com.demo.property.Ip2RegionAppYml;
 import com.demo.property.Yml;
 
 /**
- * <h1>ip2region常量类</h1>
+ * <h1>ip2region常量</h1>
  *
  * <p>
  * createDate 2020/11/21 10:27:45

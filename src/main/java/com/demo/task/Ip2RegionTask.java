@@ -12,7 +12,7 @@ import com.demo.util.FileUtils;
 import com.demo.util.IpUtils;
 
 /**
- * <h1>Ip2Region任务类</h1>
+ * <h1>ip2region任务</h1>
  *
  * <p>
  * createDate 2020/11/20 19:42:59

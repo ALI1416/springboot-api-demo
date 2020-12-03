@@ -1,13 +1,11 @@
 package com.demo.tool;
 
-import com.demo.result.Result;
-import com.demo.result.ResultCode;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * <h1>全局异常捕获类</h1>
+ * <h1>全局异常捕获</h1>
  *
  * <p>
  * 捕获所有未被捕获的异常

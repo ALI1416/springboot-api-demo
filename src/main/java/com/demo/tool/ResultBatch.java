@@ -1,4 +1,4 @@
-package com.demo.result;
+package com.demo.tool;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 /**
- * <h1>批量返回结果类</h1>
+ * <h1>批量返回结果</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -18,7 +18,7 @@ import lombok.ToString;
  **/
 @Getter
 @ToString
-public class BatchResult<T> {
+public class ResultBatch<T> {
 
     /**
      * 成功(全部都为true)

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.mail.internet.MimeMessage;
 
 /**
- * <h1>邮件工具类</h1>
+ * <h1>邮件工具</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

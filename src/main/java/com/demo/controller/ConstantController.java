@@ -10,7 +10,7 @@ import com.demo.constant.MyConstant;
 import com.demo.tool.Log;
 
 /**
- * <h1>常数测试api</h1>
+ * <h1>常数api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

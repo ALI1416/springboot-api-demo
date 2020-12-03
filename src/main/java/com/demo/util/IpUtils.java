@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 
 /**
- * <h1>IP工具类</h1>
+ * <h1>IP工具</h1>
  *
  * <p>
  * createDate 2020/11/18 10:27:10

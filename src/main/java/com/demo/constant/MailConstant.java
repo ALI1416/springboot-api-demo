@@ -4,7 +4,7 @@ import com.demo.property.MailAppYml;
 import com.demo.property.Yml;
 
 /**
- * <h1>邮件常量类</h1>
+ * <h1>邮件常量</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

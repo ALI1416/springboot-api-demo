@@ -1,24 +1,26 @@
 package com.demo.service;
 
-import com.demo.dao.UserDao;
-import com.demo.entity.User;
-import com.demo.result.BatchResult;
-import com.demo.result.Result;
-import com.demo.result.ResultCode;
-import com.demo.tool.SimplifyException;
-import com.demo.util.EncoderUtils;
-import com.demo.vo.UserVo;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.demo.dao.UserDao;
+import com.demo.entity.User;
+import com.demo.tool.Result;
+import com.demo.tool.ResultBatch;
+import com.demo.tool.ResultCode;
+import com.demo.tool.SimplifyException;
+import com.demo.tool.SimplifyPageHelper;
+import com.demo.util.EncoderUtils;
+import com.demo.vo.UserVo;
+import com.github.pagehelper.PageInfo;
+
+import lombok.AllArgsConstructor;
 
 /**
- * <h1>User服务层</h1>
+ * <h1>User服务</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -114,7 +116,7 @@ public class UserService {
     }
 
     /**
-     * 修改信息（除id和密码）
+     * 修改信息
      */
     @Transactional
     public Result changeInfo(User user) {
@@ -185,41 +187,37 @@ public class UserService {
      */
     @Transactional
     public Result batchRegister(List<User> list) {
-        BatchResult<User> result = new BatchResult<>();
+        ResultBatch<User> result = new ResultBatch<>();
         for (User user : list) {
             // 插入
             Result ok = SimplifyException.tryif(false, () -> (userDao.insert(user) == 1));
+            user.setPwd(null);
             result.add(ok.isOk(), user);
         }
         return Result.o(result);
     }
 
     /**
-     * 查找全部
-     *
-     * @param pages   页码
-     * @param rows    每页条数(为0时查询全部)
-     * @param orderBy 排序(为null时默认排序)
+     * 查询全部
      */
     public Result findAll(int pages, int rows, String orderBy) {
-        // SimplifyPageHelper.pagination(pages, rows, orderBy);
-        // orderBy == null && rows == 0：查询全部，默认排序
-        if (orderBy == null) {
-            if (rows != 0) {
-                // 分页查询，默认排序
-                PageHelper.startPage(pages, rows);
-            }
-        } else {
-            if (rows == 0) {
-                // 查询全部，排序
-                PageHelper.orderBy(orderBy);
-            } else {
-                // 分页查询，排序
-                PageHelper.startPage(pages, rows, orderBy);
-            }
-        }
-        List<User> user = userDao.findAll();
-        PageInfo<User> pageInfo = new PageInfo<>(user);
+        PageInfo<User> pageInfo = SimplifyPageHelper.pagination(pages, rows, orderBy, () -> userDao.findAll());
+        return Result.o(pageInfo);
+    }
+
+    /**
+     * 精确查询
+     */
+    public Result findExact(User user, int pages, int rows, String orderBy) {
+        PageInfo<User> pageInfo = SimplifyPageHelper.pagination(pages, rows, orderBy, () -> userDao.findExact(user));
+        return Result.o(pageInfo);
+    }
+
+    /**
+     * 模糊查询
+     */
+    public Result find(UserVo user, int pages, int rows, String orderBy) {
+        PageInfo<User> pageInfo = SimplifyPageHelper.pagination(pages, rows, orderBy, () -> userDao.find(user));
         return Result.o(pageInfo);
     }
 

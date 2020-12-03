@@ -4,7 +4,7 @@ import me.ihxq.projects.pna.PhoneNumberInfo;
 import me.ihxq.projects.pna.PhoneNumberLookup;
 
 /**
- * <h1>IP工具类</h1>
+ * <h1>电话工具</h1>
  *
  * <p>
  * createDate 2020/11/22 16:15:07

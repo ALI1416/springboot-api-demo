@@ -1,7 +1,7 @@
 package com.demo.constant;
 
 /**
- * <h1>常量类</h1>
+ * <h1>普通常量</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

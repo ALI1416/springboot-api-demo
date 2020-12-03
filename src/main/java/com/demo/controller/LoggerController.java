@@ -8,7 +8,7 @@ import com.demo.tool.Log;
 import com.demo.tool.ThreadPool;
 
 /**
- * <h1>日志测试api</h1>
+ * <h1>日志api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

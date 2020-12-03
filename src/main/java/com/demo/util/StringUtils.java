@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.UUID;
 
 /**
- * <h1>字符串工具类</h1>
+ * <h1>字符串工具</h1>
  *
  * <p>
  * createDate 2020/11/18 10:29:56

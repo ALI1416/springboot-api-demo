@@ -1,20 +1,26 @@
 package com.demo.controller;
 
-import com.demo.entity.User;
-import com.demo.result.BatchResult;
-import com.demo.result.Result;
-import com.demo.result.ResultCode;
-import com.demo.service.UserService;
-import com.demo.util.EncoderUtils;
-import com.demo.vo.UserVo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.entity.User;
+import com.demo.service.UserService;
+import com.demo.tool.Result;
+import com.demo.tool.ResultBatch;
+import com.demo.tool.ResultCode;
+import com.demo.util.EncoderUtils;
+import com.demo.vo.UserVo;
+
+import lombok.AllArgsConstructor;
+
 /**
- * <h1>User控制层</h1>
+ * <h1>User api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -54,7 +60,8 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0 || user.getPwd().length() != 32) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
+                || user.getPwd().length() != 32) {
             return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
@@ -94,7 +101,8 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0 || user.getPwd().length() != 32) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
+                || user.getPwd().length() != 32) {
             return Result.e1();
         }
         return userService.login(user);
@@ -116,7 +124,8 @@ public class UserController {
      */
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         return userService.changePwd(user);
@@ -136,9 +145,10 @@ public class UserController {
     @PostMapping("/batchRegister")
     public Result batchRegister(@RequestBody List<User> user) {
         // 输入数据完整性检查
-        BatchResult<User> result = new BatchResult<>();
+        ResultBatch<User> result = new ResultBatch<>();
         for (User u : user) {
-            if (u.getAccount() == null || u.getPwd() == null || u.getAccount().length() == 0 || u.getPwd().length() == 0) {
+            if (u.getAccount() == null || u.getPwd() == null || u.getAccount().length() == 0
+                    || u.getPwd().length() == 0) {
                 result.add(false, u);
             } else {
                 result.add(u);
@@ -167,15 +177,30 @@ public class UserController {
     }
 
     /**
-     * 查找全部
-     *
-     * @param pages   页码
-     * @param rows    每页条数
-     * @param orderBy 排序
+     * 查询全部
      */
     @PostMapping("/findAll")
-    public Result findAll(@RequestParam(defaultValue = "1") int pages, @RequestParam(defaultValue = "20") int rows, @RequestParam(defaultValue = "id desc") String orderBy) {
+    public Result findAll(@RequestParam(defaultValue = "1") int pages, @RequestParam(defaultValue = "20") int rows,
+            @RequestParam(defaultValue = "id desc") String orderBy) {
         return userService.findAll(pages, rows, orderBy);
+    }
+
+    /**
+     * 精确查询
+     */
+    @PostMapping("/findExact")
+    public Result findExact(@RequestBody User user, @RequestParam(defaultValue = "1") int pages,
+            @RequestParam(defaultValue = "20") int rows, @RequestParam(defaultValue = "id desc") String orderBy) {
+        return userService.findExact(user, pages, rows, orderBy);
+    }
+
+    /**
+     * 模糊查询
+     */
+    @PostMapping("/find")
+    public Result find(@RequestBody UserVo user, @RequestParam(defaultValue = "1") int pages,
+            @RequestParam(defaultValue = "20") int rows, @RequestParam(defaultValue = "id desc") String orderBy) {
+        return userService.find(user, pages, rows, orderBy);
     }
 
 }

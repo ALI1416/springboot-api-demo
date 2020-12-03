@@ -3,6 +3,7 @@
 <mapper namespace="com.demo.dao.UserDao">
 
 	<sql id="col">id,account,pwd,name,gender,year,is_delete</sql>
+    <sql id="col2">id,account,name,gender,year,is_delete</sql>
 
 	<insert id="insert" parameterType="User" keyProperty="id" useGeneratedKeys="true">
 		INSERT user (
@@ -30,14 +31,14 @@
 
 	<select id="findAll" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col2"/>
 		FROM
 		user
 	</select>
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col2"/>
 		FROM
 		user
 		<where>
@@ -64,7 +65,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col2"/>
 		FROM
 		user
 		<where>

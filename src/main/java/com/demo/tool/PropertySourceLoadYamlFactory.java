@@ -8,7 +8,7 @@ import org.springframework.core.io.support.PropertySourceFactory;
 import java.io.IOException;
 
 /**
- * <h1>@PropertySource加载Yaml配置文件工厂类</h1>
+ * <h1>@PropertySource加载Yaml配置文件工厂</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

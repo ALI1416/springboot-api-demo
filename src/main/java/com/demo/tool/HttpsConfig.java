@@ -8,7 +8,7 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.context.annotation.Bean;
 
 /**
- * <h1>Https配置类</h1>
+ * <h1>Https配置</h1>
  *
  * <p>
  * 监听所有路径，http协议切换到https协议

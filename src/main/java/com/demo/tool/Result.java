@@ -1,10 +1,10 @@
-package com.demo.result;
+package com.demo.tool;
 
 import lombok.Getter;
 import lombok.ToString;
 
 /**
- * <h1>返回结果类</h1>
+ * <h1>返回结果</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

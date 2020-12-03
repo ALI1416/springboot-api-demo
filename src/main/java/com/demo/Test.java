@@ -1,9 +1,9 @@
 package com.demo;
 
 import com.demo.entity.User;
-import com.demo.result.BatchResult;
-import com.demo.result.Result;
-import com.demo.result.ResultCode;
+import com.demo.tool.ResultBatch;
+import com.demo.tool.Result;
+import com.demo.tool.ResultCode;
 import com.demo.vo.UserVo;
 
 /**
@@ -42,7 +42,7 @@ public class Test {
         Result r2 = Result.e(ResultCode.ERROR);
         System.out.println(r2.isOk());
 
-        BatchResult<User> batchResult = new BatchResult<>();
+        ResultBatch<User> batchResult = new ResultBatch<>();
         batchResult.add(u);
         batchResult.add(u);
         batchResult.add(false, u);

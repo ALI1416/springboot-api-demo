@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * <h1>日期工具类</h1>
+ * <h1>日期工具</h1>
  *
  * <h2>SimpleDateFormat格式化代码</h2>
  * <table>

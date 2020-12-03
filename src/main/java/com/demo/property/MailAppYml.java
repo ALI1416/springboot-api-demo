@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 /**
- * <h1>邮件配置类</h1>
+ * <h1>邮件配置</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

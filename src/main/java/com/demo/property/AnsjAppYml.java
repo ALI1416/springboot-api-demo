@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import lombok.Data;
 
 /**
- * <h1>ansj词典文件配置类</h1>
+ * <h1>ansj词典配置</h1>
  *
  * <p>
  * createDate 2020/11/21 10:25:05

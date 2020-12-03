@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.demo.util.PhoneUtils;
 
 /**
- * <h1>总任务类</h1>
+ * <h1>总任务</h1>
  *
  * <p>
  * createDate 2020/11/21 09:28:54

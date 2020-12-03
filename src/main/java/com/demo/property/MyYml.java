@@ -13,7 +13,7 @@ import java.time.Duration;
 import java.util.List;
 
 /**
- * <h1>My配置类</h1>
+ * <h1>My配置</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

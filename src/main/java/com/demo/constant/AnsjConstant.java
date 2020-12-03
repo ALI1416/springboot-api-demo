@@ -6,7 +6,7 @@ import com.demo.property.Properties;
 import com.demo.property.Yml;
 
 /**
- * <h1>Ansj常量类</h1>
+ * <h1>Ansj常量</h1>
  *
  * <p>
  * createDate 2020/11/21 09:29:16

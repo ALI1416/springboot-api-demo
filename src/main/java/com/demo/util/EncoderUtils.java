@@ -9,7 +9,7 @@ import java.util.Base64;
 import java.util.zip.CRC32;
 
 /**
- * <h1>编码工具类</h1>
+ * <h1>编码工具</h1>
  *
  * <p>
  * createDate 2020/11/14 21:20:10

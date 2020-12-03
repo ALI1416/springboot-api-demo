@@ -1,10 +1,9 @@
 package com.demo.tool;
 
-import com.demo.result.Result;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 /**
- * <h1>简化异常处理类</h1>
+ * <h1>简化异常处理</h1>
  *
  * <p>
  * createDate 2020/11/28 17:21:13
@@ -18,7 +17,7 @@ public class SimplifyException {
     /**
      * try-if简化，不符合function条件的回滚
      *
-     * @param function 执行函数
+     * @param function 要执行的函数
      */
     public static Result tryif(Function<Boolean> function) {
         return tryif(true, function);
@@ -28,7 +27,7 @@ public class SimplifyException {
      * try-if简化
      *
      * @param rollbackIf 不符合function条件的是否回滚
-     * @param function   执行函数
+     * @param function   要执行的函数
      */
     public static Result tryif(boolean rollbackIf, Function<Boolean> function) {
         try {
@@ -45,4 +44,3 @@ public class SimplifyException {
         return Result.o();
     }
 }
-

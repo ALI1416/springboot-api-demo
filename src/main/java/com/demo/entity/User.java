@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * <h1>User实体类</h1>
+ * <h1>User实体</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.demo.util.MailUtils;
 
 /**
- * <h1>邮件测试api</h1>
+ * <h1>邮件api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

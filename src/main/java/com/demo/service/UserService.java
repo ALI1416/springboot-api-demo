@@ -1,23 +1,17 @@
 package com.demo.service;
 
-import java.util.List;
-
+import com.demo.dao.UserDao;
+import com.demo.entity.User;
+import com.demo.tool.*;
+import com.demo.util.EncoderUtils;
+import com.demo.vo.UserVo;
+import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.demo.dao.UserDao;
-import com.demo.entity.User;
-import com.demo.tool.Result;
-import com.demo.tool.ResultBatch;
-import com.demo.tool.ResultCode;
-import com.demo.tool.SimplifyException;
-import com.demo.tool.SimplifyPageHelper;
-import com.demo.util.EncoderUtils;
-import com.demo.vo.UserVo;
-import com.github.pagehelper.PageInfo;
-
-import lombok.AllArgsConstructor;
+import java.util.List;
 
 /**
  * <h1>User服务</h1>
@@ -201,7 +195,7 @@ public class UserService {
      * 查询全部
      */
     public Result findAll(int pages, int rows, String orderBy) {
-        PageInfo<User> pageInfo = SimplifyPageHelper.pagination(pages, rows, orderBy, () -> userDao.findAll());
+        PageInfo<User> pageInfo = SimplifyPageHelper.pagination(pages, rows, orderBy, userDao::findAll);
         return Result.o(pageInfo);
     }
 

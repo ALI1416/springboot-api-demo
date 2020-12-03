@@ -20,7 +20,7 @@ public class Result {
     /**
      * 成功(状态码为0)
      */
-    private boolean ok;
+    private final boolean ok;
     /**
      * 状态码
      */

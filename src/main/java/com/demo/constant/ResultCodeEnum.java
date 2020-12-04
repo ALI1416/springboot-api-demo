@@ -1,4 +1,4 @@
-package com.demo.tool;
+package com.demo.constant;
 
 /**
  * <h1>返回结果状态</h1>
@@ -10,7 +10,7 @@ package com.demo.tool;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public enum ResultCode {
+public enum ResultCodeEnum {
 
     /* 成功0 */
     /**
@@ -79,7 +79,7 @@ public enum ResultCode {
      * @param code 状态码
      * @param msg  信息
      */
-    ResultCode(int code, String msg) {
+    ResultCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

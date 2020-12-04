@@ -46,6 +46,8 @@ dependencies {
 /*普通依赖*/
     // SpringBoot框架
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // mybatis数据库操作

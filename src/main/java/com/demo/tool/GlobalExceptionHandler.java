@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.demo.constant.ResultCodeEnum;
+
 /**
  * <h1>全局异常捕获</h1>
  *
@@ -24,6 +26,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result exceptionHandler(Exception e) {
         e.printStackTrace();
-        return Result.e(ResultCode.ERROR);
+        return Result.e(ResultCodeEnum.ERROR);
     }
 }

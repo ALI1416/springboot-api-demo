@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.User;
 import com.demo.service.UserService;
 import com.demo.tool.Result;
 import com.demo.tool.ResultBatch;
-import com.demo.tool.ResultCode;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
 
@@ -155,7 +155,7 @@ public class UserController {
             }
         }
         if (!result.isOk()) {
-            return Result.e(ResultCode.USER_BATCH_REGISTER_ERROR, result);
+            return Result.e(ResultCodeEnum.USER_BATCH_REGISTER_ERROR, result);
         }
         // 补充缺失信息
         for (User u : user) {

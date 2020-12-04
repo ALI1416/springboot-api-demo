@@ -1,9 +1,9 @@
 package com.demo;
 
+import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.User;
 import com.demo.tool.ResultBatch;
 import com.demo.tool.Result;
-import com.demo.tool.ResultCode;
 import com.demo.vo.UserVo;
 
 /**
@@ -37,9 +37,9 @@ public class Test {
         uv.setYearEnd(2000);
         System.out.println(uv);
 
-        Result r1 = Result.o(ResultCode.OK);
+        Result r1 = Result.o(ResultCodeEnum.OK);
         System.out.println(r1.isOk());
-        Result r2 = Result.e(ResultCode.ERROR);
+        Result r2 = Result.e(ResultCodeEnum.ERROR);
         System.out.println(r2.isOk());
 
         ResultBatch<User> batchResult = new ResultBatch<>();

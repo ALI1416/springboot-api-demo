@@ -1,23 +1,22 @@
 package com.demo.util;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-
+import com.demo.constant.RedisExpireEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.demo.constant.RedisExpireEnum;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * <h1>redis工具</h1>
  *
  * <p>
- * createDate 2020/12/4 15:57:36
+ * createDate 2020/12/04 15:57:36
  * </p>
  *
  * @author ALI[1416978277@qq.com]
@@ -26,9 +25,9 @@ import com.demo.constant.RedisExpireEnum;
 @Component
 public class RedisUtils {
 
-    @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
+    @Autowired
     public RedisUtils(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
@@ -44,8 +43,8 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
@@ -63,8 +62,8 @@ public class RedisUtils {
             return redisTemplate.hasKey(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
@@ -83,8 +82,6 @@ public class RedisUtils {
 
     /**
      * 模糊查询获取key值
-     * 
-     * @param pattern
      */
     public Set<String> keys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -92,9 +89,6 @@ public class RedisUtils {
 
     /**
      * 使用Redis的消息队列
-     * 
-     * @param channel
-     * @param message 消息内容
      */
     public void convertAndSend(String channel, Object message) {
         redisTemplate.convertAndSend(channel, message);
@@ -118,8 +112,8 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
@@ -135,8 +129,8 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
@@ -150,7 +144,7 @@ public class RedisUtils {
 
     /**
      * 获取map指定项的键值
-     * 
+     *
      * @param key  键
      * @param item 项
      */
@@ -160,7 +154,7 @@ public class RedisUtils {
 
     /**
      * 获取map所有键值
-     * 
+     *
      * @param key 键
      */
     public Map<Object, Object> hashGet(String key) {
@@ -169,7 +163,7 @@ public class RedisUtils {
 
     /**
      * 设置map所有键值
-     * 
+     *
      * @param key 键
      * @param map 对应多个键值
      */
@@ -179,13 +173,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 设置map所有键值并设置时间
-     * 
+     *
      * @param key  键
      * @param map  对应多个键值
      * @param time 时间(秒)
@@ -199,13 +193,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 向map中放入数据,如果不存在将创建
-     * 
+     *
      * @param key   键
      * @param item  项
      * @param value 值
@@ -216,13 +210,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 向map中放入数据并设置时间,如果不存在将创建
-     * 
+     *
      * @param key   键
      * @param item  项
      * @param value 值
@@ -237,13 +231,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 删除map中的值
-     * 
+     *
      * @param key  键 不能为null
      * @param item 项 可以使多个 不能为null
      */
@@ -253,7 +247,7 @@ public class RedisUtils {
 
     /**
      * 判断map中是否有该项的值
-     * 
+     *
      * @param key  键 不能为null
      * @param item 项 不能为null
      */
@@ -263,7 +257,7 @@ public class RedisUtils {
 
     /**
      * map递增。如果不存在,就会创建一个并把新增后的值返回
-     * 
+     *
      * @param key   键
      * @param item  项
      * @param delta 要增加多少
@@ -276,7 +270,7 @@ public class RedisUtils {
 
     /**
      * 获取
-     * 
+     *
      * @param key 键
      */
     public Set<Object> setGet(String key) {
@@ -284,13 +278,13 @@ public class RedisUtils {
             return redisTemplate.opsForSet().members(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
      * 根据value从一个set中查询是否存在
-     * 
+     *
      * @param key   键
      * @param value 值
      */
@@ -299,13 +293,13 @@ public class RedisUtils {
             return redisTemplate.opsForSet().isMember(key, value);
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 将数据放入set缓存
-     * 
+     *
      * @param key    键
      * @param values 值 可以是多个
      * @return 成功个数
@@ -315,13 +309,13 @@ public class RedisUtils {
             return redisTemplate.opsForSet().add(key, values);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     /**
      * 将set数据放入缓存
-     * 
+     *
      * @param key    键
      * @param time   时间(秒)
      * @param values 值 可以是多个
@@ -329,20 +323,20 @@ public class RedisUtils {
      */
     public long setSet(String key, long time, Object... values) {
         try {
-            Long count = redisTemplate.opsForSet().add(key, values);
+            long count = redisTemplate.opsForSet().add(key, values);
             if (time > 0) {
                 expire(key, time);
             }
             return count;
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     /**
      * 获取set缓存的长度
-     * 
+     *
      * @param key 键
      */
     public long setSize(String key) {
@@ -350,32 +344,31 @@ public class RedisUtils {
             return redisTemplate.opsForSet().size(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     /**
      * 移除值为value的
-     * 
+     *
      * @param key    键
      * @param values 值 可以是多个
      * @return 移除的个数
      */
     public long setRemove(String key, Object... values) {
         try {
-            Long count = redisTemplate.opsForSet().remove(key, values);
-            return count;
+            return redisTemplate.opsForSet().remove(key, values);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     // ===============================List=================================
 
     /**
      * 获取list缓存的内容
-     * 
+     *
      * @param key   键
      * @param start 开始
      * @param end   结束 0 到 -1代表所有值
@@ -385,13 +378,13 @@ public class RedisUtils {
             return redisTemplate.opsForList().range(key, start, end);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
      * 获取list缓存的长度
-     * 
+     *
      * @param key 键
      */
     public long listSize(String key) {
@@ -399,13 +392,13 @@ public class RedisUtils {
             return redisTemplate.opsForList().size(key);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     /**
      * 通过索引 获取list中的值
-     * 
+     *
      * @param key   键
      * @param index 索引 index>=0时， 0 表头，1 第二个元素，依次类推；index<0时，-1，表尾，-2倒数第二个元素，依次类推
      */
@@ -414,13 +407,13 @@ public class RedisUtils {
             return redisTemplate.opsForList().index(key, index);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     /**
      * 将list放入缓存
-     * 
+     *
      * @param key   键
      * @param value 值
      */
@@ -430,13 +423,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 将list放入缓存
-     * 
+     *
      * @param key   键
      * @param value 值
      * @param time  时间(秒)
@@ -450,13 +443,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 将list放入缓存
-     * 
+     *
      * @param key   键
      * @param value 值
      */
@@ -466,13 +459,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 将list放入缓存
-     * 
+     *
      * @param key   键
      * @param value 值
      * @param time  时间(秒)
@@ -486,13 +479,13 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 根据索引修改list中的某条数据
-     * 
+     *
      * @param key   键
      * @param index 索引
      * @param value 值
@@ -503,33 +496,32 @@ public class RedisUtils {
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     /**
      * 移除N个值为value
-     * 
+     *
      * @param key   键
      * @param count 移除多少个
      * @param value 值
      */
     public long listRemove(String key, long count, Object value) {
         try {
-            Long remove = redisTemplate.opsForList().remove(key, count, value);
-            return remove;
+            return redisTemplate.opsForList().remove(key, count, value);
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
         }
+        return 0;
     }
 
     // =========BoundListOperations用法============
 
     /**
      * 将数据添加到Redis的list中（从右边添加）
-     * 
-     * @param listKey
+     *
+     * @param listKey    key列表
      * @param expireEnum 有效期的枚举类
      * @param values     待添加的数据
      */
@@ -544,27 +536,24 @@ public class RedisUtils {
 
     /**
      * 根据起始结束序号遍历Redis中的list
-     * 
-     * @param listKey
+     *
+     * @param listKey key列表
      * @param start   起始序号
      * @param end     结束序号
      */
     public List<Object> rangeList(String listKey, long start, long end) {
-        // 绑定操作
-        BoundListOperations<String, Object> boundValueOperations = redisTemplate.boundListOps(listKey);
-        // 查询数据
-        return boundValueOperations.range(start, end);
+        // 绑定操作--查询数据
+        return redisTemplate.boundListOps(listKey).range(start, end);
     }
 
     /**
      * 弹出右边的值 --- 并且移除这个值
-     * 
-     * @param listKey
+     *
+     * @param listKey key列表
      */
-    public Object rifhtPop(String listKey) {
+    public Object rightPop(String listKey) {
         // 绑定操作
-        BoundListOperations<String, Object> boundValueOperations = redisTemplate.boundListOps(listKey);
-        return boundValueOperations.rightPop();
+        return redisTemplate.boundListOps(listKey).rightPop();
     }
 
 }

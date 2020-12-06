@@ -1,8 +1,6 @@
 package com.demo.controller;
 
 import com.demo.util.RedisUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,28 +17,21 @@ import org.springframework.web.bind.annotation.RestController;
  **/
 @RequestMapping("/redis")
 @RestController
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RedisController {
 
-    private final RedisUtils redisUtil;
-
-    /**
-     * redis中存储的过期时间60s
-     */
-    private final static int ExpireTime = 60;
-
     @PostMapping("set")
-    public boolean redisSet(String key, String value) {
-        return redisUtil.set(key, value);
+    public String redisSet(String key, String value) {
+        RedisUtils.set(key, value);
+        return "ok";
     }
 
     @PostMapping("get")
     public Object redisGet(String key) {
-        return redisUtil.get(key);
+        return RedisUtils.get(key);
     }
 
     @PostMapping("expire")
-    public boolean redisExpire(String key) {
-        return redisUtil.expire(key, ExpireTime);
+    public Boolean redisExpire(String key) {
+        return RedisUtils.expire(key, 60);
     }
 }

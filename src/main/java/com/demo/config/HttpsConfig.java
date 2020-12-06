@@ -1,4 +1,4 @@
-package com.demo.tool;
+package com.demo.config;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
@@ -12,10 +12,6 @@ import org.springframework.context.annotation.Bean;
  *
  * <p>
  * 监听所有路径，http协议切换到https协议
- * </p>
- *
- * <p>
- * <b>取消注释@Configuration来开启Https</b>
  * </p>
  *
  * <p>

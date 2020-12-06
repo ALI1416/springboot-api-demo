@@ -1,4 +1,4 @@
-package com.demo.tool;
+package com.demo.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -13,7 +13,7 @@ import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * <h1>redis配置</h1>
+ * <h1>Redis配置</h1>
  *
  * <p>
  * createDate 2020/12/04 15:57:36

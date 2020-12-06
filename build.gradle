@@ -44,16 +44,20 @@ allprojects {
 // 依赖
 dependencies {
 /*普通依赖*/
-    // SpringBoot框架
+    // springboot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     // redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // elasticsearch
+    implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    // mybatis数据库操作
+    // mybatis
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
     // pagehelper分页排序查询
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.3.0'
+    // fastjson
+    implementation 'com.alibaba:fastjson:1.2.75'
     // MDx/SHAx加密算法
     implementation 'commons-codec:commons-codec:1.15'
     // 文件操作
@@ -64,7 +68,7 @@ dependencies {
     implementation 'org.lionsoul:ip2region:1.7.2'
     // 手机号码归属地查询
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
-    // 分词
+    // ansj分词
     implementation 'org.ansj:ansj_seg:5.1.6'
 /*仅编译时*/
     // 实体层注解

@@ -3,6 +3,7 @@ package com.demo.tool;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.ToString;
 
@@ -18,6 +19,7 @@ import lombok.ToString;
  **/
 @Getter
 @ToString
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResultBatch<T> {
 
     /**

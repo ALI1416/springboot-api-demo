@@ -1,7 +1,6 @@
 package com.demo.vo;
 
 import com.demo.entity.User;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

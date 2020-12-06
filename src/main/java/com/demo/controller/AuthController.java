@@ -1,6 +1,10 @@
 package com.demo.controller;
 
 import com.demo.annotation.Auth;
+import com.demo.entity.Redis;
+import com.demo.tool.Result;
+import com.demo.util.RedisUtils;
+import com.demo.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +24,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
+    @Auth(skip = true)
     @PostMapping("getAuth")
-    public String getAuth() {
-        return null;
+    public Result getAuth(int id) {
+        String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 128);
+        Redis redis = new Redis();
+        redis.setId(id);
+        redis.setToken(token);
+        RedisUtils.set(String.valueOf(id), redis, 1000);
+        return Result.o(redis);
+    }
+
+    @PostMapping("login")
+    public String login() {
+        return "ok";
     }
 
     @Auth(skip = true)
-    @PostMapping("skipAuth")
-    public String skipAuth() {
-        return null;
+    @PostMapping("login2")
+    public String login2() {
+        return "ok";
     }
 }

@@ -5,6 +5,11 @@ import java.lang.annotation.*;
 /**
  * <h1>权限认证注解</h1>
  *
+ * <p>
+ * 此注解@Auth可以放到类上或方法上<br>
+ * 放到类上可以使类下的所有方法生效，可以使用@Auth(skip = true)跳过某个方法
+ * </p>
+ *
  * <h2>@Target      表明该注解可以应用的Java元素类型</h2>
  * <p>
  * ElementType.TYPE             应用于类、接口（包括注解类型）、枚举<br>
@@ -39,7 +44,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Auth {
     /**
-     * 是否跳过类中的某个方法
+     * 是否跳过这个方法
      */
     boolean skip() default false;
 }

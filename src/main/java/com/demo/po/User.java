@@ -1,13 +1,11 @@
 package com.demo.po;
 
-import com.demo.entity.Base;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.demo.base.BasePo;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>User持久层</h1>
+ * <h1>User持久对象</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -18,8 +16,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class User extends Base {
+public class User extends BasePo {
     private Integer id;
     private String account;
     private String pwd;

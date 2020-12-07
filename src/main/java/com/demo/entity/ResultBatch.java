@@ -1,11 +1,10 @@
 package com.demo.entity;
 
+import com.demo.base.BaseEntity;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import lombok.Getter;
 
 /**
  * <h1>批量返回结果实体</h1>
@@ -18,8 +17,7 @@ import lombok.Getter;
  * @since 1.0.0
  **/
 @Getter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResultBatch<T> extends Base {
+public class ResultBatch<T> extends BaseEntity {
 
     /**
      * 成功(全部都为true)

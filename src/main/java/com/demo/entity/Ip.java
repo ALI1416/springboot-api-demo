@@ -1,7 +1,6 @@
 package com.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.demo.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +16,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Ip extends Base {
+public class Ip extends BaseEntity {
     private String country;
     private String province;
     private String city;

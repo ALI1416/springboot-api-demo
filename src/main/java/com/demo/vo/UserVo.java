@@ -1,8 +1,6 @@
 package com.demo.vo;
 
 import com.demo.po.User;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +16,6 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVo extends User {
     private String newPwd;
     private Integer yearNot;

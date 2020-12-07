@@ -1,18 +1,16 @@
 package com.demo.annotation;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.Result;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.Result;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
 
 /**
  * <h1>权限认证注解拦截器</h1>
@@ -27,8 +25,7 @@ import com.demo.entity.Result;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-            throws IOException {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         if (handler instanceof HandlerMethod) {
             // 获取方法
             Method method = ((HandlerMethod) handler).getMethod();
@@ -51,6 +48,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                     response.setCharacterEncoding("UTF-8");
                     response.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = response.getWriter();
+                    // 返回错误信息
                     out.print(Result.e(ResultCodeEnum.USER_NOT_LOGGED_IN));
                     out.flush();
                     out.close();
@@ -63,14 +61,12 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o,
-            ModelAndView modelAndView) {
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) {
 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-            Object o, Exception e) {
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
 
     }
 }

@@ -30,7 +30,7 @@ spring:
     default-encoding: UTF-8
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.demo.entity, com.demo.vo
+  type-aliases-package: com.demo.po, com.demo.vo
   configuration:
     map-underscore-to-camel-case: true
 logging:

@@ -1,7 +1,6 @@
 package com.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-
+import com.demo.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,8 +16,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class Redis extends Base {
+public class Redis extends BaseEntity {
     private Integer id;
     private String token;
 }

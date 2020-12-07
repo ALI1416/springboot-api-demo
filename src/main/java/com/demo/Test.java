@@ -1,9 +1,12 @@
 package com.demo;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.User;
-import com.demo.tool.ResultBatch;
-import com.demo.tool.Result;
+import com.demo.entity.Result;
+import com.demo.entity.ResultBatch;
+import com.demo.po.User;
 import com.demo.vo.UserVo;
 
 /**
@@ -26,6 +29,10 @@ public class Test {
         u.setGender(0);
         u.setYear(0);
         System.out.println(u);
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", 1234);
+        u.setMap(map);
+        System.out.println(u);
 
         UserVo uv = new UserVo();
         uv.setId(1);
@@ -36,11 +43,19 @@ public class Test {
         uv.setYearNot(0);
         uv.setYearEnd(2000);
         System.out.println(uv);
+        Map<String, Object> map2 = new HashMap<>();
+        map2.put("user", u);
+        uv.setMap(map2);
+        System.out.println(uv);
 
         Result r1 = Result.o(ResultCodeEnum.OK);
         System.out.println(r1.isOk());
         Result r2 = Result.e(ResultCodeEnum.ERROR);
         System.out.println(r2.isOk());
+        Result r3 = Result.e(ResultCodeEnum.USER_ACCOUNT_FORBIDDEN, "哈哈哈哈", u);
+        System.out.println(r3);
+        User ru = (User) r3.getData();
+        System.out.println(ru);
 
         ResultBatch<User> batchResult = new ResultBatch<>();
         batchResult.add(u);
@@ -49,6 +64,7 @@ public class Test {
         batchResult.add(false, u);
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
+
     }
 
 }

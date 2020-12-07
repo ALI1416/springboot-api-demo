@@ -2,7 +2,7 @@ package com.demo.dao;
 
 import java.util.List;
 
-import com.demo.entity.User;
+import com.demo.po.User;
 import com.demo.vo.UserVo;
 
 /**

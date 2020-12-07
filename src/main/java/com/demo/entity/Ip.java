@@ -1,9 +1,9 @@
 package com.demo.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * <h1>Ip实体</h1>
@@ -17,9 +17,8 @@ import lombok.ToString;
  **/
 @Getter
 @Setter
-@ToString
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Ip {
+public class Ip extends Base {
     private String country;
     private String province;
     private String city;

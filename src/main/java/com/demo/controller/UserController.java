@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.User;
+import com.demo.entity.Result;
+import com.demo.entity.ResultBatch;
+import com.demo.po.User;
 import com.demo.service.UserService;
-import com.demo.tool.Result;
-import com.demo.tool.ResultBatch;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
 

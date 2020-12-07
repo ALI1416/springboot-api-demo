@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import com.demo.entity.Result;
 import com.demo.tool.Function;
-import com.demo.tool.Result;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 

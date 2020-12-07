@@ -1,9 +1,10 @@
 package com.demo.vo;
 
-import com.demo.entity.User;
+import com.demo.po.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * <h1>User值对象</h1>
@@ -17,7 +18,7 @@ import lombok.ToString;
  **/
 @Getter
 @Setter
-@ToString(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserVo extends User {
     private String newPwd;
     private Integer yearNot;

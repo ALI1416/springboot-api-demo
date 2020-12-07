@@ -1,13 +1,14 @@
 package com.demo.controller;
 
-import com.demo.annotation.Auth;
-import com.demo.entity.Redis;
-import com.demo.tool.Result;
-import com.demo.util.RedisUtils;
-import com.demo.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.annotation.Auth;
+import com.demo.entity.Redis;
+import com.demo.entity.Result;
+import com.demo.util.RedisUtils;
+import com.demo.util.StringUtils;
 
 /**
  * <h1>权限认证api</h1>

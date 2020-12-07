@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserDao;
-import com.demo.entity.User;
-import com.demo.tool.Result;
-import com.demo.tool.ResultBatch;
+import com.demo.entity.Result;
+import com.demo.entity.ResultBatch;
+import com.demo.po.User;
 import com.demo.util.EncoderUtils;
 import com.demo.vo.UserVo;
 import com.github.pagehelper.PageInfo;

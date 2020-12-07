@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.Result;
 
 /**
  * <h1>全局异常捕获</h1>

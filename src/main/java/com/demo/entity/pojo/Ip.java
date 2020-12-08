@@ -1,6 +1,7 @@
-package com.demo.entity;
+package com.demo.entity.pojo;
 
-import com.demo.base.BaseEntity;
+import com.demo.entity.BaseEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 

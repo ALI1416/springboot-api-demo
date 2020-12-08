@@ -2,8 +2,8 @@ package com.demo.dao;
 
 import java.util.List;
 
-import com.demo.po.User;
-import com.demo.vo.UserVo;
+import com.demo.entity.po.User;
+import com.demo.entity.vo.UserVo;
 
 /**
  * <h1>用户业务逻辑接口</h1>

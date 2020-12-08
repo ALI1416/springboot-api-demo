@@ -1,6 +1,7 @@
-package com.demo.po;
+package com.demo.entity.po;
 
-import com.demo.base.BasePo;
+import com.demo.entity.BasePo;
+
 import lombok.Getter;
 import lombok.Setter;
 

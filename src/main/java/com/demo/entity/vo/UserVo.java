@@ -1,6 +1,7 @@
-package com.demo.vo;
+package com.demo.entity.vo;
 
-import com.demo.po.User;
+import com.demo.entity.po.User;
+
 import lombok.Getter;
 import lombok.Setter;
 

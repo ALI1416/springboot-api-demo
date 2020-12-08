@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.Result;
-import com.demo.entity.ResultBatch;
-import com.demo.po.User;
-import com.demo.vo.UserVo;
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.UserVo;
 
 /**
  * <h1>测试类</h1>

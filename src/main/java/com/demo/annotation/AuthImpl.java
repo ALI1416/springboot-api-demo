@@ -1,6 +1,6 @@
 package com.demo.annotation;
 
-import com.demo.entity.Redis;
+import com.demo.entity.pojo.Redis;
 import com.demo.util.RedisUtils;
 
 /**

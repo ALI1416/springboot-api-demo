@@ -2,18 +2,17 @@ package com.demo.service;
 
 import java.util.List;
 
-import com.demo.base.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserDao;
-import com.demo.entity.Result;
-import com.demo.entity.ResultBatch;
-import com.demo.po.User;
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.UserVo;
 import com.demo.util.EncoderUtils;
-import com.demo.vo.UserVo;
 import com.github.pagehelper.PageInfo;
 
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.demo.base;
+package com.demo.entity;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @author ALI[1416978277@qq.com]
  * @since 1.0.0
  **/
-// @JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseEntity {
     @Override
     public String toString() {

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.annotation.Auth;
-import com.demo.entity.Redis;
-import com.demo.entity.Result;
+import com.demo.entity.pojo.Redis;
+import com.demo.entity.pojo.Result;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 

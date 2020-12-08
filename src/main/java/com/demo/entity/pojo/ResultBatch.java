@@ -1,10 +1,11 @@
-package com.demo.entity;
+package com.demo.entity.pojo;
 
-import com.demo.base.BaseEntity;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.demo.entity.BaseEntity;
 
 /**
  * <h1>批量返回结果实体</h1>

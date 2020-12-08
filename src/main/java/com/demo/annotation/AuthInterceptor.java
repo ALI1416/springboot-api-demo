@@ -1,7 +1,8 @@
 package com.demo.annotation;
 
 import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.Result;
+import com.demo.entity.pojo.Result;
+
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;

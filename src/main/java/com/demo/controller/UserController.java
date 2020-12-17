@@ -49,7 +49,7 @@ public class UserController {
      */
     @PostMapping("/existAccount")
     public Result existAccount(String account) {
-        if (account == null || account.length() == 0) {
+        if (account == null || account == "") {
             return Result.e1();
         }
         return userService.existAccount(account);
@@ -60,12 +60,12 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount() == ""
                 || user.getPwd().length() != 32) {
             return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (user.getName() == null || user.getName().length() == 0) {
+        if (user.getName() == null || user.getName() == "") {
             user.setName(user.getAccount());
         }
         if (user.getGender() == null) {
@@ -101,7 +101,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().length() == 0
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount() == ""
                 || user.getPwd().length() != 32) {
             return Result.e1();
         }
@@ -147,8 +147,8 @@ public class UserController {
         // 输入数据完整性检查
         ResultBatch<User> result = new ResultBatch<>();
         for (User u : user) {
-            if (u.getAccount() == null || u.getPwd() == null || u.getAccount().length() == 0
-                    || u.getPwd().length() == 0) {
+            if (u.getAccount() == null || u.getPwd() == null || u.getAccount() == ""
+                    || u.getPwd() == "") {
                 result.add(false, u);
             } else {
                 result.add(u);
@@ -160,7 +160,7 @@ public class UserController {
         // 补充缺失信息
         for (User u : user) {
             u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
-            if (u.getName() == null || u.getName().length() == 0) {
+            if (u.getName() == null || u.getName() == "") {
                 u.setName(u.getAccount());
             }
             if (u.getGender() == null) {

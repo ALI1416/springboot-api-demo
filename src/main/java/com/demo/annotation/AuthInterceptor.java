@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
  * createDate 2020/12/05 20:05:23
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class AuthInterceptor implements HandlerInterceptor {

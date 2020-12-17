@@ -200,7 +200,7 @@ public class EncoderUtils {
             return 0;
         }
         int l = s.length();
-        if (s.length() == 0) {
+        if (s == "") {
             return 0;
         }
         long n = 0;

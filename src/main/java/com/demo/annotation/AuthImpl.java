@@ -10,7 +10,7 @@ import com.demo.util.RedisUtils;
  * createDate 2020/12/06 11:45:48
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class AuthImpl {
@@ -22,7 +22,7 @@ public class AuthImpl {
      * @param token token
      */
     public static boolean authToken(String id, String token) {
-        if (id == null || token == null || id.length() == 0 || token.length() == 0) {
+        if (id == null || token == null || id == "" || token == "") {
             return false;
         }
         Redis redis = (Redis) RedisUtils.get(id);

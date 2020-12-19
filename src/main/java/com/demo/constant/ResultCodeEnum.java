@@ -31,6 +31,10 @@ public enum ResultCodeEnum {
      * 非法操作102
      */
     INVALID_OPERATION(102, "非法操作"),
+    /**
+     * 批量操作异常103
+     */
+    BATCH_OPERATION_ERROR(103,"批量操作异常"),
 
     /* 用户相关1000-1999 */
     /**
@@ -53,10 +57,6 @@ public enum ResultCodeEnum {
      * 用户已存在1005
      */
     USER_HAS_EXISTED(1005, "账号已存在"),
-    /**
-     * 批量注册异常1006
-     */
-    USER_BATCH_REGISTER_ERROR(1006, "批量注册异常"),
 
     /* 未知错误-1 */
     /**

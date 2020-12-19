@@ -1,7 +1,6 @@
 package com.demo.entity.vo;
 
 import com.demo.entity.po.User;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,7 +17,16 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserVo extends User {
+    /**
+     * 新密码
+     */
     private String newPwd;
+    /**
+     * 出生年-否定
+     */
     private Integer yearNot;
+    /**
+     * 出生年-结束
+     */
     private Integer yearEnd;
 }

@@ -1,13 +1,13 @@
 package com.demo.service;
 
-import java.util.List;
-
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
+import com.demo.entity.BaseEntity;
 import com.demo.entity.pojo.Result;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import java.util.List;
 
 /**
  * <h1>基服务</h1>
@@ -53,15 +53,27 @@ public class BaseService {
 
     /**
      * 分页，返回List封装对象
-     * 
-     * @param <E>      返回的对象类型
-     * @param pages    页码(从1开始)
-     * @param rows     每页条数(为0时查询全部)
-     * @param orderBy  排序(为null时默认排序)
-     * @param function 要执行的查询语句
+     *
+     * @param <E>        返回的对象类型
+     * @param baseEntity 基实体(从中获取分页参数)
+     * @param function   要执行的查询语句
      */
-    public static <E> List<E> paginationUnpack(int pages, int rows, String orderBy, Function<List<E>> function) {
-        // orderBy == null && rows == 0：查询全部，默认排序
+    public static <E> List<E> paginationUnpack(BaseEntity baseEntity, Function<List<E>> function) {
+        /* 基实体为空，不需要分页 */
+        if (baseEntity == null) {
+            return function.run();
+        }
+        // 页码(从1开始)
+        Integer pages = baseEntity.getPages();
+        // 每页条数(为0时查询全部)
+        Integer rows = baseEntity.getRows();
+        /* 页码或每页条数为空，不需要分页 */
+        if (pages == null || rows == null) {
+            return function.run();
+        }
+        // 排序(为null时默认排序)
+        String orderBy = baseEntity.getOrderBy();
+        /* orderBy == null && rows == 0 : 查询全部，默认排序 */
         if (orderBy == null) {
             if (rows != 0) {
                 // 分页查询，默认排序
@@ -81,15 +93,13 @@ public class BaseService {
 
     /**
      * 分页，返回PageInfo封装对象
-     * 
-     * @param <E>      返回的对象类型
-     * @param pages    页码(从1开始)
-     * @param rows     每页条数(为0时查询全部)
-     * @param orderBy  排序(为null时默认排序)
-     * @param function 要执行的查询语句
+     *
+     * @param <E>        返回的对象类型
+     * @param baseEntity 基实体(从中获取分页参数)
+     * @param function   要执行的查询语句
      */
-    public static <E> PageInfo<E> pagination(int pages, int rows, String orderBy, Function<List<E>> function) {
-        return new PageInfo<>(paginationUnpack(pages, rows, orderBy, function));
+    public static <E> PageInfo<E> pagination(BaseEntity baseEntity, Function<List<E>> function) {
+        return new PageInfo<>(paginationUnpack(baseEntity, function));
     }
 
 }

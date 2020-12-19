@@ -1,7 +1,6 @@
 package com.demo.entity.po;
 
-import com.demo.entity.BasePo;
-
+import com.demo.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,13 +16,34 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class User extends BasePo {
+public class User extends BaseEntity {
+    /**
+     * id
+     */
     private Integer id;
+    /**
+     * 账号
+     */
     private String account;
+    /**
+     * 密码
+     */
     private String pwd;
+    /**
+     * 姓名
+     */
     private String name;
+    /**
+     * 性别
+     */
     private Integer gender;
+    /**
+     * 出生年
+     */
     private Integer year;
+    /**
+     * 是否删除
+     */
     private Integer isDelete;
 
 }

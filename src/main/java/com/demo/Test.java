@@ -1,8 +1,5 @@
 package com.demo;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -29,10 +26,6 @@ public class Test {
         u.setGender(0);
         u.setYear(0);
         System.out.println(u);
-        Map<String, Object> map = new HashMap<>();
-        map.put("user", 1234);
-        u.setMap(map);
-        System.out.println(u);
 
         UserVo uv = new UserVo();
         uv.setId(1);
@@ -42,10 +35,6 @@ public class Test {
         uv.setYear(1998);
         uv.setYearNot(0);
         uv.setYearEnd(2000);
-        System.out.println(uv);
-        Map<String, Object> map2 = new HashMap<>();
-        map2.put("user", u);
-        uv.setMap(map2);
         System.out.println(uv);
 
         Result r1 = Result.o(ResultCodeEnum.OK);
@@ -59,9 +48,9 @@ public class Test {
 
         ResultBatch<User> batchResult = new ResultBatch<>();
         batchResult.add(u);
+        batchResult.add(false, u, "fff");
         batchResult.add(u);
-        batchResult.add(false, u);
-        batchResult.add(false, u);
+        batchResult.add(false, u, "aaa");
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
 

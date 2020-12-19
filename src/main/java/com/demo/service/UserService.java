@@ -86,14 +86,15 @@ public class UserService extends BaseService {
      */
     @Transactional
     public Result register(User user) {
-        // 查找用户，通过account。用户不存在
+        // 查找用户，通过account。用户已存在
         if (userDao.findByAccount(user.getAccount()) != null) {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
         // 插入
-        Result ok = tryif(() -> (userDao.insert(user) == 1));
-        if (ok.isOk()) {
-            return ok;
+        Result result = tryif(() -> (userDao.insert(user) == 1));
+        // 失败
+        if (!result.isOk()) {
+            return result;
         }
         user.setPwd(null);
         return Result.o(user);
@@ -130,9 +131,10 @@ public class UserService extends BaseService {
         }
         user.setPwd(null);
         // 更新
-        Result ok = tryif(() -> (userDao.updateById(user) == 1));
-        if (ok.isOk()) {
-            return ok;
+        Result result = tryif(() -> (userDao.updateById(user) == 1));
+        // 失败
+        if (!result.isOk()) {
+            return result;
         }
         return Result.o(user);
     }
@@ -156,9 +158,10 @@ public class UserService extends BaseService {
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
         // 更新
-        Result ok = tryif(() -> (userDao.updateById(u2) == 1));
-        if (ok.isOk()) {
-            return ok;
+        Result result = tryif(() -> (userDao.updateById(u2) == 1));
+        // 失败
+        if (!result.isOk()) {
+            return result;
         }
         return Result.o();
     }
@@ -173,9 +176,10 @@ public class UserService extends BaseService {
             return Result.e(ResultCodeEnum.USER_NOT_EXIST);
         }
         // 删除
-        Result ok = tryif(() -> (userDao.deleteById(id) == 1));
-        if (ok.isOk()) {
-            return ok;
+        Result result = tryif(() -> (userDao.deleteById(id) == 1));
+        // 失败
+        if (!result.isOk()) {
+            return result;
         }
         return Result.o();
     }
@@ -190,32 +194,24 @@ public class UserService extends BaseService {
             // 插入
             Result ok = tryif(false, () -> (userDao.insert(user) == 1));
             user.setPwd(null);
-            result.add(ok.isOk(), user);
+            result.add(ok.isOk(), user, ok.getMsg());
         }
         return Result.o(result);
     }
 
     /**
-     * 查询全部
-     */
-    public Result findAll(int pages, int rows, String orderBy) {
-        PageInfo<User> pageInfo = pagination(pages, rows, orderBy, userDao::findAll);
-        return Result.o(pageInfo);
-    }
-
-    /**
      * 精确查询
      */
-    public Result findExact(User user, int pages, int rows, String orderBy) {
-        PageInfo<User> pageInfo = pagination(pages, rows, orderBy, () -> userDao.findExact(user));
+    public Result findExact(User user) {
+        PageInfo<User> pageInfo = pagination(user, () -> userDao.findExact(user));
         return Result.o(pageInfo);
     }
 
     /**
      * 模糊查询
      */
-    public Result find(UserVo user, int pages, int rows, String orderBy) {
-        PageInfo<User> pageInfo = pagination(pages, rows, orderBy, () -> userDao.find(user));
+    public Result find(UserVo user) {
+        PageInfo<User> pageInfo = pagination(user, () -> userDao.find(user));
         return Result.o(pageInfo);
     }
 

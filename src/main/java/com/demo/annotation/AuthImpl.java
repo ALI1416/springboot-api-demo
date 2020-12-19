@@ -22,7 +22,7 @@ public class AuthImpl {
      * @param token token
      */
     public static boolean authToken(String id, String token) {
-        if (id == null || token == null || id == "" || token == "") {
+        if (id == null || token == null || id.isEmpty() || token.isEmpty()) {
             return false;
         }
         Redis redis = (Redis) RedisUtils.get(id);

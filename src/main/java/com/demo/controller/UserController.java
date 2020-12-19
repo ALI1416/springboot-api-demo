@@ -1,14 +1,5 @@
 package com.demo.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -16,8 +7,15 @@ import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
 import com.demo.util.EncoderUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <h1>User api</h1>
@@ -49,7 +47,7 @@ public class UserController {
      */
     @PostMapping("/existAccount")
     public Result existAccount(String account) {
-        if (account == null || account == "") {
+        if (account == null || account.isEmpty()) {
             return Result.e1();
         }
         return userService.existAccount(account);
@@ -60,22 +58,12 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount() == ""
-                || user.getPwd().length() != 32) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().isEmpty() || user.getPwd().length() != 32) {
             return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (user.getName() == null || user.getName() == "") {
+        if (user.getName() == null || user.getName().isEmpty()) {
             user.setName(user.getAccount());
-        }
-        if (user.getGender() == null) {
-            user.setGender(0);
-        }
-        if (user.getYear() == null) {
-            user.setYear(2000);
-        }
-        if (user.getIsDelete() == null) {
-            user.setIsDelete(0);
         }
         return userService.register(user);
     }
@@ -101,8 +89,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount() == ""
-                || user.getPwd().length() != 32) {
+        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().isEmpty() || user.getPwd().length() != 32) {
             return Result.e1();
         }
         return userService.login(user);
@@ -124,8 +111,7 @@ public class UserController {
      */
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         return userService.changePwd(user);
@@ -144,23 +130,26 @@ public class UserController {
      */
     @PostMapping("/batchRegister")
     public Result batchRegister(@RequestBody List<User> user) {
-        // 输入数据完整性检查
+        // 数据完整性检查
         ResultBatch<User> result = new ResultBatch<>();
         for (User u : user) {
-            if (u.getAccount() == null || u.getPwd() == null || u.getAccount() == ""
-                    || u.getPwd() == "") {
-                result.add(false, u);
+            if (u.getAccount() == null || u.getAccount().isEmpty()) {
+                result.add(false, u, "账号不能为空");
             } else {
                 result.add(u);
             }
         }
+        // 数据不完整
         if (!result.isOk()) {
-            return Result.e(ResultCodeEnum.USER_BATCH_REGISTER_ERROR, result);
+            return Result.e(ResultCodeEnum.BATCH_OPERATION_ERROR, result);
         }
         // 补充缺失信息
         for (User u : user) {
+            if (u.getPwd() == null || u.getPwd().isEmpty()) {
+                u.setPwd(u.getAccount());
+            }
             u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
-            if (u.getName() == null || u.getName() == "") {
+            if (u.getName() == null || u.getName().isEmpty()) {
                 u.setName(u.getAccount());
             }
             if (u.getGender() == null) {
@@ -177,30 +166,19 @@ public class UserController {
     }
 
     /**
-     * 查询全部
-     */
-    @PostMapping("/findAll")
-    public Result findAll(@RequestParam(defaultValue = "1") int pages, @RequestParam(defaultValue = "20") int rows,
-            @RequestParam(defaultValue = "id desc") String orderBy) {
-        return userService.findAll(pages, rows, orderBy);
-    }
-
-    /**
      * 精确查询
      */
     @PostMapping("/findExact")
-    public Result findExact(@RequestBody User user, @RequestParam(defaultValue = "1") int pages,
-            @RequestParam(defaultValue = "20") int rows, @RequestParam(defaultValue = "id desc") String orderBy) {
-        return userService.findExact(user, pages, rows, orderBy);
+    public Result findExact(@RequestBody @Nullable User user) {
+        return userService.findExact(user);
     }
 
     /**
      * 模糊查询
      */
     @PostMapping("/find")
-    public Result find(@RequestBody UserVo user, @RequestParam(defaultValue = "1") int pages,
-            @RequestParam(defaultValue = "20") int rows, @RequestParam(defaultValue = "id desc") String orderBy) {
-        return userService.find(user, pages, rows, orderBy);
+    public Result find(@RequestBody @Nullable UserVo user) {
+        return userService.find(user);
     }
 
 }

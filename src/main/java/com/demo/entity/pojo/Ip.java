@@ -1,7 +1,6 @@
 package com.demo.entity.pojo;
 
 import com.demo.entity.BaseEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,10 +17,25 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Ip extends BaseEntity {
+    /**
+     * 国家
+     */
     private String country;
+    /**
+     * 省份
+     */
     private String province;
+    /**
+     * 城市
+     */
     private String city;
+    /**
+     * 区域
+     */
     private String area;
+    /**
+     * isp
+     */
     private String isp;
 
     /**

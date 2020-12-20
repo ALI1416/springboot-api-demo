@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.constant.Constant;
 import com.demo.entity.BaseEntity;
 import com.demo.entity.pojo.Result;
 import com.demo.tool.Function;
@@ -52,17 +53,25 @@ public class BaseService {
     }
 
     /**
-     * 分页，返回List封装对象
-     *
+     * 分页，返回List封装对象<br>
+     * 
      * @param <E>        返回的对象类型
-     * @param baseEntity 基实体(从中获取分页参数)
+     * @param baseEntity 基实体(从中获取分页参数)<br>
+     *                   默认分页：baseEntity==null或pages==null或rows==null<br>
+     *                   不分页：enablePage==false<br>
      * @param function   要执行的查询语句
      */
     public static <E> List<E> paginationUnpack(BaseEntity baseEntity, Function<List<E>> function) {
-        /* 基实体为空，不需要分页 */
+        /* baseEntity==null：默认分页 */
         if (baseEntity == null) {
-            return function.run();
+            baseEntity = new BaseEntity();
+            baseEntity.setEnablePage(Constant.PAGE_DEFAULT_ENABLE);
+            baseEntity.setPages(Constant.PAGE_DEFAULT_PAGES);
+            baseEntity.setRows(Constant.PAGE_DEFAULT_ROWS);
+            baseEntity.setOrderBy(Constant.PAGE_DEFAULT_ORDER_BY);
         }
+        // 是否启用分页
+        Boolean enablePage = baseEntity.getEnablePage();
         // 页码(从1开始)
         Integer pages = baseEntity.getPages();
         // 每页条数(为0时查询全部)

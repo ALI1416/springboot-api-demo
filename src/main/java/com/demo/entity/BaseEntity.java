@@ -21,15 +21,19 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseEntity {
     /**
-     * 页码(从1开始)
+     * 分页-是否启用
+     */
+    private Boolean enablePage;
+    /**
+     * 分页-页码
      */
     private Integer pages;
     /**
-     * 每页条数
+     * 分页-每页条数
      */
     private Integer rows;
     /**
-     * 排序
+     * 分页-排序
      */
     private String orderBy;
 

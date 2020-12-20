@@ -403,8 +403,11 @@ public class FileUtils {
 
     public static void saveAsUTF8(String inputFilePath, String outputFilePath) {
         try {
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath), getJavaEncode(inputFilePath)));
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
+            BufferedReader bufferedReader =
+                    new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath),
+                            getJavaEncode(inputFilePath)));
+            BufferedWriter bufferedWriter =
+                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 bufferedWriter.write(line + "\r\n");

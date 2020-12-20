@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * createDate 2020/12/06 10:00:57
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 @Configuration

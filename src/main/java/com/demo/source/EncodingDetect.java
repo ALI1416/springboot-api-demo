@@ -183,9 +183,9 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Arguments: URL Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
-     * EUC_TW, ASCII, or OTHER) Description: This function looks at the URL contents and assigns it a probability score for each
-     * encoding type. The encoding type with the highest probability is returned.
+     * Function : detectEncoding Arguments: URL Returns : One of the encodings from the Encoding enumeration (GB2312,
+     * HZ, BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the URL contents and assigns it a
+     * probability score for each encoding type. The encoding type with the highest probability is returned.
      */
     public int detectEncoding(URL testurl) {
         byte[] rawtext = new byte[10000];
@@ -207,9 +207,9 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Arguments: File Returns : One of the encodings from the Encoding enumeration (GB2312, HZ, BIG5,
-     * EUC_TW, ASCII, or OTHER) Description: This function looks at the file and assigns it a probability score for each encoding
-     * type. The encoding type with the highest probability is returned.
+     * Function : detectEncoding Arguments: File Returns : One of the encodings from the Encoding enumeration
+     * (GB2312, HZ, BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the file and assigns it a
+     * probability score for each encoding type. The encoding type with the highest probability is returned.
      */
     public int detectEncoding(File testfile) {
         FileInputStream chinesefile;
@@ -226,9 +226,9 @@ public class EncodingDetect {
     }
 
     /**
-     * Function : detectEncoding Arguments: byte array Returns : One of the encodings from the Encoding enumeration (GB2312, HZ,
-     * BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the byte array and assigns it a probability score for
-     * each encoding type. The encoding type with the highest probability is returned.
+     * Function : detectEncoding Arguments: byte array Returns : One of the encodings from the Encoding enumeration
+     * (GB2312, HZ, BIG5, EUC_TW, ASCII, or OTHER) Description: This function looks at the byte array and assigns it
+     * a probability score for each encoding type. The encoding type with the highest probability is returned.
      */
     public int detectEncoding(byte[] rawtext) {
         int[] scores;
@@ -275,9 +275,9 @@ public class EncodingDetect {
         return encoding_guess;
     }
 
-    /*
-     * Function: gb2312_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
-     * in array uses GB-2312 encoding
+    /**
+     * Function: gb2312_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses GB-2312 encoding
      */
     int gb2312_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -310,9 +310,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval);
     }
 
-    /*
-     * Function: gbk_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text in
-     * array uses GBK encoding
+    /**
+     * Function: gbk_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses GBK encoding
      */
     int gbk_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -359,9 +359,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval) - 1;
     }
 
-    /*
-     * Function: gb18030_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
-     * in array uses GBK encoding
+    /**
+     * Function: gb18030_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses GBK encoding
      */
     int gb18030_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -411,9 +411,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval) - 1;
     }
 
-    /*
-     * Function: hz_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array uses HZ
-     * encoding
+    /**
+     * Function: hz_probability Argument: byte array Returns : number from 0 to 100 representing probability text in
+     * array uses HZ encoding
      */
     int hz_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -466,8 +466,8 @@ public class EncodingDetect {
     }
 
     /**
-     * Function: big5_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array uses
-     * Big5 encoding
+     * Function: big5_probability Argument: byte array Returns : number from 0 to 100 representing probability text
+     * in array uses Big5 encoding
      */
     int big5_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -503,9 +503,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval);
     }
 
-    /*
-     * Function: euc_tw_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array
-     * uses EUC-TW (CNS 11643) encoding
+    /**
+     * Function: euc_tw_probability Argument: byte array Returns : number from 0 to 100 representing probability text
+     * in array uses EUC-TW (CNS 11643) encoding
      */
     int euc_tw_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -543,9 +543,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval);
     }
 
-    /*
-     * Function: iso_2022_cn_probability Argument: byte array Returns : number from 0 to 100 representing probability text in
-     * array uses ISO 2022-CN encoding WORKS FOR BASIC CASES, BUT STILL NEEDS MORE WORK
+    /**
+     * Function: iso_2022_cn_probability Argument: byte array Returns : number from 0 to 100 representing probability
+     * text in array uses ISO 2022-CN encoding WORKS FOR BASIC CASES, BUT STILL NEEDS MORE WORK
      */
     int iso_2022_cn_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -558,7 +558,8 @@ public class EncodingDetect {
         rawtextlen = rawtext.length;
         for (i = 0; i < rawtextlen - 1; i++) {
             if (rawtext[i] == (byte) 0x1B && i + 3 < rawtextlen) { // Escape char ESC
-                if (rawtext[i + 1] == (byte) 0x24 && rawtext[i + 2] == 0x29 && rawtext[i + 3] == (byte) 0x41) { // GB Escape $ ) A
+                if (rawtext[i + 1] == (byte) 0x24 && rawtext[i + 2] == 0x29 && rawtext[i + 3] == (byte) 0x41) { // GB
+                    // Escape $ ) A
                     i += 4;
                     while (rawtext[i] != (byte) 0x1B) {
                         dbchars++;
@@ -608,9 +609,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval);
     }
 
-    /*
-     * Function: utf8_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array uses
-     * UTF-8 encoding of Unicode
+    /**
+     * Function: utf8_probability Argument: byte array Returns : number from 0 to 100 representing probability text
+     * in array uses UTF-8 encoding of Unicode
      */
     int utf8_probability(byte[] rawtext) {
         int score;
@@ -648,9 +649,9 @@ public class EncodingDetect {
         }
     }
 
-    /*
-     * Function: utf16_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array uses
-     * UTF-16 encoding of Unicode, guess based on BOM // NOT VERY GENERAL, NEEDS MUCH MORE WORK
+    /**
+     * Function: utf16_probability Argument: byte array Returns : number from 0 to 100 representing probability text
+     * in array uses UTF-16 encoding of Unicode, guess based on BOM // NOT VERY GENERAL, NEEDS MUCH MORE WORK
      */
     int utf16_probability(byte[] rawtext) {
         if (rawtext.length > 1 && (((byte) 0xFE == rawtext[0] && (byte) 0xFF == rawtext[1]) || // Big-endian
@@ -660,9 +661,9 @@ public class EncodingDetect {
         return 0;
     }
 
-    /*
-     * Function: ascii_probability Argument: byte array Returns : number from 0 to 100 representing probability text in array uses
-     * all ASCII Description: Sees if array has any characters not in ASCII range, if so, score is reduced
+    /**
+     * Function: ascii_probability Argument: byte array Returns : number from 0 to 100 representing probability text
+     * in array uses all ASCII Description: Sees if array has any characters not in ASCII range, if so, score is reduced
      */
     int ascii_probability(byte[] rawtext) {
         int score = 75;
@@ -681,9 +682,9 @@ public class EncodingDetect {
         return score;
     }
 
-    /*
-     * Function: euc_kr__probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
-     * in array uses EUC-KR encoding
+    /**
+     * Function: euc_kr__probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses EUC-KR encoding
      */
     int euc_kr_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -715,9 +716,9 @@ public class EncodingDetect {
         return (int) (rangeval + freqval);
     }
 
-    /*
-     * Function: cp949__probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
-     * in array uses Cp949 encoding
+    /**
+     * Function: cp949_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses Cp949 encoding
      */
     int cp949_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -759,9 +760,9 @@ public class EncodingDetect {
         return 0;
     }
 
-    /*
-     * Function: euc_jp_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text
-     * in array uses EUC-JP encoding
+    /**
+     * Function: euc_jp_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses EUC-JP encoding
      */
     int euc_jp_probability(byte[] rawtext) {
         int i, rawtextlen;
@@ -803,9 +804,9 @@ public class EncodingDetect {
         return 0;
     }
 
-    /*
-     * Function: sjis_probability Argument: pointer to byte array Returns : number from 0 to 100 representing probability text in
-     * array uses Shift-JIS encoding
+    /**
+     * Function: sjis_probability Argument: pointer to byte array Returns : number from 0 to 100 representing
+     * probability text in array uses Shift-JIS encoding
      */
     int sjis_probability(byte[] rawtext) {
         int i, rawtextlen;

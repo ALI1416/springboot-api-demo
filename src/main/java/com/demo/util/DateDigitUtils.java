@@ -142,10 +142,7 @@ public class DateDigitUtils {
             calendar.setTimeInMillis(timestamp);
         }
         // 返回时间戳
-        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L)
-                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000)
-                + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000)
-                + (calendar.get(Calendar.MILLISECOND));
+        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L) + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000) + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000) + (calendar.get(Calendar.MILLISECOND));
     }
 
     /**
@@ -185,9 +182,7 @@ public class DateDigitUtils {
         // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
         // 返回当前日期yyyyMMddHHmmss形式
-        return (calendar.get(Calendar.YEAR) * 10000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000L)
-                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000)
-                + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
+        return (calendar.get(Calendar.YEAR) * 10000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000L) + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
     }
 
     /**
@@ -199,8 +194,7 @@ public class DateDigitUtils {
         // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
         // 返回当前日期yyyyMMdd形式
-        return (calendar.get(Calendar.YEAR) * 10000) + ((calendar.get(Calendar.MONTH) + 1) * 100)
-                + (calendar.get(Calendar.DAY_OF_MONTH));
+        return (calendar.get(Calendar.YEAR) * 10000) + ((calendar.get(Calendar.MONTH) + 1) * 100) + (calendar.get(Calendar.DAY_OF_MONTH));
     }
 
     /**
@@ -212,8 +206,7 @@ public class DateDigitUtils {
         // 获取原始时间戳
         Calendar calendar = Calendar.getInstance();
         // 返回当前时间HHmmss形式
-        return (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100)
-                + (calendar.get(Calendar.SECOND));
+        return (calendar.get(Calendar.HOUR_OF_DAY) * 10000) + (calendar.get(Calendar.MINUTE) * 100) + (calendar.get(Calendar.SECOND));
     }
 
     /**
@@ -229,7 +222,7 @@ public class DateDigitUtils {
      * @see #getTimestamp(long timestamp)
      */
     public static long getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int offsetField,
-            int offsetAmount) {
+                                    int offsetAmount) {
         // 获取当前原始时间戳
         Calendar calendar = Calendar.getInstance();
         // 指定(原始)时间戳
@@ -266,17 +259,14 @@ public class DateDigitUtils {
             calendar.add(offsetField, offsetAmount);
         }
         // 返回时间戳
-        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L)
-                + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000)
-                + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000)
-                + (calendar.get(Calendar.MILLISECOND));
+        return (calendar.get(Calendar.YEAR) * 10000000000000L) + ((calendar.get(Calendar.MONTH) + 1) * 100000000000L) + (calendar.get(Calendar.DAY_OF_MONTH) * 1000000000L) + (calendar.get(Calendar.HOUR_OF_DAY) * 10000000) + (calendar.get(Calendar.MINUTE) * 100000) + (calendar.get(Calendar.SECOND) * 1000) + (calendar.get(Calendar.MILLISECOND));
     }
 
     /**
      * 获取今天0时0分0秒0毫秒的时间戳
      *
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestamp() {
         return getTimestamp(true, false, -1, -1, 0);
@@ -287,7 +277,7 @@ public class DateDigitUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(long timestamp) {
         return getTimestamp(true, false, timestamp, -1, 0);
@@ -298,7 +288,7 @@ public class DateDigitUtils {
      *
      * @param timestamp 指定原始时间戳
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestampByOrigin(long timestamp) {
         return getTimestamp(true, true, timestamp, -1, 0);
@@ -309,7 +299,7 @@ public class DateDigitUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(int dayOffset) {
         return getTimestamp(true, false, -1, Calendar.DAY_OF_YEAR, dayOffset);
@@ -321,7 +311,7 @@ public class DateDigitUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestamp(long timestamp, int dayOffset) {
         return getTimestamp(true, false, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -333,7 +323,7 @@ public class DateDigitUtils {
      * @param timestamp 指定原始时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      */
     public static long getStartTimestampByOrigin(long timestamp, int dayOffset) {
         return getTimestamp(true, true, timestamp, Calendar.DAY_OF_YEAR, dayOffset);
@@ -344,7 +334,7 @@ public class DateDigitUtils {
      * 如果已经调用过getStartXxx，请用变量保存并+INTERVAL_DAY来替代getEndXxx，这样速度更快
      *
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestamp()
      * @see #INTERVAL_DAY
      */
@@ -358,7 +348,7 @@ public class DateDigitUtils {
      *
      * @param timestamp 指定时间戳
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestamp(long timestamp)
      * @see #INTERVAL_DAY
      */
@@ -372,7 +362,7 @@ public class DateDigitUtils {
      *
      * @param timestamp 指定原始时间戳
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestampByOrigin(long timestamp)
      * @see #INTERVAL_DAY
      */
@@ -386,7 +376,7 @@ public class DateDigitUtils {
      *
      * @param dayOffset 相对于今天的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestamp(int dayOffset)
      * @see #INTERVAL_DAY
      */
@@ -401,7 +391,7 @@ public class DateDigitUtils {
      * @param timestamp 指定时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestamp(long timestamp, int dayOffset)
      * @see #INTERVAL_DAY
      */
@@ -416,7 +406,7 @@ public class DateDigitUtils {
      * @param timestamp 指定原始时间戳
      * @param dayOffset 相对于指定时间戳的偏移天
      * @see #getTimestamp(boolean isStart, boolean isOrigin, long timestamp, int
-     *      offsetField, int offsetAmount)
+     * offsetField, int offsetAmount)
      * @see #getStartTimestampByOrigin(long timestamp, int dayOffset)
      * @see #INTERVAL_DAY
      */

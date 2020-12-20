@@ -15,7 +15,7 @@ import java.util.zip.CRC32;
  * createDate 2020/11/14 21:20:10
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class EncoderUtils {

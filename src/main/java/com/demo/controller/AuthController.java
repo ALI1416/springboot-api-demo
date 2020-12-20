@@ -17,7 +17,7 @@ import com.demo.util.StringUtils;
  * createDate 2020/12/05 19:39:35
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 @Auth

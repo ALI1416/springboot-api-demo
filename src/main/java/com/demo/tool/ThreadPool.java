@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * createDate 2020/11/12 20:23:18
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class ThreadPool {
@@ -22,7 +22,8 @@ public class ThreadPool {
     /**
      * 自定义线程池
      */
-    private static final ExecutorService POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+    private static final ExecutorService POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
     /**
      * 执行线程

@@ -34,7 +34,11 @@ public enum ResultCodeEnum {
     /**
      * 批量操作异常103
      */
-    BATCH_OPERATION_ERROR(103,"批量操作异常"),
+    BATCH_OPERATION_ERROR(103, "批量操作异常"),
+    /**
+     * API找不到104
+     */
+    NOT_FOUND(104, "API找不到"),
 
     /* 用户相关1000-1999 */
     /**

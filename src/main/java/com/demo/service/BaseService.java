@@ -53,45 +53,56 @@ public class BaseService {
     }
 
     /**
-     * 分页，返回List封装对象<br>
+     * 分页
      * 
-     * @param <E>        返回的对象类型
-     * @param baseEntity 基实体(从中获取分页参数)<br>
-     *                   默认分页：baseEntity==null或pages==null或rows==null<br>
-     *                   不分页：enablePage==false<br>
+     * @param <E>        对象类型
+     * @param baseEntity 基实体<br>
+     *                   默认分页，默认排序：baseEntity == null<br>
+     *                   默认页码：pages == null<br>
+     *                   默认每页条数：rows == null || rows <= 0<br>
+     *                   默认排序：orderBy == null<br>
+     *                   全部查询，不排序：pages == 0 && orderBy == ""<br>
+     *                   全部查询，排序：pages == 0 && orderBy != ""<br>
+     *                   分页查询，不排序：pages != 0 && orderBy == ""<br>
+     *                   分页查询，排序：pages != 0 && orderBy != ""<br>
      * @param function   要执行的查询语句
+     * @return List封装的对象
      */
     public static <E> List<E> paginationUnpack(BaseEntity baseEntity, Function<List<E>> function) {
-        /* baseEntity==null：默认分页 */
+        /* 默认分页，默认排序(baseEntity为null) */
         if (baseEntity == null) {
             baseEntity = new BaseEntity();
-            baseEntity.setEnablePage(Constant.PAGE_DEFAULT_ENABLE);
             baseEntity.setPages(Constant.PAGE_DEFAULT_PAGES);
             baseEntity.setRows(Constant.PAGE_DEFAULT_ROWS);
             baseEntity.setOrderBy(Constant.PAGE_DEFAULT_ORDER_BY);
         }
-        // 是否启用分页
-        Boolean enablePage = baseEntity.getEnablePage();
-        // 页码(从1开始)
+        // 页码(pages为null时，默认)
         Integer pages = baseEntity.getPages();
-        // 每页条数(为0时查询全部)
-        Integer rows = baseEntity.getRows();
-        /* 页码或每页条数为空，不需要分页 */
-        if (pages == null || rows == null) {
-            return function.run();
+        if (pages == null) {
+            pages = Constant.PAGE_DEFAULT_PAGES;
         }
-        // 排序(为null时默认排序)
+        // 每页条数(rows为null或<=0时，默认)
+        Integer rows = baseEntity.getRows();
+        if (rows == null || rows <= 0) {
+            rows = Constant.PAGE_DEFAULT_ROWS;
+        }
+        // 排序(orderBy为null时，默认)
         String orderBy = baseEntity.getOrderBy();
-        /* orderBy == null && rows == 0 : 查询全部，默认排序 */
         if (orderBy == null) {
-            if (rows != 0) {
-                // 分页查询，默认排序
-                PageHelper.startPage(pages, rows);
+            orderBy = Constant.PAGE_DEFAULT_ORDER_BY;
+        }
+        /* 开始排序 */
+        if (pages == 0) {
+            // 全部查询，不排序
+            // pages == 0 && orderBy.isEmpty()
+            if (!orderBy.isEmpty()) {
+                // 全部查询，排序
+                PageHelper.orderBy(orderBy);
             }
         } else {
-            if (rows == 0) {
-                // 查询全部，排序
-                PageHelper.orderBy(orderBy);
+            if (orderBy.isEmpty()) {
+                // 分页查询，不排序
+                PageHelper.startPage(pages, rows);
             } else {
                 // 分页查询，排序
                 PageHelper.startPage(pages, rows, orderBy);
@@ -101,11 +112,20 @@ public class BaseService {
     }
 
     /**
-     * 分页，返回PageInfo封装对象
-     *
-     * @param <E>        返回的对象类型
-     * @param baseEntity 基实体(从中获取分页参数)
+     * 分页
+     * 
+     * @param <E>        对象类型
+     * @param baseEntity 基实体<br>
+     *                   默认分页，默认排序：baseEntity == null<br>
+     *                   默认页码：pages == null<br>
+     *                   默认每页条数：rows == null || rows <= 0<br>
+     *                   默认排序：orderBy == null<br>
+     *                   全部查询，不排序：pages == 0 && orderBy == ""<br>
+     *                   全部查询，排序：pages == 0 && orderBy != ""<br>
+     *                   分页查询，不排序：pages != 0 && orderBy == ""<br>
+     *                   分页查询，排序：pages != 0 && orderBy != ""<br>
      * @param function   要执行的查询语句
+     * @return PageInfo封装的对象
      */
     public static <E> PageInfo<E> pagination(BaseEntity baseEntity, Function<List<E>> function) {
         return new PageInfo<>(paginationUnpack(baseEntity, function));

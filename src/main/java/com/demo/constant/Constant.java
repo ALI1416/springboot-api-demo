@@ -13,17 +13,13 @@ package com.demo.constant;
 public class Constant {
 
     /**
-     * 分页-默认是否启用true
+     * 分页-默认页码{@value}
      */
-    public final static Boolean PAGE_DEFAULT_ENABLE = true;
+    public final static int PAGE_DEFAULT_PAGES = 1;
     /**
-     * 分页-默认页码1
+     * 分页-默认每页条数{@value}
      */
-    public final static Integer PAGE_DEFAULT_PAGES = 1;
-    /**
-     * 分页-默认每页条数20
-     */
-    public final static Integer PAGE_DEFAULT_ROWS = 20;
+    public final static int PAGE_DEFAULT_ROWS = 5;
     /**
      * 分页-默认排序{@value}
      */

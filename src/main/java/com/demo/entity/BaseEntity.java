@@ -21,10 +21,6 @@ import lombok.Setter;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseEntity {
     /**
-     * 分页-是否启用
-     */
-    private Boolean enablePage;
-    /**
      * 分页-页码
      */
     private Integer pages;

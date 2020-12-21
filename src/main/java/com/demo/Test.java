@@ -1,5 +1,6 @@
 package com.demo;
 
+import com.demo.a.IdWorker;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -53,6 +54,8 @@ public class Test {
         batchResult.add(false, u, "aaa");
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
+
+        System.out.println(IdWorker.getId());
 
     }
 

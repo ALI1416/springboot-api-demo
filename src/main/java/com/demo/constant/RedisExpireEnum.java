@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * createDate 2020/12/4 15:57:36
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public enum RedisExpireEnum {
@@ -21,11 +21,11 @@ public enum RedisExpireEnum {
     /**
      * 过期时间
      */
-    private Long time;
+    private final Long time;
     /**
      * 时间单位
      */
-    private TimeUnit timeUnit;
+    private final TimeUnit timeUnit;
 
     RedisExpireEnum(Long time, TimeUnit timeUnit) {
         this.time = time;

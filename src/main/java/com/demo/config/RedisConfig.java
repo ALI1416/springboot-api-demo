@@ -19,7 +19,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * createDate 2020/12/04 15:57:36
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 @Configuration

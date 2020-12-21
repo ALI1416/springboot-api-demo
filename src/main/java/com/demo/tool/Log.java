@@ -152,12 +152,14 @@ public class Log {
             String className = traces[i].getClassName();
             if (!className.equals(Log.class.getName())) {
                 s[0] = traces[i].getClassName();
-                s[1] = String.format(Locale.US, ".%s(%s:%s) ", traces[i].getMethodName(), traces[i].getFileName(), traces[i].getLineNumber());
+                s[1] = String.format(Locale.US, ".%s(%s:%s) ", traces[i].getMethodName(), traces[i].getFileName(),
+                        traces[i].getLineNumber());
                 return s;
             }
         }
         s[0] = "LOG_ERROR";
-        s[1] = String.format(Locale.US, "%s.%s(%s:%s) ", traces[0].getClassName(), traces[0].getMethodName(), traces[0].getFileName(), traces[0].getLineNumber());
+        s[1] = String.format(Locale.US, "%s.%s(%s:%s) ", traces[0].getClassName(), traces[0].getMethodName(),
+                traces[0].getFileName(), traces[0].getLineNumber());
         return s;
     }
 }

@@ -41,7 +41,8 @@ public class AnsjTask {
             logger.info("Ansj检查并创建文件...");
             // 文件夹
             boolean hasFolder = true;
-            File libraryPath = new File(AnsjConstant.DEFAULT_REFERENCE_PATH.substring(0, AnsjConstant.DEFAULT_REFERENCE_PATH.lastIndexOf("/") + 1));
+            File libraryPath = new File(AnsjConstant.DEFAULT_REFERENCE_PATH.substring(0,
+                    AnsjConstant.DEFAULT_REFERENCE_PATH.lastIndexOf("/") + 1));
             if (!libraryPath.exists()) {
                 if (libraryPath.mkdirs()) {
                     logger.info("Ansj词典文件夹缺失，创建在{}", libraryPath.getPath());

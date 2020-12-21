@@ -39,7 +39,10 @@ public enum ResultCodeEnum {
      * API找不到104
      */
     NOT_FOUND(104, "API找不到"),
-
+    /**
+     * 方法不支持105
+     */
+    NOT_SUPPORTED(105,"方法不支持"),
     /* 用户相关1000-1999 */
     /**
      * 用户未登录或登录已过期1001

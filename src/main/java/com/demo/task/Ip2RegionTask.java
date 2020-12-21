@@ -41,7 +41,8 @@ public class Ip2RegionTask {
         try {
             logger.info("Ip2Region检查并创建文件...");
             // 文件夹
-            File libraryPath = new File(Ip2RegionConstant.REFERENCE_PATH.substring(0, Ip2RegionConstant.REFERENCE_PATH.lastIndexOf("/") + 1));
+            File libraryPath = new File(Ip2RegionConstant.REFERENCE_PATH.substring(0,
+                    Ip2RegionConstant.REFERENCE_PATH.lastIndexOf("/") + 1));
             if (!libraryPath.exists()) {
                 if (libraryPath.mkdirs()) {
                     logger.info("Ip2Region文件夹缺失，创建在{}", libraryPath.getPath());

@@ -1,29 +1,29 @@
-package com.demo.tool;
+package com.demo.handler;
 
-import java.io.IOException;
-
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.pojo.Result;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.pojo.Result;
+import java.io.IOException;
 
 /**
  * <h1>全局异常捕获</h1>
  *
  * <p>
- * 捕获所有未被捕获的异常
+ * 捕获所有未被捕获的异常(404除外)
  * </p>
  *
  * <p>
  * createDate 2020/11/28 17:06:12
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 @RestControllerAdvice
@@ -49,10 +49,14 @@ public class GlobalExceptionHandler {
      * ----HTML<br>
      * ----Text<br>
      * --binary<br>
+     *
+     * @see java.lang.IllegalStateException
+     * @see org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+     * @see org.springframework.http.converter.HttpMessageNotReadableException
      */
     @Order(1)
-    @ExceptionHandler({ IllegalStateException.class, MethodArgumentTypeMismatchException.class, BindException.class,
-            HttpMessageNotReadableException.class })
+    @ExceptionHandler({IllegalStateException.class, MethodArgumentTypeMismatchException.class, BindException.class,
+            HttpMessageNotReadableException.class})
     public Result paramErrorHandler(Exception e) {
         System.out.println("paramErrorHandler");
         e.printStackTrace();
@@ -60,7 +64,23 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 方法不支持<br>
+     * 例如某个接口要使用post访问，对方使用get去访问，会报错
+     *
+     * @see org.springframework.web.HttpRequestMethodNotSupportedException
+     */
+    @Order(1)
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    public Result notSupportedHandler(Exception e) {
+        System.out.println("notSupportedHandler");
+        e.printStackTrace();
+        return Result.e(ResultCodeEnum.NOT_SUPPORTED);
+    }
+
+    /**
      * 运行异常
+     *
+     * @see java.lang.RuntimeException
      */
     @Order(2)
     @ExceptionHandler(RuntimeException.class)
@@ -72,6 +92,8 @@ public class GlobalExceptionHandler {
 
     /**
      * IO异常
+     *
+     * @see java.io.IOException
      */
     @Order(2)
     @ExceptionHandler(IOException.class)
@@ -83,6 +105,8 @@ public class GlobalExceptionHandler {
 
     /**
      * 异常
+     *
+     * @see java.lang.Exception
      */
     @Order(3)
     @ExceptionHandler(Exception.class)

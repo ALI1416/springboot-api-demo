@@ -1,16 +1,23 @@
-package com.demo.tool;
+package com.demo.handler;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.pojo.Result;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.pojo.Result;
-
+/**
+ * <h1>404异常捕获</h1>
+ *
+ * <p>
+ * createDate 2020/11/28 17:06:12
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
+ **/
 @RestController
-public class NotFoundException implements ErrorController {
+public class NotFoundExceptionHandler implements ErrorController {
 
     @Override
     public String getErrorPath() {
@@ -18,7 +25,7 @@ public class NotFoundException implements ErrorController {
     }
 
     @RequestMapping("/error")
-    public Result error(HttpServletRequest request) {
+    public Result error() {
         return Result.e(ResultCodeEnum.NOT_FOUND);
     }
 }

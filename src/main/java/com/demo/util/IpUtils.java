@@ -49,7 +49,8 @@ public class IpUtils {
     /**
      * IP地址正则表达式
      */
-    private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
+    private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]" +
+            "|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
     /**
      * ip2region搜索实例
      */
@@ -59,8 +60,7 @@ public class IpUtils {
      * 初始化DbSearcher实例
      *
      * @see org.lionsoul.ip2region.DbConfig#DbConfig()
-     * @see org.lionsoul.ip2region.DbSearcher#DbSearcher(DbConfig dbConfig, String
-     * dbFile)
+     * @see org.lionsoul.ip2region.DbSearcher#DbSearcher(DbConfig dbConfig, String dbFile)
      */
     public static void ip2RegionInitial() {
         if (ip2regionSearcher == null) {
@@ -68,7 +68,8 @@ public class IpUtils {
                 if (ip2regionSearcher == null) {
                     try {
                         ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
-                        // ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data.db");
+                        // ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data
+                        // .db");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

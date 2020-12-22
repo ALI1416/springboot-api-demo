@@ -13,14 +13,14 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.io.IOException;
 
 /**
- * <h1>全局异常捕获</h1>
+ * <h1>全局异常处理</h1>
  *
  * <p>
- * 捕获所有未被捕获的异常(404除外)
+ * 捕获处理所有未被捕获的异常(404除外)
  * </p>
  *
  * <p>
- * createDate 2020/11/28 17:06:12
+ * createDate 2020/12/22 19:56:13
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]

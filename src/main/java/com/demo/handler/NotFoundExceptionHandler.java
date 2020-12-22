@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * <h1>404异常捕获</h1>
+ * <h1>404异常处理</h1>
  *
  * <p>
- * createDate 2020/11/28 17:06:12
+ * createDate 2020/12/22 19:55:49
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]

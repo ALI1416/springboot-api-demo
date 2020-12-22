@@ -1,8 +1,5 @@
 package com.demo;
 
-import com.demo.a.A;
-import com.demo.a.IdWorker;
-import com.demo.a.SystemClock;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -57,7 +54,6 @@ public class Test {
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
 
-        System.out.println(IdWorker.getId());
     }
 
 }

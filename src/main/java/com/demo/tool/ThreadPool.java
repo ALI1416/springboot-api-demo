@@ -1,5 +1,7 @@
 package com.demo.tool;
 
+import org.springframework.lang.NonNull;
+
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -22,7 +24,7 @@ public class ThreadPool {
     /**
      * 自定义线程池
      */
-    private static final ExecutorService POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
+    private static final ExecutorService threadPool = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
     /**
@@ -31,18 +33,19 @@ public class ThreadPool {
      * @param command 线程
      */
     public static void execute(Runnable command) {
-        POOL.execute(command);
+        threadPool.execute(command);
     }
 
     /**
      * 自定义线程名
      */
     private static class NameTreadFactory implements ThreadFactory {
-        private final AtomicInteger mThreadNumber = new AtomicInteger(0);
+        // 原子整形，防止多线程异常
+        private final AtomicInteger threadNumber = new AtomicInteger(0);
 
         @Override
-        public Thread newThread(Runnable r) {
-            return new Thread(r, "ThreadPool-" + mThreadNumber.getAndIncrement());
+        public Thread newThread(@NonNull Runnable runnable) {
+            return new Thread(runnable, "ThreadPool-" + threadNumber.getAndIncrement());
         }
     }
 }

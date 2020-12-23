@@ -22,6 +22,6 @@ public class IdController {
 
     @GetMapping("get")
     public long get() {
-        return Id.next();
+        return Id.get();
     }
 }

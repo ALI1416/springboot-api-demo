@@ -97,8 +97,8 @@ public class GlobalExceptionHandler {
      */
     @Order(2)
     @ExceptionHandler(IOException.class)
-    public Result iOExceptionHandler(Exception e) {
-        System.out.println("iOExceptionHandler");
+    public Result ioExceptionHandler(Exception e) {
+        System.out.println("ioExceptionHandler");
         e.printStackTrace();
         return Result.e(ResultCodeEnum.ERROR, "IO异常");
     }

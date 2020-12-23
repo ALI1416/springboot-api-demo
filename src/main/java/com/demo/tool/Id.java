@@ -18,10 +18,10 @@ import com.demo.constant.IdConstant;
 public final class Id {
 
     public static void main(String[] args) {
-        System.out.println(Id.next());
+        System.out.println(Id.get());
         long a = Clock.now();
         for (int i = 0; i < 1000000; i++) {
-            Id.next();
+            Id.get();
         }
         long b = Clock.now();
         System.out.println(b - a);
@@ -30,7 +30,7 @@ public final class Id {
     /**
      * Logger日志实例
      */
-    private static Logger log = LoggerFactory.getLogger(Id.class);
+    private static final Logger log = LoggerFactory.getLogger(Id.class);
 
     /**
      * 初始时间戳(如果发生回拨，这个值会减少)
@@ -48,17 +48,17 @@ public final class Id {
      * 机器码
      */
     private final static long MACHINE_ID = IdConstant.MACHINE_ID;
-//    private final static long MACHINE_ID = 0L;
+    //    private final static long MACHINE_ID = 0L;
     /**
      * 机器码位数
      **/
     private final static long MACHINE_BITS = IdConstant.MACHINE_BITS;
-//    private final static long MACHINE_BITS = 8L;
+    //    private final static long MACHINE_BITS = 8L;
     /**
      * 序列号位数
      **/
     private final static long SEQUENCE_BITS = IdConstant.SEQUENCE_BITS;
-//    private final static long SEQUENCE_BITS = 14L;
+    //    private final static long SEQUENCE_BITS = 14L;
     /**
      * 最大机器码
      **/
@@ -93,15 +93,14 @@ public final class Id {
         // 时间戳位数过小(需要留给时间戳35位才能使用1年，其中二进制头部占1位为0来保证生成的id是正数)
         // 28 = 64 - 35 - 1
         if (SEQUENCE_BITS + MACHINE_BITS > 28) {
-            throw new IllegalArgumentException(
-                    "时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为：" + (SEQUENCE_BITS + MACHINE_BITS));
+            throw new IllegalArgumentException("时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为：" + (SEQUENCE_BITS + MACHINE_BITS));
         }
     }
 
     /**
      * 获取下一个序列号
      */
-    public static synchronized long next() {
+    public static synchronized long get() {
         // 当前时间戳
         long currentTimestamp = Clock.now();
         // 判断当前时间戳 和 上一次时间戳的大小关系

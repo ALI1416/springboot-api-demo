@@ -53,13 +53,13 @@ public class Clock {
     /**
      * 系统时钟实例
      */
-    private static final Clock instance = new Clock();
+    private static final Clock INSTANCE = new Clock();
 
     /**
      * 获取当前时间戳
      */
     public static long now() {
-        return instance.now.get();
+        return INSTANCE.now.get();
     }
 
     /**

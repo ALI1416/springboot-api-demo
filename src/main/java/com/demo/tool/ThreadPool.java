@@ -24,7 +24,7 @@ public class ThreadPool {
     /**
      * 自定义线程池
      */
-    private static final ExecutorService threadPool = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
+    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
     /**
@@ -33,7 +33,7 @@ public class ThreadPool {
      * @param command 线程
      */
     public static void execute(Runnable command) {
-        threadPool.execute(command);
+        THREAD_POOL.execute(command);
     }
 
     /**

@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory;
 public class Log {
 
     /**
-     * 日志实例
+     * Logger日志实例
      */
-    private static Logger logger = LoggerFactory.getLogger("Log");
+    private static Logger log = LoggerFactory.getLogger(Log.class);
 
     /**
      * trace
@@ -35,8 +35,8 @@ public class Log {
      */
     public synchronized static void t(String tag, String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(tag);
-        logger.trace(s[1] + msg);
+        log = LoggerFactory.getLogger(tag);
+        log.trace(s[1] + msg);
     }
 
     /**
@@ -47,8 +47,8 @@ public class Log {
      */
     public synchronized static void d(String tag, String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(tag);
-        logger.debug(s[1] + msg);
+        log = LoggerFactory.getLogger(tag);
+        log.debug(s[1] + msg);
     }
 
     /**
@@ -59,8 +59,8 @@ public class Log {
      */
     public synchronized static void i(String tag, String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(tag);
-        logger.info(s[1] + msg);
+        log = LoggerFactory.getLogger(tag);
+        log.info(s[1] + msg);
     }
 
     /**
@@ -71,8 +71,8 @@ public class Log {
      */
     public synchronized static void w(String tag, String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(tag);
-        logger.warn(s[1] + msg);
+        log = LoggerFactory.getLogger(tag);
+        log.warn(s[1] + msg);
     }
 
     /**
@@ -83,8 +83,8 @@ public class Log {
      */
     public synchronized static void e(String tag, String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(tag);
-        logger.error(s[1] + msg);
+        log = LoggerFactory.getLogger(tag);
+        log.error(s[1] + msg);
     }
 
     /**
@@ -94,8 +94,8 @@ public class Log {
      */
     public synchronized static void t(String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(s[0]);
-        logger.trace(s[1] + msg);
+        log = LoggerFactory.getLogger(s[0]);
+        log.trace(s[1] + msg);
     }
 
     /**
@@ -105,8 +105,8 @@ public class Log {
      */
     public synchronized static void d(String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(s[0]);
-        logger.debug(s[1] + msg);
+        log = LoggerFactory.getLogger(s[0]);
+        log.debug(s[1] + msg);
     }
 
     /**
@@ -116,8 +116,8 @@ public class Log {
      */
     public synchronized static void i(String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(s[0]);
-        logger.info(s[1] + msg);
+        log = LoggerFactory.getLogger(s[0]);
+        log.info(s[1] + msg);
     }
 
     /**
@@ -127,8 +127,8 @@ public class Log {
      */
     public synchronized static void w(String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(s[0]);
-        logger.warn(s[1] + msg);
+        log = LoggerFactory.getLogger(s[0]);
+        log.warn(s[1] + msg);
     }
 
     /**
@@ -138,8 +138,8 @@ public class Log {
      */
     public synchronized static void e(String msg) {
         String[] s = getTrace();
-        logger = LoggerFactory.getLogger(s[0]);
-        logger.error(s[1] + msg);
+        log = LoggerFactory.getLogger(s[0]);
+        log.error(s[1] + msg);
     }
 
     /**

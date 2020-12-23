@@ -14,10 +14,36 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class SystemClock {
+public class Clock {
 
     public static void main(String[] args) {
-        System.out.println(now());
+        int count = 100000000;
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 高性能时钟
+        long a = Clock.now();
+        for (int i = 0; i < count; i++) {
+            now();
+        }
+        long b = Clock.now();
+        long ba = b - a;
+        System.out.println(ba);
+
+        // 系统时钟
+        long c = Clock.now();
+        for (int i = 0; i < count; i++) {
+            System.currentTimeMillis();
+        }
+        long d = Clock.now();
+        long dc = d - c;
+        System.out.println(dc);
+
+        System.out.println(dc / (double) ba);
     }
 
     /**
@@ -27,7 +53,7 @@ public class SystemClock {
     /**
      * 系统时钟实例
      */
-    private static final SystemClock instance = new SystemClock();
+    private static final Clock instance = new Clock();
 
     /**
      * 获取当前时间戳
@@ -39,7 +65,7 @@ public class SystemClock {
     /**
      * 每1毫秒更新一次时间戳
      */
-    private SystemClock() {
+    private Clock() {
         Executors.newSingleThreadScheduledExecutor(runnable -> {
             Thread thread = new Thread(runnable, "SystemClock");
             thread.setDaemon(true);

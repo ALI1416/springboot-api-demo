@@ -41,6 +41,10 @@ logging:
     com:
       demo:
         dao: trace
+id:
+  machine-id: 0
+  machine-bits: 8
+  sequence-bits: 12
 ansj:
   default-resource-path: /file/ansj/default.dic
   ambiguity-resource-path: /file/ansj/ambiguity.dic

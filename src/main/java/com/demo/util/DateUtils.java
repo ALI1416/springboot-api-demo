@@ -1,6 +1,6 @@
 package com.demo.util;
 
-import com.demo.tool.SystemClock;
+import com.demo.tool.Clock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -319,11 +319,11 @@ public class DateUtils {
     /**
      * 获取当前时间戳
      *
-     * @see SystemClock#now()
+     * @see Clock#now()
      */
     public static long getTimestamp() {
         // 返回时间戳
-        return SystemClock.now();
+        return Clock.now();
     }
 
     /**
@@ -341,7 +341,7 @@ public class DateUtils {
             return -1;
         }
         // 返回时间戳
-        return SystemClock.now();
+        return Clock.now();
     }
 
     /**

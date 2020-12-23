@@ -20,12 +20,15 @@ public class Yml {
     public static MailAppYml mailAppYml;
     public static AnsjAppYml ansjAppYml;
     public static Ip2RegionAppYml ip2RegionAppYml;
+    public static IdAppYml idAppYml;
 
     @Autowired
-    private Yml(MyYml myYml, MailAppYml mailAppYml, AnsjAppYml ansjAppYml, Ip2RegionAppYml ip2RegionAppYml) {
+    private Yml(MyYml myYml, MailAppYml mailAppYml, AnsjAppYml ansjAppYml, Ip2RegionAppYml ip2RegionAppYml,
+            IdAppYml idAppYml) {
         Yml.myYml = myYml;
         Yml.mailAppYml = mailAppYml;
         Yml.ansjAppYml = ansjAppYml;
         Yml.ip2RegionAppYml = ip2RegionAppYml;
+        Yml.idAppYml = idAppYml;
     }
 }

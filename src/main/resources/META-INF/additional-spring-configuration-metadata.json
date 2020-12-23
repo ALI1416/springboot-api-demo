@@ -1,32 +1,51 @@
-{
-  "properties": [
-    {
-      "name": "ansj.default-resource-path",
-      "type": "java.lang.String",
-      "description": "ansj自定义词典文件在本项目中resources文件夹下的路径，引用路径(本机绝对地址)请到library.properties中配置dic.",
-      "sourceType": "com.demo.property.AnsjAppYml",
-      "defaultValue": "/file/ansj/default.dic"
-    },
-    {
-      "name": "ansj.ambiguity-resource-path",
-      "type": "java.lang.String",
-      "description": "ansj歧义词典文件在本项目中resources文件夹下的路径，引用路径(本机绝对地址)请到library.properties中配置ambiguity.",
-      "sourceType": "com.demo.property.AnsjAppYml",
-      "defaultValue": "/file/ansj/ambiguity.dic"
-    },
-    {
-      "name": "ip2region.resource-path",
-      "type": "java.lang.String",
-      "description": "ip2region数据文件在本项目中resources文件夹下的路径.",
-      "sourceType": "com.demo.property.Ip2RegionAppYml",
-      "defaultValue": "/file/ip2region/data.db"
-    },
-    {
-      "name": "ip2region.reference-path",
-      "type": "java.lang.String",
-      "description": "ip2region数据文件引用路径(本机绝对地址).",
-      "sourceType": "com.demo.property.Ip2RegionAppYml",
-      "defaultValue": "D:/springboot-api-demo/ip2region/data.db"
-    }
-  ]
-}
+{"properties": [
+  {
+    "name": "ansj.default-resource-path",
+    "type": "java.lang.String",
+    "description": "ansj自定义词典文件在本项目中resources文件夹下的路径，引用路径(本机绝对地址)请到library.properties中配置dic.",
+    "sourceType": "com.demo.property.AnsjAppYml",
+    "defaultValue": "/file/ansj/default.dic"
+  },
+  {
+    "name": "ansj.ambiguity-resource-path",
+    "type": "java.lang.String",
+    "description": "ansj歧义词典文件在本项目中resources文件夹下的路径，引用路径(本机绝对地址)请到library.properties中配置ambiguity.",
+    "sourceType": "com.demo.property.AnsjAppYml",
+    "defaultValue": "/file/ansj/ambiguity.dic"
+  },
+  {
+    "name": "ip2region.resource-path",
+    "type": "java.lang.String",
+    "description": "ip2region数据文件在本项目中resources文件夹下的路径.",
+    "sourceType": "com.demo.property.Ip2RegionAppYml",
+    "defaultValue": "/file/ip2region/data.db"
+  },
+  {
+    "name": "ip2region.reference-path",
+    "type": "java.lang.String",
+    "description": "ip2region数据文件引用路径(本机绝对地址).",
+    "sourceType": "com.demo.property.Ip2RegionAppYml",
+    "defaultValue": "D:/springboot-api-demo/ip2region/data.db"
+  },
+  {
+    "name": "id.machine-id",
+    "type": "java.lang.Integer",
+    "description": "高性能Id生成器-机器码id",
+    "sourceType":"com.demo.property.IdAppYml",
+    "defaultValue":"0"
+  },
+  {
+    "name": "id.machine-bits",
+    "type": "java.lang.Integer",
+    "description": "高性能Id生成器-机器码位数",
+    "sourceType":"com.demo.property.IdAppYml",
+    "defaultValue":"8"
+  },
+  {
+    "name": "id.sequence-bits",
+    "type": "java.lang.Integer",
+    "description": "高性能Id生成器-序列号位数",
+    "sourceType":"com.demo.property.IdAppYml",
+    "defaultValue":"12"
+  }
+]}

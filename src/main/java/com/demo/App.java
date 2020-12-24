@@ -1,8 +1,12 @@
 package com.demo;
 
+import com.demo.init.Init;
 import org.mybatis.spring.annotation.MapperScan;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * <h1>启动类</h1>
@@ -33,9 +37,21 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class App {
 
+    private final static Logger log = LoggerFactory.getLogger(App.class);
+
+    public static ConfigurableApplicationContext context;
+
     public static void main(String[] args) {
-        SpringApplication.run(App.class, args);
-        // Task.initial();
+        context = SpringApplication.run(App.class, args);
+        Init.init();
+    }
+
+    /**
+     * 关闭SpringBoot
+     */
+    public static void shutdown() {
+        log.error("SpringBoot服务即将停止！");
+        context.close();
     }
 
 }

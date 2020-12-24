@@ -1,5 +1,6 @@
 package com.demo.init;
 
+import com.demo.App;
 import com.demo.constant.Ip2RegionConstant;
 import com.demo.util.FileUtils;
 import com.demo.util.IpUtils;
@@ -20,13 +21,9 @@ import java.io.InputStream;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class Ip2Region {
+public class Ip2RegionInit {
 
-    private final static Logger log = LoggerFactory.getLogger(Ip2Region.class);
-
-    public static void main(String[] args) {
-        init();
-    }
+    private final static Logger log = LoggerFactory.getLogger(Ip2RegionInit.class);
 
     public static void init() {
         log.info("Ip2Region初始化开始...");
@@ -63,7 +60,8 @@ public class Ip2Region {
             }
             log.info("Ip2Region检查并创建文件结束。");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("复制文件时发生了错误！", e);
+            App.shutdown();
         }
     }
 

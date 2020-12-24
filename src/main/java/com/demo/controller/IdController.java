@@ -1,10 +1,9 @@
 package com.demo.controller;
 
+import com.demo.tool.Id;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.demo.tool.Id;
 
 /**
  * <h1>Id api</h1>
@@ -22,6 +21,7 @@ public class IdController {
 
     @GetMapping("get")
     public long get() {
-        return Id.get();
+        return Id.next();
     }
+
 }

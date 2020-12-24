@@ -6,6 +6,7 @@ import com.demo.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.InputStream;
@@ -20,13 +21,10 @@ import java.io.InputStream;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class Ansj {
+@Component
+public class AnsjInit {
 
-    private final static Logger log = LoggerFactory.getLogger(Ansj.class);
-
-    public static void main(String[] args) {
-        init();
-    }
+    private final static Logger log = LoggerFactory.getLogger(AnsjInit.class);
 
     public static void init() {
         log.info("Ansj初始化开始...");
@@ -76,7 +74,7 @@ public class Ansj {
             }
             log.info("Ansj检查并创建词典文件结束。");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("复制文件时发生了错误！", e);
         }
     }
 

@@ -16,17 +16,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0.0
  **/
 public final class Id {
-
-    public static void main(String[] args) {
-        System.out.println(Id.next());
-        long a = Clock.now();
-        for (int i = 0; i < 1000000; i++) {
-            Id.next();
-        }
-        long b = Clock.now();
-        System.out.println(b - a);
-    }
-
+    
     /**
      * Logger日志实例
      */

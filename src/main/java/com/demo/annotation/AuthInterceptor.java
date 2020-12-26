@@ -2,7 +2,7 @@ package com.demo.annotation;
 
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.pojo.Result;
-
+import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,7 +26,8 @@ import java.lang.reflect.Method;
 public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+    public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
+                             @NonNull Object handler) throws IOException {
         if (handler instanceof HandlerMethod) {
             // 获取方法
             Method method = ((HandlerMethod) handler).getMethod();
@@ -62,14 +63,15 @@ public class AuthInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                           Object object, ModelAndView modelAndView) {
+    public void postHandle(@NonNull HttpServletRequest httpServletRequest,
+                           @NonNull HttpServletResponse httpServletResponse, @NonNull Object object,
+                           ModelAndView modelAndView) {
 
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
-                                Object object, Exception e) {
+    public void afterCompletion(@NonNull HttpServletRequest httpServletRequest,
+                                @NonNull HttpServletResponse httpServletResponse, @NonNull Object object, Exception e) {
 
     }
 }

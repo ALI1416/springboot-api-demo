@@ -2,6 +2,7 @@ package com.demo.handler;
 
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.pojo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -27,6 +28,7 @@ import java.io.IOException;
  * @since 1.0.0
  **/
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -59,7 +61,7 @@ public class GlobalExceptionHandler {
             HttpMessageNotReadableException.class})
     public Result paramErrorHandler(Exception e) {
         System.out.println("paramErrorHandler");
-        e.printStackTrace();
+        log.error("参数错误", e);
         return Result.e(ResultCodeEnum.PARAM_IS_ERROR);
     }
 
@@ -73,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public Result notSupportedHandler(Exception e) {
         System.out.println("notSupportedHandler");
-        e.printStackTrace();
+        log.error("方法不支持", e);
         return Result.e(ResultCodeEnum.NOT_SUPPORTED);
     }
 
@@ -86,7 +88,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public Result runtimeExceptionHandler(Exception e) {
         System.out.println("runtimeExceptionHandler");
-        e.printStackTrace();
+        log.error("运行异常", e);
         return Result.e(ResultCodeEnum.ERROR, "运行异常");
     }
 
@@ -99,7 +101,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public Result ioExceptionHandler(Exception e) {
         System.out.println("ioExceptionHandler");
-        e.printStackTrace();
+        log.error("IO异常", e);
         return Result.e(ResultCodeEnum.ERROR, "IO异常");
     }
 
@@ -112,7 +114,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result exceptionHandler(Exception e) {
         System.out.println("exceptionHandler");
-        e.printStackTrace();
+        log.error("异常", e);
         return Result.e(ResultCodeEnum.ERROR, "异常");
     }
 }

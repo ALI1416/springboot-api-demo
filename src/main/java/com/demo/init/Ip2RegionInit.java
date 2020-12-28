@@ -4,11 +4,11 @@ import com.demo.App;
 import com.demo.constant.Ip2RegionConstant;
 import com.demo.util.FileUtils;
 import com.demo.util.IpUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -21,9 +21,8 @@ import java.io.InputStream;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Slf4j
 public class Ip2RegionInit {
-
-    private final static Logger log = LoggerFactory.getLogger(Ip2RegionInit.class);
 
     public static void init() {
         log.info("Ip2Region初始化开始...");
@@ -60,8 +59,7 @@ public class Ip2RegionInit {
             }
             log.info("Ip2Region检查并创建文件结束。");
         } catch (Exception e) {
-            log.error("复制文件时发生了错误！", e);
-            App.shutdown();
+            App.shutdown(new IOException("复制文件时发生了错误！"));
         }
     }
 

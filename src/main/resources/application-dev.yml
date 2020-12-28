@@ -50,4 +50,4 @@ ansj:
   ambiguity-resource-path: /file/ansj/ambiguity.dic
 ip2region:
   resource-path: /file/ip2region/data.db
-  reference-path: D:/springboot-api-demo/ip2region/data.db
+  reference-path: /file/ip2region/data.db

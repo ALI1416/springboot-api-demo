@@ -2,8 +2,7 @@ package com.demo.tool;
 
 import com.demo.App;
 import com.demo.constant.IdConstant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>高性能Id生成器</h1>
@@ -15,12 +14,12 @@ import org.slf4j.LoggerFactory;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Slf4j
 public final class Id {
-    
-    /**
-     * Logger日志实例
-     */
-    private static final Logger log = LoggerFactory.getLogger(Id.class);
+
+    public static void main(String[] args) {
+        System.out.println(next());
+    }
 
     /**
      * 初始时间戳(如果发生回拨，这个值会减少)
@@ -38,17 +37,17 @@ public final class Id {
      * 机器码
      */
     private final static long MACHINE_ID = IdConstant.MACHINE_ID;
-    //    private final static long MACHINE_ID = 0L;
+    // private final static long MACHINE_ID = 0L;
     /**
      * 机器码位数
      **/
     private final static long MACHINE_BITS = IdConstant.MACHINE_BITS;
-    //    private final static long MACHINE_BITS = 8L;
+    // private final static long MACHINE_BITS = 8L;
     /**
      * 序列号位数
      **/
     private final static long SEQUENCE_BITS = IdConstant.SEQUENCE_BITS;
-    //    private final static long SEQUENCE_BITS = 14L;
+    // private final static long SEQUENCE_BITS = 14L;
     /**
      * 最大机器码
      **/
@@ -70,24 +69,20 @@ public final class Id {
     static {
         // 机器码位数过大或过小
         if (MACHINE_BITS < 0 || MACHINE_BITS > 64) {
-            log.error("机器码位数MACHINE_BITS需要>=0并且<=64。当前为{}", MACHINE_BITS);
-            App.shutdown();
+            App.shutdown(new IllegalArgumentException("机器码位数MACHINE_BITS需要>=0并且<=64。当前为" + MACHINE_BITS));
         }
         // 序列号位数过大或过小
         if (SEQUENCE_BITS < 0 || SEQUENCE_BITS > 64) {
-            log.error("序列号位数SEQUENCE_BITS需要>=0并且<=64。当前为{}", SEQUENCE_BITS);
-            App.shutdown();
+            App.shutdown(new IllegalArgumentException("序列号位数SEQUENCE_BITS需要>=0并且<=64。当前为" + SEQUENCE_BITS));
         }
         // 机器码过大或过小
         if (MACHINE_ID > MACHINE_MAX || MACHINE_ID < 0) {
-            log.error("机器码MACHINE_ID需要>=0并且<={}。当前为{}", MACHINE_MAX, MACHINE_ID);
-            App.shutdown();
+            App.shutdown(new IllegalArgumentException("机器码MACHINE_ID需要>=0并且<=" + MACHINE_MAX + "。当前为" + MACHINE_ID));
         }
         // 时间戳位数过小(需要留给时间戳35位才能使用1年，其中二进制头部占1位为0来保证生成的id是正数)
         // 28 = 64 - 35 - 1
         if (SEQUENCE_BITS + MACHINE_BITS > 28) {
-            log.error("时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为{}", (SEQUENCE_BITS + MACHINE_BITS));
-            App.shutdown();
+            App.shutdown(new IllegalArgumentException("时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为" + (SEQUENCE_BITS + MACHINE_BITS)));
         }
     }
 

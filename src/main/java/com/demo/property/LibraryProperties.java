@@ -21,6 +21,6 @@ import lombok.Data;
 @Component
 @Data
 public class LibraryProperties {
-    private String dic = "D:/springboot-api-demo/ansj/default.dic";
-    private String ambiguity = "D:/springboot-api-demo/ansj/ambiguity.dic";
+    private String dic = "/file/ansj/default.dic";
+    private String ambiguity = "/file/ansj/ambiguity.dic";
 }

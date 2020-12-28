@@ -2,8 +2,7 @@ package com.demo.init;
 
 import com.demo.tool.Id;
 import com.demo.util.PhoneUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>总初始化</h1>
@@ -15,9 +14,8 @@ import org.slf4j.LoggerFactory;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Slf4j
 public class Init {
-
-    private final static Logger log = LoggerFactory.getLogger(Init.class);
 
     public static void init() {
         log.info("初始化开始...");

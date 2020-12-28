@@ -2,7 +2,6 @@ package com.demo.util;
 
 import com.demo.constant.Ip2RegionConstant;
 import com.demo.entity.pojo.Ip;
-
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -43,7 +42,6 @@ public class IpUtils {
 
         ip2RegionInitial();
         System.out.println(getIpInfo("157.122.178.42"));
-        System.out.println(getIpInfo(null));
     }
 
     /**
@@ -68,8 +66,7 @@ public class IpUtils {
                 if (ip2regionSearcher == null) {
                     try {
                         ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
-                        // ip2regionSearcher = new DbSearcher(new DbConfig(), "D:/springboot-api-demo/ip2region/data
-                        // .db");
+                        // ip2regionSearcher = new DbSearcher(new DbConfig(), "/file/ip2region/data.db");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

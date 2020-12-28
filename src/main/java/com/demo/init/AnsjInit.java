@@ -3,8 +3,7 @@ package com.demo.init;
 import com.demo.constant.AnsjConstant;
 import com.demo.util.FileUtils;
 import com.demo.util.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
@@ -21,10 +20,9 @@ import java.io.InputStream;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Slf4j
 @Component
 public class AnsjInit {
-
-    private final static Logger log = LoggerFactory.getLogger(AnsjInit.class);
 
     public static void init() {
         log.info("Ansj初始化开始...");

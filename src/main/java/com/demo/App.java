@@ -1,9 +1,8 @@
 package com.demo;
 
 import com.demo.init.Init;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -35,11 +34,10 @@ import org.springframework.context.ConfigurableApplicationContext;
  **/
 @MapperScan("com.demo.dao")
 @SpringBootApplication
+@Slf4j
 public class App {
 
-    private final static Logger log = LoggerFactory.getLogger(App.class);
-
-    public static ConfigurableApplicationContext context;
+    private static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
         context = SpringApplication.run(App.class, args);
@@ -47,10 +45,12 @@ public class App {
     }
 
     /**
-     * 关闭SpringBoot
+     * 关闭服务
+     *
+     * @param e 异常信息
      */
-    public static void shutdown() {
-        log.error("SpringBoot服务即将停止！");
+    public static void shutdown(Exception e) {
+        log.error("SpringBoot服务被强制关闭！", e);
         context.close();
     }
 

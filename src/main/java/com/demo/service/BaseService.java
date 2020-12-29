@@ -6,6 +6,9 @@ import com.demo.entity.pojo.Result;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Slf4j
 public class BaseService {
 
     /**
@@ -46,7 +50,7 @@ public class BaseService {
                 return Result.e();
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("try-if简化捕获到异常", e);
             return Result.e();
         }
         return Result.o();

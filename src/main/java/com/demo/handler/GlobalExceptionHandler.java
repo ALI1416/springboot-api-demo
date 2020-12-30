@@ -1,8 +1,7 @@
 package com.demo.handler;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.pojo.Result;
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -11,7 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.io.IOException;
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.pojo.Result;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>全局异常处理</h1>
@@ -34,8 +36,9 @@ public class GlobalExceptionHandler {
     /**
      * <h3>参数错误</h3><br>
      * Params<br>
-     * --{@linkplain java.lang.IllegalStateException
-     * IllegalStateException}：非法的状态异常：缺少参数<br>
+     * --{@linkplain java.lang.IllegalStateException IllegalStateException},
+     * {@linkplain java.lang.IllegalArgumentException
+     * IllegalArgumentException}：非法状态异常、非法参数异常：缺少参数<br>
      * --{@linkplain org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
      * MethodArgumentTypeMismatchException}：方法参数类型不匹配异常：参数类型错误<br>
      * Body<br>
@@ -57,8 +60,8 @@ public class GlobalExceptionHandler {
      * @see org.springframework.http.converter.HttpMessageNotReadableException
      */
     @Order(1)
-    @ExceptionHandler({IllegalStateException.class, MethodArgumentTypeMismatchException.class, BindException.class,
-            HttpMessageNotReadableException.class})
+    @ExceptionHandler({ IllegalStateException.class, IllegalArgumentException.class,
+            MethodArgumentTypeMismatchException.class, BindException.class, HttpMessageNotReadableException.class })
     public Result paramErrorHandler(Exception e) {
         System.out.println("paramErrorHandler");
         log.error("参数错误", e);
@@ -66,21 +69,21 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 方法不支持<br>
-     * 例如某个接口要使用post访问，对方使用get去访问，会报错
+     * 方法Method不支持<br>
+     * 例如某个接口要使用POST访问，对方使用GET去访问，会报错
      *
      * @see org.springframework.web.HttpRequestMethodNotSupportedException
      */
     @Order(1)
-    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
+    @ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
     public Result notSupportedHandler(Exception e) {
         System.out.println("notSupportedHandler");
-        log.error("方法不支持", e);
+        log.error("方法Method不支持", e);
         return Result.e(ResultCodeEnum.NOT_SUPPORTED);
     }
 
     /**
-     * 运行异常
+     * RuntimeException运行异常
      *
      * @see java.lang.RuntimeException
      */
@@ -88,12 +91,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public Result runtimeExceptionHandler(Exception e) {
         System.out.println("runtimeExceptionHandler");
-        log.error("运行异常", e);
-        return Result.e(ResultCodeEnum.ERROR, "运行异常");
+        log.error("RuntimeException运行异常", e);
+        return Result.e(ResultCodeEnum.ERROR, "RuntimeException运行异常");
     }
 
     /**
-     * IO异常
+     * IOException异常
      *
      * @see java.io.IOException
      */
@@ -101,12 +104,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IOException.class)
     public Result ioExceptionHandler(Exception e) {
         System.out.println("ioExceptionHandler");
-        log.error("IO异常", e);
-        return Result.e(ResultCodeEnum.ERROR, "IO异常");
+        log.error("IOException异常", e);
+        return Result.e(ResultCodeEnum.ERROR, "IOException异常");
     }
 
     /**
-     * 异常
+     * Exception异常
      *
      * @see java.lang.Exception
      */
@@ -114,7 +117,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public Result exceptionHandler(Exception e) {
         System.out.println("exceptionHandler");
-        log.error("异常", e);
-        return Result.e(ResultCodeEnum.ERROR, "异常");
+        log.error("Exception异常", e);
+        return Result.e(ResultCodeEnum.ERROR, "Exception异常");
     }
 }

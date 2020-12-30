@@ -41,7 +41,7 @@ public class App {
 
     public static void main(String[] args) {
         context = SpringApplication.run(App.class, args);
-        Init.init();
+//        Init.init();
     }
 
     /**

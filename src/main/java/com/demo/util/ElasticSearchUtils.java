@@ -12,9 +12,13 @@ import lombok.extern.slf4j.Slf4j;
  * <h1>ElasticSearch工具</h1>
  *
  * <p>
- * createDate 2020/12/29 16:23:19
+ * 捕获异常请用Exception，因为会出现多种异常情况，比如IOException、RuntimeException等。
  * </p>
  *
+ * <p>
+ * createDate 2020/12/29 16:23:19
+ * </p>
+ * 
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/

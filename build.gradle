@@ -1,7 +1,7 @@
 // 插件
 plugins {
     // SpringBoot框架版本
-    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'org.springframework.boot' version '2.4.1'
     // Spring依赖管理
     id 'io.spring.dependency-management' version '1.0.10.RELEASE'
     // Java语言
@@ -50,6 +50,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // elasticsearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+//    implementation 'org.elasticsearch.client:transport:7.10.1'
+//    implementation 'org.elasticsearch.plugin:transport-netty4-client:7.10.1'
+//    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.10.1'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // 修复某些注解异常

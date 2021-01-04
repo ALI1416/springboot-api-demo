@@ -50,9 +50,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // elasticsearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-//    implementation 'org.elasticsearch.client:transport:7.10.1'
-//    implementation 'org.elasticsearch.plugin:transport-netty4-client:7.10.1'
-//    implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.10.1'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // 修复某些注解异常
@@ -73,6 +70,8 @@ dependencies {
     implementation 'org.lionsoul:ip2region:1.7.2'
     // 手机号码归属地查询
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
+    // 图片验证码
+    implementation 'com.github.whvcse:easy-captcha:1.6.2'
     // ansj分词
     implementation 'org.ansj:ansj_seg:5.1.6'
 /*仅编译时*/

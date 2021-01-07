@@ -1,15 +1,16 @@
 package com.demo.controller;
 
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.util.EsUtils;
+import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
+import org.elasticsearch.action.update.UpdateResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.demo.entity.po.User;
-import com.demo.entity.pojo.Result;
-import com.demo.util.EsUtils;
 
 /**
  * <h1>ElasticSearch api</h1>
@@ -36,7 +37,7 @@ public class EsController {
     }
 
     /**
-     * 存在索引
+     * 是否存在索引
      */
     @PostMapping("/existIndex")
     public Result existIndex(String index) {
@@ -66,7 +67,7 @@ public class EsController {
     }
 
     /**
-     * 存在文档
+     * 是否存在文档
      */
     @PostMapping("/existDocument")
     public Result existDocument(String index, String id) {
@@ -81,6 +82,26 @@ public class EsController {
     @PostMapping("/getDocument")
     public Result getDocument(String index, String id) {
         GetResponse ok = EsUtils.getDocument(index, id);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 修改文档
+     */
+    @PostMapping("/updateDocument")
+    public Result updateDocument(String index, String id, @RequestBody User user) {
+        UpdateResponse ok = EsUtils.updateDocument(index, id, user);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 删除文档
+     */
+    @PostMapping("/deleteDocument")
+    public Result deleteDocument(String index, String id) {
+        DeleteResponse ok = EsUtils.deleteDocument(index, id);
         System.out.println(ok);
         return Result.o(ok);
     }

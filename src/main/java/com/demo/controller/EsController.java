@@ -1,8 +1,8 @@
 package com.demo.controller;
 
-import com.demo.entity.po.User;
-import com.demo.entity.pojo.Result;
-import com.demo.util.EsUtils;
+import java.util.List;
+import java.util.Map;
+
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.util.EsUtils;
 
 /**
  * <h1>ElasticSearch api</h1>
@@ -57,10 +61,20 @@ public class EsController {
     }
 
     /**
-     * 新增文档
+     * 新增文档(随机文档id)
      */
     @PostMapping("/addDocument")
-    public Result addDocument(String index, String id, @RequestBody User user) {
+    public Result addDocument(String index, @RequestBody User user) {
+        IndexResponse ok = EsUtils.addDocument(index, user);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 新增文档
+     */
+    @PostMapping("/addDocument2")
+    public Result addDocument2(String index, String id, @RequestBody User user) {
         IndexResponse ok = EsUtils.addDocument(index, id, user);
         System.out.println(ok);
         return Result.o(ok);
@@ -102,6 +116,36 @@ public class EsController {
     @PostMapping("/deleteDocument")
     public Result deleteDocument(String index, String id) {
         DeleteResponse ok = EsUtils.deleteDocument(index, id);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 批量新增文档(随机文档id)
+     */
+    @PostMapping("/addDocumentBulk")
+    public Result addDocumentBulk(String index, @RequestBody List<User> objects) {
+        boolean ok = EsUtils.addDocumentBulk(index, objects);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 批量新增文档
+     */
+    @PostMapping("/addDocumentBulk2")
+    public Result addDocumentBulk2(String index, @RequestBody Map<String, User> objects) {
+        boolean ok = EsUtils.addDocumentBulk(index, objects);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 查询文档
+     */
+    @PostMapping("/search")
+    public Result search(String index, String value) {
+        List<Map<String, Object>> ok = EsUtils.search(index, null, value);
         System.out.println(ok);
         return Result.o(ok);
     }

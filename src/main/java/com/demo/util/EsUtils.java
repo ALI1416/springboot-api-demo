@@ -1,10 +1,12 @@
 package com.demo.util;
 
-import com.alibaba.fastjson.JSON;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
-import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetRequest;
@@ -17,6 +19,7 @@ import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.AnalyzeRequest;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
@@ -30,9 +33,9 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.alibaba.fastjson.JSON;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>ElasticSearch工具</h1>
@@ -109,22 +112,26 @@ public class EsUtils {
 
     /**
      * 新增文档(随机文档id)
+     * 
+     * @param <T>
      *
      * @param index  索引名
      * @param object 文档名
      */
-    public static IndexResponse addDocument(String index, Object object) {
+    public static <T> IndexResponse addDocument(String index, T object) {
         return addDocument(index, null, object);
     }
 
     /**
      * 新增文档
+     * 
+     * @param <T>
      *
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
      */
-    public static IndexResponse addDocument(String index, String id, Object object) {
+    public static <T> IndexResponse addDocument(String index, String id, T object) {
         IndexRequest request = new IndexRequest(index);
         request.id(id);
         request.source(JSON.toJSONString(object), XContentType.JSON);
@@ -174,12 +181,14 @@ public class EsUtils {
 
     /**
      * 更新文档
+     * 
+     * @param <T>
      *
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
      */
-    public static UpdateResponse updateDocument(String index, String id, Object object) {
+    public static <T> UpdateResponse updateDocument(String index, String id, T object) {
         UpdateRequest request = new UpdateRequest(index, id);
         request.doc(JSON.toJSONString(object), XContentType.JSON);
         try {
@@ -208,42 +217,46 @@ public class EsUtils {
 
     /**
      * 批量新增文档
+     * 
+     * @param <T>
      *
      * @param index   索引名
      * @param objects 带文档id对象Map
      */
-    public static BulkResponse addDocumentBulk(String index, Map<String, Object> objects) {
+    public static <T> boolean addDocumentBulk(String index, Map<String, T> objects) {
         BulkRequest request = new BulkRequest();
-        for (Map.Entry<String, Object> object : objects.entrySet()) {
+        for (Entry<String, T> object : objects.entrySet()) {
             request.add(new IndexRequest(index)//
                     .id(object.getKey())//
                     .source(JSON.toJSONString(object.getValue()), XContentType.JSON));
         }
         try {
-            return client.bulk(request, RequestOptions.DEFAULT);
+            return !client.bulk(request, RequestOptions.DEFAULT).hasFailures();
         } catch (Exception e) {
             log.error("批量新增文档异常", e);
-            return null;
+            return false;
         }
     }
 
     /**
      * 批量新增文档(随机文档id)
+     * 
+     * @param <T>
      *
      * @param index   索引名
      * @param objects 随机文档id对象List
      */
-    public static BulkResponse addDocumentBulk(String index, List<Object> objects) {
+    public static <T> boolean addDocumentBulk(String index, List<T> objects) {
         BulkRequest request = new BulkRequest();
-        for (Object object : objects) {
+        for (T object : objects) {
             request.add(new IndexRequest(index)//
                     .source(JSON.toJSONString(object), XContentType.JSON));
         }
         try {
-            return client.bulk(request, RequestOptions.DEFAULT);
+            return !client.bulk(request, RequestOptions.DEFAULT).hasFailures();
         } catch (Exception e) {
             log.error("批量新增文档异常", e);
-            return null;
+            return false;
         }
     }
 
@@ -253,22 +266,25 @@ public class EsUtils {
      * @param index   索引名
      * @param builder 查询构造器
      */
-    public static List<Map<String, Object>> search(String index, SearchSourceBuilder builder) {
+    public static List<Map<String, Object>> search(String index, SearchSourceBuilder builder, String value) {
         SearchRequest request = new SearchRequest(index);
 
-        String field = "";
-        String value = "";
-        /*精确查询(匹配字段,匹配值)*/
-        builder.query(QueryBuilders.termQuery(field, value));
-        /*匹配所有*/
-        builder.query(QueryBuilders.matchAllQuery());
-        /*高亮查询*/
+//        AnalyzeRequest an = new AnalyzeRequest(value).analyzer("ik_smart");
+        builder = new SearchSourceBuilder();
+        String field = "account";
+        /* 精确查询(匹配字段,匹配值) */
+//        builder.query(QueryBuilders.termQuery(field, value));
+        /* 模糊查询(匹配字段,匹配值) */
+//        最大切分  ik_samrt
+//        详细切分  ik_max_word
+        builder.query(QueryBuilders.matchQuery(field, value).analyzer("ik_max_word"));
+        /* 高亮查询 */
         builder.highlighter(new HighlightBuilder()//
-                .field(field)//匹配字段
-                .requireFieldMatch(false)//匹配所有字段
-                .preTags("<span style='color:red'")//内容前缀
-                .postTags("</span>"));//内容后缀
-        /*分页查询(从第几条开始查询,查询多少条)*/
+                .field(field)// 匹配字段
+                .requireFieldMatch(false)// 匹配所有字段
+                .preTags("<span style='color:red'>")// 内容前缀
+                .postTags("</span>"));// 内容后缀
+        /* 分页查询(从第几条开始查询,查询多少条) */
         builder.from(0).size(10);
 
         request.source(builder);
@@ -277,7 +293,7 @@ public class EsUtils {
             SearchResponse response = client.search(request, RequestOptions.DEFAULT);
             for (SearchHit documentFields : response.getHits().getHits()) {
                 // list.add(documentFields.getSourceAsMap());
-                /*高亮*/
+                /* 高亮 */
                 // 原来的内容
                 Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
                 // 找到所有的高亮字段

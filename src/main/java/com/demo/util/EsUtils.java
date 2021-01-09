@@ -1,10 +1,7 @@
 package com.demo.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -20,6 +17,7 @@ import org.elasticsearch.action.update.UpdateResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.indices.AnalyzeRequest;
+import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
@@ -33,9 +31,10 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * <h1>ElasticSearch工具</h1>
@@ -70,6 +69,27 @@ public class EsUtils {
      */
     public static boolean createIndex(String index) {
         CreateIndexRequest request = new CreateIndexRequest(index);
+        /* 设置类型字段类型 */
+        // {
+        //   "properties": {
+        //     "account": {//字段名
+        //       "type": "text",//类型keyword、text
+        //       "analyzer": "ik_max_word",//分词器standard、ik_smart、ik_max_word
+        //       "search_analyzer": "ik_max_word"//搜索用分词器
+        //     }
+        //   }
+        // }
+        request.mapping(//
+                "{\n" +//
+                        "  \"properties\": {\n" +//
+                        "    \"account\": {\n" +//
+                        "      \"type\": \"text\",\n" +//
+                        "      \"analyzer\": \"ik_max_word\",\n" +//
+                        "      \"search_analyzer\": \"ik_max_word\"\n" +//
+                        "    }\n" +//
+                        "  }\n" +//
+                        "}", //
+                XContentType.JSON);
         try {
             return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
         } catch (Exception e) {
@@ -112,9 +132,8 @@ public class EsUtils {
 
     /**
      * 新增文档(随机文档id)
-     * 
-     * @param <T>
      *
+     * @param <T>    对象
      * @param index  索引名
      * @param object 文档名
      */
@@ -124,9 +143,8 @@ public class EsUtils {
 
     /**
      * 新增文档
-     * 
-     * @param <T>
      *
+     * @param <T>    对象
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
@@ -181,9 +199,8 @@ public class EsUtils {
 
     /**
      * 更新文档
-     * 
-     * @param <T>
      *
+     * @param <T>    对象
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
@@ -217,18 +234,19 @@ public class EsUtils {
 
     /**
      * 批量新增文档
-     * 
-     * @param <T>
      *
+     * @param <T>     对象
      * @param index   索引名
      * @param objects 带文档id对象Map
      */
     public static <T> boolean addDocumentBulk(String index, Map<String, T> objects) {
         BulkRequest request = new BulkRequest();
         for (Entry<String, T> object : objects.entrySet()) {
-            request.add(new IndexRequest(index)//
-                    .id(object.getKey())//
-                    .source(JSON.toJSONString(object.getValue()), XContentType.JSON));
+            request.add(//
+                    new IndexRequest(index)//
+                            .id(object.getKey())//
+                            .source(JSON.toJSONString(object.getValue()), XContentType.JSON)//
+            );
         }
         try {
             return !client.bulk(request, RequestOptions.DEFAULT).hasFailures();
@@ -240,17 +258,18 @@ public class EsUtils {
 
     /**
      * 批量新增文档(随机文档id)
-     * 
-     * @param <T>
      *
+     * @param <T>     对象
      * @param index   索引名
      * @param objects 随机文档id对象List
      */
     public static <T> boolean addDocumentBulk(String index, List<T> objects) {
         BulkRequest request = new BulkRequest();
         for (T object : objects) {
-            request.add(new IndexRequest(index)//
-                    .source(JSON.toJSONString(object), XContentType.JSON));
+            request.add(//
+                    new IndexRequest(index)//
+                            .source(JSON.toJSONString(object), XContentType.JSON)//
+            );
         }
         try {
             return !client.bulk(request, RequestOptions.DEFAULT).hasFailures();
@@ -263,62 +282,91 @@ public class EsUtils {
     /**
      * 查询文档
      *
-     * @param index   索引名
-     * @param builder 查询构造器
+     * @param index 索引名
+     * @param value 查询的值
      */
-    public static List<Map<String, Object>> search(String index, SearchSourceBuilder builder, String value) {
+    public static List<Map<String, Object>> search(String index, String value) {
         SearchRequest request = new SearchRequest(index);
-
-//        AnalyzeRequest an = new AnalyzeRequest(value).analyzer("ik_smart");
-        builder = new SearchSourceBuilder();
+        /*查询构造器*/
+        SearchSourceBuilder builder = new SearchSourceBuilder();
+        // 字段名
         String field = "account";
-        /* 精确查询(匹配字段,匹配值) */
-//        builder.query(QueryBuilders.termQuery(field, value));
         /* 模糊查询(匹配字段,匹配值) */
-//        最大切分  ik_samrt
-//        详细切分  ik_max_word
-        builder.query(QueryBuilders.matchQuery(field, value).analyzer("ik_max_word"));
+        builder.query(//
+                QueryBuilders.matchQuery(field, value)//
+        );
         /* 高亮查询 */
-        builder.highlighter(new HighlightBuilder()//
-                .field(field)// 匹配字段
-                .requireFieldMatch(false)// 匹配所有字段
-                .preTags("<span style='color:red'>")// 内容前缀
-                .postTags("</span>"));// 内容后缀
+        builder.highlighter(//
+                new HighlightBuilder()//
+                        .field(field)// 匹配字段
+                // .requireFieldMatch(false)// 匹配所有字段
+                // .preTags("<span style='color:red'>")// 内容前缀
+                // .postTags("</span>")// 内容后缀
+        );//
         /* 分页查询(从第几条开始查询,查询多少条) */
         builder.from(0).size(10);
-
+        /*最小分数*/
+        builder.minScore(1.0f);
         request.source(builder);
+        /*返回结果*/
+        SearchResponse response;
         try {
-            List<Map<String, Object>> list = new ArrayList<>();
-            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
-            for (SearchHit documentFields : response.getHits().getHits()) {
-                // list.add(documentFields.getSourceAsMap());
-                /* 高亮 */
-                // 原来的内容
-                Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
-                // 找到所有的高亮字段
-                Map<String, HighlightField> highlightFieldMap = documentFields.getHighlightFields();
-                // 遍历所有的高亮字段
-                for (Map.Entry<String, HighlightField> highlightFieldEntry : highlightFieldMap.entrySet()) {
-                    // 高亮字段的内容
-                    HighlightField highlightField = highlightFieldEntry.getValue();
-                    if (highlightField != null) {
-                        // 高亮字段所有行内容
-                        Text[] fragments = highlightField.getFragments();
-                        StringBuilder texts = new StringBuilder();
-                        for (Text text : fragments) {
-                            texts.append(text);
-                        }
-                        // 替换原来的内容(高亮字段,所有行内容)
-                        sourceAsMap.put(highlightFieldEntry.getKey(), texts);
-                    }
-                }
-                list.add(sourceAsMap);
-            }
-            return list;
+            response = client.search(request, RequestOptions.DEFAULT);
         } catch (Exception e) {
             log.error("查询文档异常", e);
             return null;
         }
+        List<Map<String, Object>> list = new ArrayList<>();
+        /* 设置高亮 */
+        for (SearchHit documentFields : response.getHits().getHits()) {
+            // 原来的内容
+            Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
+            // 找到所有的高亮字段
+            Map<String, HighlightField> highlightFieldMap = documentFields.getHighlightFields();
+            // 遍历所有的高亮字段
+            for (Map.Entry<String, HighlightField> highlightFieldEntry : highlightFieldMap.entrySet()) {
+                // 高亮字段的内容
+                HighlightField highlightField = highlightFieldEntry.getValue();
+                if (highlightField != null) {
+                    // 高亮字段所有行内容
+                    Text[] fragments = highlightField.getFragments();
+                    StringBuilder texts = new StringBuilder();
+                    for (Text text : fragments) {
+                        texts.append(text);
+                    }
+                    // 替换原来的内容(高亮字段,所有行内容)
+                    sourceAsMap.put(highlightFieldEntry.getKey(), removeAdjacentTag(texts, "</em><em>"));
+                }
+            }
+            list.add(sourceAsMap);
+        }
+        return list;
     }
+
+    /**
+     * 分析文本
+     *
+     * @param analyzer 分析器standard、ik_smart、ik_max_word
+     * @param text     文本
+     */
+    public static List<AnalyzeResponse.AnalyzeToken> analyze(String analyzer, String text) {
+        AnalyzeRequest request = AnalyzeRequest.withGlobalAnalyzer(analyzer, text);
+        try {
+            return client.indices().analyze(request, RequestOptions.DEFAULT).getTokens();
+        } catch (Exception e) {
+            log.error("分析文本异常", e);
+            return null;
+        }
+    }
+
+    /**
+     * 去除相邻标签
+     *
+     * @param texts    文本
+     * @param regexTag 正则表达式转义后的标签
+     */
+    public static String removeAdjacentTag(StringBuilder texts, String regexTag) {
+        return texts.toString().replaceAll(regexTag, "");
+    }
+
 }

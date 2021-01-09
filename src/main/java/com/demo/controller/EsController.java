@@ -1,20 +1,20 @@
 package com.demo.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.util.EsUtils;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateResponse;
+import org.elasticsearch.client.indices.AnalyzeResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.entity.po.User;
-import com.demo.entity.pojo.Result;
-import com.demo.util.EsUtils;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <h1>ElasticSearch api</h1>
@@ -145,7 +145,17 @@ public class EsController {
      */
     @PostMapping("/search")
     public Result search(String index, String value) {
-        List<Map<String, Object>> ok = EsUtils.search(index, null, value);
+        List<Map<String, Object>> ok = EsUtils.search(index, value);
+        System.out.println(ok);
+        return Result.o(ok);
+    }
+
+    /**
+     * 分析文本
+     */
+    @PostMapping("/analyze")
+    public Result analyze(String analyzer, String text) {
+        List<AnalyzeResponse.AnalyzeToken> ok = EsUtils.analyze(analyzer, text);
         System.out.println(ok);
         return Result.o(ok);
     }

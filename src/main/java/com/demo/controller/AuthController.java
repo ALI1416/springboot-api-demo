@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.annotation.Auth;
-import com.demo.entity.pojo.Redis;
 import com.demo.entity.pojo.Result;
+import com.demo.tool.Id;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 
@@ -27,13 +27,11 @@ public class AuthController {
 
     @Auth(skip = true)
     @PostMapping("getAuth")
-    public Result getAuth(int id) {
+    public Result getAuth() {
+        long timestamp = Id.next();
         String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 128);
-        Redis redis = new Redis();
-        redis.setId(id);
-        redis.setToken(token);
-        RedisUtils.set(String.valueOf(id), redis, 1000);
-        return Result.o(redis);
+        RedisUtils.hashSet(String.valueOf(timestamp), "token", token, 1000);
+        return Result.o(timestamp + " " + token);
     }
 
     @PostMapping("login")

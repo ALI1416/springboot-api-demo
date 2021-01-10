@@ -1,7 +1,7 @@
 package com.demo.annotation;
 
-import com.demo.entity.pojo.Redis;
 import com.demo.util.RedisUtils;
+import com.demo.util.StringUtils;
 
 /**
  * <h1>权限认证注解实现</h1>
@@ -18,14 +18,15 @@ public class AuthImpl {
     /**
      * 检查token是否正确
      *
-     * @param id    id
-     * @param token token
+     * @param timestamp timestamp
+     * @param token     token
      */
-    public static boolean authToken(String id, String token) {
-        if (id == null || token == null || id.isEmpty() || token.isEmpty()) {
+    public static boolean authToken(String timestamp, String token) {
+        System.out.println(timestamp);
+        if (StringUtils.existEmpty(timestamp, token)) {
             return false;
         }
-        Redis redis = (Redis) RedisUtils.get(id);
-        return token.equals(redis.getToken());
+        String redisToken = (String) RedisUtils.hashGet(timestamp, "token");
+        return token.equals(redisToken);
     }
 }

@@ -36,7 +36,7 @@ public class UserService extends BaseService {
     /**
      * 存在id
      */
-    public Result existId(int id) {
+    public Result existId(long id) {
         // 查找用户，通过id。用户不存在
         if (userDao.findById(id) == null) {
             return Result.e(ResultCodeEnum.USER_NOT_EXIST);
@@ -58,7 +58,7 @@ public class UserService extends BaseService {
     /**
      * 查找用户，通过id
      */
-    public Result findById(int id) {
+    public Result findById(long id) {
         // 查找用户，通过id
         User u = userDao.findById(id);
         // 用户不存在
@@ -170,7 +170,7 @@ public class UserService extends BaseService {
      * 删除
      */
     @Transactional
-    public Result deleteById(int id) {
+    public Result deleteById(long id) {
         // 查找用户，通过id。用户不存在
         if (userDao.findById(id) == null) {
             return Result.e(ResultCodeEnum.USER_NOT_EXIST);

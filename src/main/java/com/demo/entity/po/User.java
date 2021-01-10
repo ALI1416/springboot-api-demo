@@ -1,6 +1,7 @@
 package com.demo.entity.po;
 
 import com.demo.entity.BaseEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ public class User extends BaseEntity {
     /**
      * id
      */
-    private Integer id;
+    private Long id;
     /**
      * 账号
      */
@@ -41,6 +42,14 @@ public class User extends BaseEntity {
      * 出生年
      */
     private Integer year;
+    /**
+     * 个人简介
+     */
+    private String profile;
+    /**
+     * 备注
+     */
+    private String comment;
     /**
      * 是否删除
      */

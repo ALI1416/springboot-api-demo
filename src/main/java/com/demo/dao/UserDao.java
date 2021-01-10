@@ -1,9 +1,9 @@
 package com.demo.dao;
 
+import java.util.List;
+
 import com.demo.entity.po.User;
 import com.demo.entity.vo.UserVo;
-
-import java.util.List;
 
 /**
  * <h1>用户业务逻辑接口</h1>
@@ -25,7 +25,7 @@ public interface UserDao {
     /**
      * 查询，通过id
      */
-    User findById(Integer id);
+    User findById(Long id);
 
     /**
      * 查询，通过account
@@ -50,6 +50,6 @@ public interface UserDao {
     /**
      * 删除，通过id
      */
-    int deleteById(int id);
+    int deleteById(long id);
 
 }

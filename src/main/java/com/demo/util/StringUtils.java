@@ -1,12 +1,12 @@
 package com.demo.util;
 
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.springframework.stereotype.Component;
 
 /**
  * <h1>字符串工具</h1>
@@ -136,16 +136,62 @@ public class StringUtils {
      */
     public static String getAnsj(String s) {
         // 标准分词 没有词性 去掉英文标点符号 多个空格合成1个 去除首尾空格
-        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ").trim();
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ")
+                .trim();
     }
 
     /**
-     * 获取64位uuid
+     * 是空字符串
+     * 
+     * @param string 字符串
+     */
+    public static boolean isEmpty(String string) {
+        return string == null || string.length() == 0;
+    }
+
+    /**
+     * 存在空字符串
+     * 
+     * @param strings 字符串
+     */
+    public static boolean existEmpty(String... strings) {
+        for (String string : strings) {
+            if (string == null || string.length() == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是空白字符串
+     * 
+     * @param string 字符串
+     */
+    public static boolean isBlack(String string) {
+        return string == null || string.trim().length() == 0;
+    }
+
+    /**
+     * 存在空白字符串
+     * 
+     * @param strings 字符串
+     */
+    public static boolean existBlack(String... strings) {
+        for (String string : strings) {
+            if (string == null || string.trim().length() == 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 获取64位uuid(去除-)
      *
      * @see java.util.UUID#randomUUID()
      */
     public static String getUuid() {
-        // 去除-
         return UUID.randomUUID().toString().replaceAll("-", "");
     }
 

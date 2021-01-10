@@ -1,7 +1,10 @@
 package com.demo.util;
 
-import com.alibaba.fastjson.JSON;
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -22,7 +25,7 @@ import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.common.xcontent.XContentType;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.fetch.subphase.FetchSourceContext;
@@ -31,10 +34,9 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+import com.alibaba.fastjson.JSON;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>ElasticSearch工具</h1>
@@ -64,32 +66,14 @@ public class EsUtils {
     /**
      * 创建索引
      *
-     * @param index 索引名
+     * @param index   索引名
+     * @param mapping 字段map(json格式)
      * @return 是否成功
      */
-    public static boolean createIndex(String index) {
+    public static boolean createIndex(String index, String mapping) {
         CreateIndexRequest request = new CreateIndexRequest(index);
         /* 设置类型字段类型 */
-        // {
-        //   "properties": {
-        //     "account": {//字段名
-        //       "type": "text",//类型keyword、text
-        //       "analyzer": "ik_max_word",//分词器standard、ik_smart、ik_max_word
-        //       "search_analyzer": "ik_max_word"//搜索用分词器
-        //     }
-        //   }
-        // }
-        request.mapping(//
-                "{\n" +//
-                        "  \"properties\": {\n" +//
-                        "    \"account\": {\n" +//
-                        "      \"type\": \"text\",\n" +//
-                        "      \"analyzer\": \"ik_max_word\",\n" +//
-                        "      \"search_analyzer\": \"ik_max_word\"\n" +//
-                        "    }\n" +//
-                        "  }\n" +//
-                        "}", //
-                XContentType.JSON);
+        request.mapping(mapping, XContentType.JSON);
         try {
             return client.indices().create(request, RequestOptions.DEFAULT).isAcknowledged();
         } catch (Exception e) {
@@ -133,7 +117,6 @@ public class EsUtils {
     /**
      * 新增文档(随机文档id)
      *
-     * @param <T>    对象
      * @param index  索引名
      * @param object 文档名
      */
@@ -144,7 +127,6 @@ public class EsUtils {
     /**
      * 新增文档
      *
-     * @param <T>    对象
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
@@ -200,7 +182,6 @@ public class EsUtils {
     /**
      * 更新文档
      *
-     * @param <T>    对象
      * @param index  索引名
      * @param id     文档id
      * @param object 对象
@@ -235,7 +216,6 @@ public class EsUtils {
     /**
      * 批量新增文档
      *
-     * @param <T>     对象
      * @param index   索引名
      * @param objects 带文档id对象Map
      */
@@ -259,7 +239,6 @@ public class EsUtils {
     /**
      * 批量新增文档(随机文档id)
      *
-     * @param <T>     对象
      * @param index   索引名
      * @param objects 随机文档id对象List
      */
@@ -281,44 +260,112 @@ public class EsUtils {
 
     /**
      * 查询文档
-     *
-     * @param index 索引名
-     * @param value 查询的值
+     * 
+     * @param index            索引名
+     * @param queryBuilder     查询构造器
+     * @param highlightBuilder 高亮构造器(默认关闭)
+     * @param pages            页码(默认1)
+     * @param rows             每页条数(默认10)
+     * @param minScore         最小分数(默认0)
      */
-    public static List<Map<String, Object>> search(String index, String value) {
+    public static SearchResponse search(String index, QueryBuilder queryBuilder, HighlightBuilder highlightBuilder,
+            Integer pages, Integer rows, Float minScore) {
         SearchRequest request = new SearchRequest(index);
-        /*查询构造器*/
         SearchSourceBuilder builder = new SearchSourceBuilder();
-        // 字段名
-        String field = "account";
-        /* 模糊查询(匹配字段,匹配值) */
-        builder.query(//
-                QueryBuilders.matchQuery(field, value)//
-        );
-        /* 高亮查询 */
-        builder.highlighter(//
-                new HighlightBuilder()//
-                        .field(field)// 匹配字段
-                // .requireFieldMatch(false)// 匹配所有字段
-                // .preTags("<span style='color:red'>")// 内容前缀
-                // .postTags("</span>")// 内容后缀
-        );//
-        /* 分页查询(从第几条开始查询,查询多少条) */
-        builder.from(0).size(10);
-        /*最小分数*/
-        builder.minScore(1.0f);
+        /* 查询 */
+        builder.query(queryBuilder);
+        /* 高亮 */
+        builder.highlighter(highlightBuilder);
+        /* 分页查询 */
+        if (pages != null && rows != null && pages > 0 && rows > 0) {
+            // 从第几条开始查询，查询多少条
+            builder.from((pages - 1) * rows).size(rows);
+        }
+        /* 最小分数 */
+        if (minScore != null) {
+            builder.minScore(minScore);
+        }
         request.source(builder);
-        /*返回结果*/
-        SearchResponse response;
         try {
-            response = client.search(request, RequestOptions.DEFAULT);
+            return client.search(request, RequestOptions.DEFAULT);
         } catch (Exception e) {
             log.error("查询文档异常", e);
             return null;
         }
-        List<Map<String, Object>> list = new ArrayList<>();
+    }
+
+    /**
+     * 分析文本
+     *
+     * @param analyzer 分析器standard、ik_smart、ik_max_word
+     * @param text     文本
+     */
+    public static AnalyzeResponse analyze(String analyzer, String text) {
+        AnalyzeRequest request = AnalyzeRequest.withGlobalAnalyzer(analyzer, text);
+        try {
+            return client.indices().analyze(request, RequestOptions.DEFAULT);
+        } catch (Exception e) {
+            log.error("分析文本异常", e);
+            return null;
+        }
+    }
+
+    /**
+     * 提取结果
+     * 
+     * @param searchResponse searchResponse
+     */
+    public static List<Map<String, Object>> extractResult(SearchResponse searchResponse) {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (SearchHit documentFields : searchResponse.getHits().getHits()) {
+            result.add(documentFields.getSourceAsMap());
+        }
+        return result;
+    }
+
+    /**
+     * 提取高亮后的结果(启用去除相邻标签)
+     * 
+     * @param searchResponse searchResponse
+     */
+    public static List<Map<String, Object>> extractHighlightResult(SearchResponse searchResponse) {
+        return extractHighlightResult(searchResponse, null, null);
+    }
+
+    /**
+     * 提取高亮后的结果(启用去除相邻标签)
+     * 
+     * @param searchResponse searchResponse
+     * @param regexTag       去除标签的正则表达式(默认&lt;/em>&lt;em>)
+     */
+    public static List<Map<String, Object>> extractHighlightResult(SearchResponse searchResponse, String regexTag) {
+        return extractHighlightResult(searchResponse, null, regexTag);
+    }
+
+    /**
+     * 提取高亮后的结果
+     * 
+     * @param searchResponse          searchResponse
+     * @param enableRemoveAdjacentTag 启用去除相邻标签(默认true)
+     * @param regexTag                去除标签的正则表达式(默认&lt;/em>&lt;em>)
+     */
+    public static List<Map<String, Object>> extractHighlightResult(SearchResponse searchResponse,
+            Boolean enableRemoveAdjacentTag, String regexTag) {
+        /* 是否启用去除 */
+        if (enableRemoveAdjacentTag == null || enableRemoveAdjacentTag) {
+            // 启用去除
+            if (regexTag == null) {
+                // 标签默认
+                regexTag = "</em><em>";
+            }
+            // else 自定义标签
+        } else {
+            // 不用去除
+            regexTag = null;
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
         /* 设置高亮 */
-        for (SearchHit documentFields : response.getHits().getHits()) {
+        for (SearchHit documentFields : searchResponse.getHits().getHits()) {
             // 原来的内容
             Map<String, Object> sourceAsMap = documentFields.getSourceAsMap();
             // 找到所有的高亮字段
@@ -334,36 +381,21 @@ public class EsUtils {
                     for (Text text : fragments) {
                         texts.append(text);
                     }
+                    String text = regexTag == null ? texts.toString() : removeAdjacentTag(texts, regexTag);
                     // 替换原来的内容(高亮字段,所有行内容)
-                    sourceAsMap.put(highlightFieldEntry.getKey(), removeAdjacentTag(texts, "</em><em>"));
+                    sourceAsMap.put(highlightFieldEntry.getKey(), text);
                 }
             }
-            list.add(sourceAsMap);
+            result.add(sourceAsMap);
         }
-        return list;
-    }
-
-    /**
-     * 分析文本
-     *
-     * @param analyzer 分析器standard、ik_smart、ik_max_word
-     * @param text     文本
-     */
-    public static List<AnalyzeResponse.AnalyzeToken> analyze(String analyzer, String text) {
-        AnalyzeRequest request = AnalyzeRequest.withGlobalAnalyzer(analyzer, text);
-        try {
-            return client.indices().analyze(request, RequestOptions.DEFAULT).getTokens();
-        } catch (Exception e) {
-            log.error("分析文本异常", e);
-            return null;
-        }
+        return result;
     }
 
     /**
      * 去除相邻标签
      *
      * @param texts    文本
-     * @param regexTag 正则表达式转义后的标签
+     * @param regexTag 去除标签的正则表达式
      */
     public static String removeAdjacentTag(StringBuilder texts, String regexTag) {
         return texts.toString().replaceAll(regexTag, "");

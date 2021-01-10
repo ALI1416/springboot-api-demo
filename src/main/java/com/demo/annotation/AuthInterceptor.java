@@ -42,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 // 进行拦截
-                if (AuthImpl.authToken(request.getHeader("id"), request.getHeader("token"))) {
+                if (AuthImpl.authToken(request.getHeader("timestamp"), request.getHeader("token"))) {
                     // token验证成功
                     return true;
                 } else {

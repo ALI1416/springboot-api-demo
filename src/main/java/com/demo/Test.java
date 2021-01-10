@@ -20,7 +20,7 @@ public class Test {
 
     public static void main(String[] args) {
         User u = new User();
-        u.setId(0);
+        u.setId(0L);
         u.setAccount("root");
         u.setName("root");
         u.setGender(0);
@@ -28,7 +28,7 @@ public class Test {
         System.out.println(u);
 
         UserVo uv = new UserVo();
-        uv.setId(1);
+        uv.setId(1L);
         uv.setAccount("admin");
         uv.setName("ck");
         uv.setGender(1);

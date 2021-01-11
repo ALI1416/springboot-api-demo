@@ -1,38 +1,37 @@
 package com.demo.config;
 
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * <h1>将ResponseBody的JSON转换器换成FastJson配置</h1>
+ * <h1>消息转换器配置</h1>
  *
  * <p>
- * createDate 2020/12/29 16:00:05
+ * createDate 2021/01/11 19:53:12
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 @Configuration
-public class FastJsonResponseBodyConfig {
+public class HttpMessageConvertersConfig {
 
     /**
-     * 配置消息转换器
+     * 替换成FastJson
      */
     @Bean
     public HttpMessageConverters fastJsonMessageConverters() {
-        // 消息转换对象
+        // 消息转换器对象
         List<HttpMessageConverter<?>> converters = new ArrayList<>();
         // FastJson消息转换对象
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
@@ -46,7 +45,7 @@ public class FastJsonResponseBodyConfig {
         // 日期设置
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         // 编码设置
-        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
+        fastJsonConfig.setCharset(StandardCharsets.UTF_8);
         // MediaType配置
         List<MediaType> fastMediaTypes = new ArrayList<>();
         // application/json

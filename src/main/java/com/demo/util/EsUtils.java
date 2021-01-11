@@ -1,10 +1,7 @@
 package com.demo.util;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
@@ -34,9 +31,10 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alibaba.fastjson.JSON;
-
-import lombok.extern.slf4j.Slf4j;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * <h1>ElasticSearch工具</h1>
@@ -260,7 +258,7 @@ public class EsUtils {
 
     /**
      * 查询文档
-     * 
+     *
      * @param index            索引名
      * @param queryBuilder     查询构造器
      * @param highlightBuilder 高亮构造器(默认关闭)
@@ -269,7 +267,7 @@ public class EsUtils {
      * @param minScore         最小分数(默认0)
      */
     public static SearchResponse search(String index, QueryBuilder queryBuilder, HighlightBuilder highlightBuilder,
-            Integer pages, Integer rows, Float minScore) {
+                                        Integer pages, Integer rows, Float minScore) {
         SearchRequest request = new SearchRequest(index);
         SearchSourceBuilder builder = new SearchSourceBuilder();
         /* 查询 */
@@ -312,7 +310,7 @@ public class EsUtils {
 
     /**
      * 提取结果
-     * 
+     *
      * @param searchResponse searchResponse
      */
     public static List<Map<String, Object>> extractResult(SearchResponse searchResponse) {
@@ -325,7 +323,7 @@ public class EsUtils {
 
     /**
      * 提取高亮后的结果(启用去除相邻标签)
-     * 
+     *
      * @param searchResponse searchResponse
      */
     public static List<Map<String, Object>> extractHighlightResult(SearchResponse searchResponse) {
@@ -334,7 +332,7 @@ public class EsUtils {
 
     /**
      * 提取高亮后的结果(启用去除相邻标签)
-     * 
+     *
      * @param searchResponse searchResponse
      * @param regexTag       去除标签的正则表达式(默认&lt;/em>&lt;em>)
      */
@@ -344,13 +342,13 @@ public class EsUtils {
 
     /**
      * 提取高亮后的结果
-     * 
+     *
      * @param searchResponse          searchResponse
      * @param enableRemoveAdjacentTag 启用去除相邻标签(默认true)
      * @param regexTag                去除标签的正则表达式(默认&lt;/em>&lt;em>)
      */
     public static List<Map<String, Object>> extractHighlightResult(SearchResponse searchResponse,
-            Boolean enableRemoveAdjacentTag, String regexTag) {
+                                                                   Boolean enableRemoveAdjacentTag, String regexTag) {
         /* 是否启用去除 */
         if (enableRemoveAdjacentTag == null || enableRemoveAdjacentTag) {
             // 启用去除

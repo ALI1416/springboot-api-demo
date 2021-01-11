@@ -19,10 +19,17 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ElasticSearchConfig {
 
+    /**
+     * rest风格高级客户端
+     */
     @Bean
     public RestHighLevelClient restHighLevelClient() {
-        RestHighLevelClient client = new RestHighLevelClient(
-                RestClient.builder(new HttpHost("localhost", 9200, "http")));
-        return client;
+        return new RestHighLevelClient(//
+                RestClient.builder(//
+                        new HttpHost(//
+                                "localhost",//主机
+                                9200, //端口
+                                "http"//协议
+                        )));
     }
 }

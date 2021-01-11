@@ -1,12 +1,11 @@
 package com.demo.entity;
 
-import java.sql.Timestamp;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.sql.Timestamp;
 
 /**
  * <h1>基实体</h1>
@@ -22,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class BaseEntity {
 
-    /* ====================po==================== */
+    /* ==================== po ==================== */
     /**
      * id
      */
@@ -52,7 +51,7 @@ public class BaseEntity {
      */
     private Integer version;
 
-    /* ====================vo==================== */
+    /* ==================== vo ==================== */
     /**
      * 分页-页码
      */
@@ -66,7 +65,8 @@ public class BaseEntity {
      */
     private String orderBy;
 
-    /* ====================all==================== */
+    /* ==================== all ==================== */
+
     /**
      * 重写toString成JSON格式
      */

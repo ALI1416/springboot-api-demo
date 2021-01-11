@@ -6,7 +6,9 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
+import com.demo.tool.Id;
 import com.demo.util.EncoderUtils;
+import com.demo.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -38,7 +40,7 @@ public class UserController {
      * 是否存在该id
      */
     @PostMapping("/existId")
-    public Result existId(int id) {
+    public Result existId(long id) {
         return userService.existId(id);
     }
 
@@ -47,7 +49,7 @@ public class UserController {
      */
     @PostMapping("/existAccount")
     public Result existAccount(String account) {
-        if (account == null || account.isEmpty()) {
+        if (StringUtils.existEmpty(account)) {
             return Result.e1();
         }
         return userService.existAccount(account);
@@ -58,13 +60,14 @@ public class UserController {
      */
     @PostMapping("/register")
     public Result register(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().isEmpty() || user.getPwd().length() != 32) {
+        if (StringUtils.existEmpty(user.getAccount(), user.getPwd()) || user.getPwd().length() != 32) {
             return Result.e1();
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (user.getName() == null || user.getName().isEmpty()) {
+        if (StringUtils.existEmpty(user.getName())) {
             user.setName(user.getAccount());
         }
+        user.setId(Id.next());
         return userService.register(user);
     }
 
@@ -72,7 +75,7 @@ public class UserController {
      * 查找用户，通过id
      */
     @PostMapping("/findById")
-    public Result findById(int id) {
+    public Result findById(long id) {
         return userService.findById(id);
     }
 
@@ -89,7 +92,7 @@ public class UserController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if (user.getAccount() == null || user.getPwd() == null || user.getAccount().isEmpty() || user.getPwd().length() != 32) {
+        if ((StringUtils.existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
             return Result.e1();
         }
         return userService.login(user);
@@ -121,7 +124,7 @@ public class UserController {
      * 删除
      */
     @PostMapping("/deleteById")
-    public Result deleteById(int id) {
+    public Result deleteById(long id) {
         return userService.deleteById(id);
     }
 
@@ -133,7 +136,7 @@ public class UserController {
         // 数据完整性检查
         ResultBatch<User> result = new ResultBatch<>();
         for (User u : user) {
-            if (u.getAccount() == null || u.getAccount().isEmpty()) {
+            if (StringUtils.existEmpty(u.getAccount())) {
                 result.add(false, u, "账号不能为空");
             } else {
                 result.add(u);
@@ -145,22 +148,14 @@ public class UserController {
         }
         // 补充缺失信息
         for (User u : user) {
-            if (u.getPwd() == null || u.getPwd().isEmpty()) {
+            if (StringUtils.existEmpty(u.getPwd())) {
                 u.setPwd(u.getAccount());
             }
             u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
-            if (u.getName() == null || u.getName().isEmpty()) {
+            if (StringUtils.existEmpty(u.getName())) {
                 u.setName(u.getAccount());
             }
-            if (u.getGender() == null) {
-                u.setGender(0);
-            }
-            if (u.getYear() == null) {
-                u.setYear(2000);
-            }
-            if (u.getIsDelete() == null) {
-                u.setIsDelete(0);
-            }
+            u.setId(Id.next());
         }
         return userService.batchRegister(user);
     }

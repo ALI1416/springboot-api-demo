@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserVo extends User {
+
     /**
      * 新密码
      */

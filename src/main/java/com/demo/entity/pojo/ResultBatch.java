@@ -1,10 +1,11 @@
 package com.demo.entity.pojo;
 
-import com.demo.entity.BaseEntity;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.demo.entity.BaseEntity;
+
+import lombok.Getter;
 
 /**
  * <h1>批量返回结果实体</h1>
@@ -80,15 +81,15 @@ public class ResultBatch<T> extends BaseEntity {
      */
     public void add(boolean ok, T t, String msg) {
         if (ok) {
-            listTrue.add(t);
-            listTrueMsg.add(msg);
-            totalTrue += 1;
+            this.listTrue.add(t);
+            this.listTrueMsg.add(msg);
+            this.totalTrue += 1;
         } else {
-            listFalse.add(t);
-            listFalseMsg.add(msg);
-            totalFalse += 1;
+            this.listFalse.add(t);
+            this.listFalseMsg.add(msg);
+            this.totalFalse += 1;
             this.ok = false;
         }
-        total += 1;
+        this.total += 1;
     }
 }

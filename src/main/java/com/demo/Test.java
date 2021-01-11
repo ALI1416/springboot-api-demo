@@ -1,5 +1,7 @@
 package com.demo;
 
+import java.sql.Timestamp;
+
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -25,6 +27,7 @@ public class Test {
         u.setName("root");
         u.setGender(0);
         u.setYear(0);
+        u.setCreateTime(new Timestamp(System.currentTimeMillis()));
         System.out.println(u);
 
         UserVo uv = new UserVo();

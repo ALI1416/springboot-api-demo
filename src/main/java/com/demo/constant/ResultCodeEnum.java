@@ -1,5 +1,7 @@
 package com.demo.constant;
 
+import lombok.Getter;
+
 /**
  * <h1>返回结果状态</h1>
  *
@@ -10,15 +12,16 @@ package com.demo.constant;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Getter
 public enum ResultCodeEnum {
 
-    /* 成功0 */
+    /* ====================成功0==================== */
     /**
      * 成功0
      */
     OK(0, "成功"),
 
-    /* 通用100-999 */
+    /* ====================通用100-999==================== */
     /**
      * 系统繁忙100
      */
@@ -42,8 +45,9 @@ public enum ResultCodeEnum {
     /**
      * 方法不支持105
      */
-    NOT_SUPPORTED(105,"方法不支持"),
-    /* 用户相关1000-1999 */
+    NOT_SUPPORTED(105, "方法不支持"),
+
+    /* ====================用户相关1000-1999==================== */
     /**
      * 用户未登录或登录已过期1001
      */
@@ -65,20 +69,21 @@ public enum ResultCodeEnum {
      */
     USER_HAS_EXISTED(1005, "账号已存在"),
 
-    /* 未知错误-1 */
+    /* ====================未知错误-1==================== */
     /**
      * 未知错误-1
      */
     ERROR(-1, "未知错误");
 
+    // ====================枚举字段和构造器==================== //
     /**
      * 状态码
      */
-    public final int code;
+    private final int code;
     /**
      * 状态信息
      */
-    public final String msg;
+    private final String msg;
 
     /**
      * 构造函数
@@ -86,7 +91,7 @@ public enum ResultCodeEnum {
      * @param code 状态码
      * @param msg  信息
      */
-    ResultCodeEnum(int code, String msg) {
+    private ResultCodeEnum(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

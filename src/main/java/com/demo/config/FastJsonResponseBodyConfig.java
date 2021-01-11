@@ -1,0 +1,59 @@
+package com.demo.config;
+
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
+
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+
+/**
+ * <h1>将ResponseBody的JSON转换器换成FastJson配置</h1>
+ *
+ * <p>
+ * createDate 2020/12/29 16:00:05
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
+ **/
+@Configuration
+public class FastJsonResponseBodyConfig {
+
+    /**
+     * 配置消息转换器
+     */
+    @Bean
+    public HttpMessageConverters fastJsonMessageConverters() {
+        // 消息转换对象
+        List<HttpMessageConverter<?>> converters = new ArrayList<>();
+        // FastJson消息转换对象
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+        // FastJson配置
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        // 序列化设置
+        fastJsonConfig.setSerializerFeatures(//
+                SerializerFeature.DisableCircularReferenceDetect, // 禁用对象循环引用：避免$ref
+                SerializerFeature.WriteNonStringValueAsString// 非String转为String：防止long丢失精度
+        );
+        // 日期设置
+        fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
+        // 编码设置
+        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
+        // MediaType配置
+        List<MediaType> fastMediaTypes = new ArrayList<>();
+        // application/json
+        fastMediaTypes.add(MediaType.APPLICATION_JSON);
+        fastConverter.setSupportedMediaTypes(fastMediaTypes);
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+        converters.add(0, fastConverter);
+        return new HttpMessageConverters(converters);
+    }
+}

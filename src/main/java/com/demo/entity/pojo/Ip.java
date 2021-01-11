@@ -17,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Ip extends BaseEntity {
+
     /**
      * 国家
      */

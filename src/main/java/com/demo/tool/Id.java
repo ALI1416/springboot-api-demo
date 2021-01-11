@@ -22,9 +22,12 @@ public final class Id {
     }
 
     /**
-     * 初始时间戳(如果发生回拨，这个值会减少)
+     * 初始时间戳(如果发生回拨，这个值会减少)<br>
+     * 1609459200000的<br>
+     * 格林尼治时间为2021-01-01 00:00:00 GMT+0<br>
+     * 北京时间为2021-01-01 08:00:00 GMT+8
      **/
-    private static long startTimestamp = 1608652800000L;
+    private static long startTimestamp = 1609459200000L;
     /**
      * 上一次生成的时间戳
      */
@@ -82,7 +85,8 @@ public final class Id {
         // 时间戳位数过小(需要留给时间戳35位才能使用1年，其中二进制头部占1位为0来保证生成的id是正数)
         // 28 = 64 - 35 - 1
         if (SEQUENCE_BITS + MACHINE_BITS > 28) {
-            App.shutdown(new IllegalArgumentException("时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为" + (SEQUENCE_BITS + MACHINE_BITS)));
+            App.shutdown(new IllegalArgumentException(
+                    "时间戳分配的位数过小，需要SEQUENCE_BITS+MACHINE_BITS<=28。当前为" + (SEQUENCE_BITS + MACHINE_BITS)));
         }
     }
 

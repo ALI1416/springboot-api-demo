@@ -18,10 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User extends BaseEntity {
-    /**
-     * id
-     */
-    private Long id;
+
     /**
      * 账号
      */
@@ -50,9 +47,5 @@ public class User extends BaseEntity {
      * 备注
      */
     private String comment;
-    /**
-     * 是否删除
-     */
-    private Integer isDelete;
 
 }

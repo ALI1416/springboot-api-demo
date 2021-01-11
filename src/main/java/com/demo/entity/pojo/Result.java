@@ -39,10 +39,10 @@ public class Result extends BaseEntity {
      * 构造函数
      */
     private Result(ResultCodeEnum resultCodeEnum, Object data) {
-        this.code = resultCodeEnum.code;
-        this.msg = resultCodeEnum.msg;
+        this.code = resultCodeEnum.getCode();
+        this.msg = resultCodeEnum.getMsg();
         this.data = data;
-        ok = (code == ResultCodeEnum.OK.code);
+        this.ok = (this.code == ResultCodeEnum.OK.getCode());
     }
 
     /**
@@ -52,7 +52,7 @@ public class Result extends BaseEntity {
         this.code = code;
         this.msg = msg;
         this.data = data;
-        ok = (code == ResultCodeEnum.OK.code);
+        this.ok = (this.code == ResultCodeEnum.OK.getCode());
     }
 
     /**
@@ -73,14 +73,14 @@ public class Result extends BaseEntity {
      * 成功
      */
     public static Result o(String msg) {
-        return new Result(ResultCodeEnum.OK.code, msg, null);
+        return new Result(ResultCodeEnum.OK.getCode(), msg, null);
     }
 
     /**
      * 成功
      */
     public static Result o(String msg, Object data) {
-        return new Result(ResultCodeEnum.OK.code, msg, data);
+        return new Result(ResultCodeEnum.OK.getCode(), msg, data);
     }
 
     /**
@@ -101,14 +101,14 @@ public class Result extends BaseEntity {
      * 错误
      */
     public static Result e(ResultCodeEnum resultCodeEnum, String msg) {
-        return new Result(resultCodeEnum.code, msg, null);
+        return new Result(resultCodeEnum.getCode(), msg, null);
     }
 
     /**
      * 错误
      */
     public static Result e(ResultCodeEnum resultCodeEnum, String msg, Object data) {
-        return new Result(resultCodeEnum.code, msg, data);
+        return new Result(resultCodeEnum.getCode(), msg, data);
     }
 
     /**

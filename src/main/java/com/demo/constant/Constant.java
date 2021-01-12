@@ -26,15 +26,24 @@ public class Constant {
     public final static String PAGE_DEFAULT_ORDER_BY = "id desc";
 
     /**
-     * 常量A
+     * 启用表备份{@value}
+     */
+    public final static boolean ENABLE_BAK = true;
+    /**
+     * 启用表日志{@value}
+     */
+    public final static boolean ENABLE_LOG = true;
+
+    /**
+     * 常量A{@value}
      */
     public final static int A = 1;
     /**
-     * 常量B
+     * 常量B{@value}
      */
     public final static int B = 2;
     /**
-     * 常量C
+     * 常量C{@value}
      */
     public final static int C = 3;
 }

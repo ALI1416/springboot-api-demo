@@ -91,13 +91,17 @@ public class UserService extends BaseService {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
         // 插入
-        Result result = tryif(() -> (userDao.insert(user) == 1));
+        Result result = tryif(() -> (userDao.register(user) == 1));
         // 失败
         if (!result.isOk()) {
             return result;
         }
-        user.setPwd(null);
-        return Result.o(user);
+        // 重新查找
+        User u = userDao.findById(user.getId());
+        // 备份
+        recordBak(() -> userDao.registerBak(u));
+        u.setPwd(null);
+        return Result.o(u);
     }
 
     /**
@@ -192,7 +196,7 @@ public class UserService extends BaseService {
         ResultBatch<User> result = new ResultBatch<>();
         for (User user : list) {
             // 插入
-            Result ok = tryif(false, () -> (userDao.insert(user) == 1));
+            Result ok = tryif(false, () -> (userDao.register(user) == 1));
             user.setPwd(null);
             result.add(ok.isOk(), user, ok.getMsg());
         }

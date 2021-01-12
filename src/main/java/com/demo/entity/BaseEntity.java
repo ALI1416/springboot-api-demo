@@ -1,11 +1,12 @@
 package com.demo.entity;
 
+import java.sql.Timestamp;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.sql.Timestamp;
 
 /**
  * <h1>基实体</h1>
@@ -22,6 +23,10 @@ import java.sql.Timestamp;
 public class BaseEntity {
 
     /* ==================== po ==================== */
+    /**
+     * 自增id(仅用在表名后缀为_bak(备份)和_log(日志)表中)
+     */
+    private Integer autoIncrementId;
     /**
      * id
      */

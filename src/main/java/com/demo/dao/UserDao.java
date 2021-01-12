@@ -18,9 +18,14 @@ import com.demo.entity.vo.UserVo;
 public interface UserDao {
 
     /**
-     * 插入
+     * 注册
      */
-    int insert(User user);
+    int register(User user);
+
+    /**
+     * 注册备份
+     */
+    int registerBak(User user);
 
     /**
      * 查询，通过id

@@ -2,107 +2,30 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.UserDao">
 
-	<sql id="col">id,account,pwd,name,gender,year,profile,comment,is_delete,create_id,create_time,update_id,update_time,version</sql>
-	<sql id="col2">id,account,name,gender,year,profile,comment,is_delete,create_id,create_time,update_id,update_time,version</sql>
+	<sql id="col">id,account,pwd,name,gender,year,profile,comment,is_delete,create_id,create_time,update_id,update_time,version
+	</sql>
 
-	<insert id="insert" parameterType="User" keyProperty="id"
-			useGeneratedKeys="true">
-		INSERT user (
-		<trim prefix="" suffixOverrides=",">
-			<if test="id != null">
-				id,
-			</if>
-			<if test="account != null">
-				account,
-			</if>
-			<if test="pwd != null">
-				pwd,
-			</if>
-			<if test="name != null">
-				name,
-			</if>
-			<if test="gender != null">
-				gender,
-			</if>
-			<if test="year != null">
-				year,
-			</if>
-			<if test="profile != null">
-				profile,
-			</if>
-			<if test="comment != null">
-				comment,
-			</if>
-			<if test="isDelete != null">
-				is_delete,
-			</if>
-			<if test="createId != null">
-				create_id,
-			</if>
-			<if test="createTime != null">
-				create_time,
-			</if>
-			<if test="updateId != null">
-				update_id,
-			</if>
-			<if test="updateTime != null">
-				update_time,
-			</if>
-			<if test="version != null">
-				version,
-			</if>
-		</trim>
+	<insert id="register" parameterType="User" keyProperty="id">
+		INSERT
+		user(
+		id,account,pwd,name
 		)VALUES(
-		<trim prefix="" suffixOverrides=",">
-			<if test="id != null">
-				#{id},
-			</if>
-			<if test="account != null">
-				#{account},
-			</if>
-			<if test="pwd != null">
-				#{pwd},
-			</if>
-			<if test="name != null">
-				#{name},
-			</if>
-			<if test="gender != null">
-				#{gender},
-			</if>
-			<if test="year != null">
-				#{year},
-			</if>
-			<if test="profile != null">
-				#{profile},
-			</if>
-			<if test="comment != null">
-				#{comment},
-			</if>
-			<if test="isDelete != null">
-				#{isDelete},
-			</if>
-			<if test="createId != null">
-				#{createId},
-			</if>
-			<if test="createTime != null">
-				#{createTime},
-			</if>
-			<if test="updateId != null">
-				#{updateId},
-			</if>
-			<if test="updateTime != null">
-				#{updateTime},
-			</if>
-			<if test="version != null">
-				#{version},
-			</if>
-		</trim>
+		#{id},#{account},#{pwd},#{name}
+		)
+	</insert>
+
+	<insert id="registerBak" parameterType="User" keyProperty="id">
+		INSERT
+		user_bak(
+		<include refid="col" />
+		)VALUES(
+		#{id},#{account},#{pwd},#{name},#{gender},#{year},#{profile},#{comment},#{isDelete},#{createId},#{createTime},#{updateId},#{updateTime},#{version}
 		)
 	</insert>
 
 	<select id="findById" parameterType="Long" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
@@ -110,9 +33,9 @@
 	</select>
 
 	<select id="findByAccount" parameterType="String"
-			resultType="User">
+		resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
@@ -121,7 +44,7 @@
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col2"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -148,7 +71,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col2"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -156,11 +79,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'"/>
+				<bind name="account1" value="'%'+ account +'%'" />
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'"/>
+				<bind name="name1" value="'%'+ name +'%'" />
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -168,7 +91,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null"/>
+				<when test="year == null and yearEnd == null" />
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">

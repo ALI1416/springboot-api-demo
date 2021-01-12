@@ -1,11 +1,5 @@
 package com.demo.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserDao;
 import com.demo.entity.po.User;
@@ -14,8 +8,12 @@ import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.util.EncoderUtils;
 import com.github.pagehelper.PageInfo;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * <h1>User服务</h1>
@@ -96,12 +94,10 @@ public class UserService extends BaseService {
         if (!result.isOk()) {
             return result;
         }
-        // 重新查找
-        User u = userDao.findById(user.getId());
         // 备份
-        recordBak(() -> userDao.registerBak(u));
-        u.setPwd(null);
-        return Result.o(u);
+        recordBak(() -> userDao.bak(user.getId()));
+        user.setPwd(null);
+        return Result.o(user);
     }
 
     /**
@@ -129,10 +125,20 @@ public class UserService extends BaseService {
         if (u == null) {
             return Result.e(ResultCodeEnum.USER_NOT_EXIST);
         }
-        // 查找用户，通过account。用户存在（修改account）
-        if (userDao.findByAccount(user.getAccount()) != null) {
-            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
+        // 修改account
+        if (user.getAccount() != null) {
+            // 要修改的account和以前的需要一样
+            if (!user.getAccount().equals(u.getAccount())) {
+                // 查找用户，通过account
+                if (userDao.findByAccount(user.getAccount()) != null) {
+                    // 用户已存在
+                    return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
+                }
+            } else {
+                user.setAccount(null);
+            }
         }
+        // 不能修改密码
         user.setPwd(null);
         // 更新
         Result result = tryif(() -> (userDao.updateById(user) == 1));
@@ -140,6 +146,8 @@ public class UserService extends BaseService {
         if (!result.isOk()) {
             return result;
         }
+        // 备份
+        recordBak(() -> userDao.bak(user.getId()));
         return Result.o(user);
     }
 
@@ -167,6 +175,8 @@ public class UserService extends BaseService {
         if (!result.isOk()) {
             return result;
         }
+        // 备份
+        recordBak(() -> userDao.bak(u.getId()));
         return Result.o();
     }
 
@@ -185,6 +195,8 @@ public class UserService extends BaseService {
         if (!result.isOk()) {
             return result;
         }
+        // 备份
+        recordBak(() -> userDao.bak(id));
         return Result.o();
     }
 
@@ -199,6 +211,10 @@ public class UserService extends BaseService {
             Result ok = tryif(false, () -> (userDao.register(user) == 1));
             user.setPwd(null);
             result.add(ok.isOk(), user, ok.getMsg());
+            if (ok.isOk()) {
+                // 备份
+                recordBak(() -> userDao.bak(user.getId()));
+            }
         }
         return Result.o(result);
     }

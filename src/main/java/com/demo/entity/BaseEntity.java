@@ -38,7 +38,7 @@ public class BaseEntity {
     /**
      * 创建者id
      */
-    private Integer createId;
+    private Long createId;
     /**
      * 创建时间
      */
@@ -46,7 +46,7 @@ public class BaseEntity {
     /**
      * 更新者id
      */
-    private Integer updateId;
+    private Long updateId;
     /**
      * 更新时间
      */

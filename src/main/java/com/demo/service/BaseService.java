@@ -1,17 +1,15 @@
 package com.demo.service;
 
-import java.util.List;
-
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
-
 import com.demo.constant.Constant;
 import com.demo.entity.BaseEntity;
 import com.demo.entity.pojo.Result;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
+
+import java.util.List;
 
 /**
  * <h1>基服务</h1>
@@ -137,23 +135,31 @@ public class BaseService {
 
     /**
      * 记录备份
-     * 
+     *
      * @param function 要执行的语句
      */
     public static void recordBak(Function<Integer> function) {
         if (Constant.ENABLE_BAK) {
-            function.run();
+            try {
+                function.run();
+            } catch (Exception e) {
+                log.error("记录备份异常", e);
+            }
         }
     }
 
     /**
      * 记录日志
-     * 
+     *
      * @param function 要执行的语句
      */
     public static void recordLog(Function<Integer> function) {
         if (Constant.ENABLE_LOG) {
-            function.run();
+            try {
+                function.run();
+            } catch (Exception e) {
+                log.error("记录日志异常", e);
+            }
         }
     }
 

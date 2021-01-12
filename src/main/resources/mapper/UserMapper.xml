@@ -5,6 +5,19 @@
 	<sql id="col">id,account,pwd,name,gender,year,profile,comment,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
+	<insert id="bak" parameterType="Long" keyProperty="id">
+		INSERT
+		user_bak(
+		<include refid="col"/>
+		)
+		SELECT
+		<include refid="col"/>
+		FROM
+		user
+		WHERE
+		id=#{id}
+	</insert>
+
 	<insert id="register" parameterType="User" keyProperty="id">
 		INSERT
 		user(
@@ -14,18 +27,9 @@
 		)
 	</insert>
 
-	<insert id="registerBak" parameterType="User" keyProperty="id">
-		INSERT
-		user_bak(
-		<include refid="col" />
-		)VALUES(
-		#{id},#{account},#{pwd},#{name},#{gender},#{year},#{profile},#{comment},#{isDelete},#{createId},#{createTime},#{updateId},#{updateTime},#{version}
-		)
-	</insert>
-
 	<select id="findById" parameterType="Long" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
@@ -33,9 +37,9 @@
 	</select>
 
 	<select id="findByAccount" parameterType="String"
-		resultType="User">
+			resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
@@ -44,7 +48,7 @@
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -71,7 +75,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -79,11 +83,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'" />
+				<bind name="account1" value="'%'+ account +'%'"/>
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'" />
+				<bind name="name1" value="'%'+ name +'%'"/>
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -91,7 +95,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null" />
+				<when test="year == null and yearEnd == null"/>
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">
@@ -129,9 +133,6 @@
 	<update id="updateById" parameterType="User">
 		UPDATE user
 		<set>
-			<if test="id != null">
-				id=#{id},
-			</if>
 			<if test="account != null and account != ''">
 				account=#{account},
 			</if>
@@ -147,9 +148,20 @@
 			<if test="year != null">
 				year=#{year},
 			</if>
+			<if test="profile != null and profile != ''">
+				profile=#{profile},
+			</if>
+			<if test="comment != null and comment != ''">
+				comment=#{comment},
+			</if>
 			<if test="isDelete != null">
 				is_delete=#{isDelete},
 			</if>
+			<if test="updateId != null">
+				update_id=#{updateId},
+			</if>
+			update_time=CURRENT_TIMESTAMP,
+			version=version+1,
 		</set>
 		WHERE
 		id=#{id}

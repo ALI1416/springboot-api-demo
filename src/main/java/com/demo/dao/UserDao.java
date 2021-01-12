@@ -1,9 +1,9 @@
 package com.demo.dao;
 
-import java.util.List;
-
 import com.demo.entity.po.User;
 import com.demo.entity.vo.UserVo;
+
+import java.util.List;
 
 /**
  * <h1>用户业务逻辑接口</h1>
@@ -18,14 +18,14 @@ import com.demo.entity.vo.UserVo;
 public interface UserDao {
 
     /**
+     * 插入后或更新后备份
+     */
+    int bak(long id);
+
+    /**
      * 注册
      */
     int register(User user);
-
-    /**
-     * 注册备份
-     */
-    int registerBak(User user);
 
     /**
      * 查询，通过id

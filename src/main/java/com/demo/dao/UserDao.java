@@ -1,9 +1,10 @@
 package com.demo.dao;
 
-import com.demo.entity.po.User;
-import com.demo.entity.vo.UserVo;
-
 import java.util.List;
+
+import com.demo.entity.po.User;
+import com.demo.entity.po.UserLog;
+import com.demo.entity.vo.UserVo;
 
 /**
  * <h1>用户业务逻辑接口</h1>
@@ -21,6 +22,11 @@ public interface UserDao {
      * 插入后或更新后备份
      */
     int bak(long id);
+
+    /**
+     * 登录后记录日志
+     */
+    int log(UserLog userLog);
 
     /**
      * 注册

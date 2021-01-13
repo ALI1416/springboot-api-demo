@@ -8,14 +8,23 @@
 	<insert id="bak" parameterType="Long" keyProperty="id">
 		INSERT
 		user_bak(
-		<include refid="col"/>
+		<include refid="col" />
 		)
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
 		id=#{id}
+	</insert>
+
+	<insert id="log" parameterType="UserLog" keyProperty="id">
+		INSERT
+		user(
+		id,ip,user_agent,ip_country,ip_provice,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
+		)VALUES(
+		#{id},#{ip},#{userAgent},#{ipCountry},#{ipProvice},#{ipCity},#{uaOsName},#{uaBrowserName},#{uaDeviceTypeName}
+		)
 	</insert>
 
 	<insert id="register" parameterType="User" keyProperty="id">
@@ -29,7 +38,7 @@
 
 	<select id="findById" parameterType="Long" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
@@ -37,9 +46,9 @@
 	</select>
 
 	<select id="findByAccount" parameterType="String"
-			resultType="User">
+		resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
@@ -48,7 +57,7 @@
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -75,7 +84,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -83,11 +92,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'"/>
+				<bind name="account1" value="'%'+ account +'%'" />
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'"/>
+				<bind name="name1" value="'%'+ name +'%'" />
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -95,7 +104,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null"/>
+				<when test="year == null and yearEnd == null" />
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">

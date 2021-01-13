@@ -72,6 +72,8 @@ dependencies {
     implementation 'me.ihxq.projects:phone-number-geo:1.0.6-202004'
     // 图片验证码
     implementation 'com.github.whvcse:easy-captcha:1.6.2'
+    // UserAgent解析
+    implementation 'eu.bitwalker:UserAgentUtils:1.21'
     // ansj分词
     implementation 'org.ansj:ansj_seg:5.1.6'
 /*仅编译时*/

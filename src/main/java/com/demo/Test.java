@@ -8,6 +8,8 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 
+import eu.bitwalker.useragentutils.UserAgent;
+
 /**
  * <h1>测试类</h1>
  *
@@ -57,6 +59,25 @@ public class Test {
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
 
+        // google chrome
+//        String userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36";
+        // ie9
+//        String userAgentString = "User-Agent:Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0;";
+        // safari
+//        String userAgentString = "User-Agent:Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; en-us) AppleWebKit/534.50 (KHTML, like Gecko) Version/5.1 Safari/534.50";
+        // iphone
+//        String userAgentString = "User-Agent:Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5";
+        // ipad
+//        String userAgentString = "User-Agent:Mozilla/5.0 (iPad; U; CPU OS 4_3_3 like Mac OS X; en-us) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5";
+        // android
+        String userAgentString = "User-Agent: MQQBrowser/26 Mozilla/5.0 (Linux; U; Android 2.3.7; zh-cn; MB200 Build/GRJ22; CyanogenMod-7) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.1";
+        // windows phone
+//        String userAgentString = "User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows Phone OS 7.5; Trident/5.0; IEMobile/9.0; HTC; Titan)";
+        UserAgent userAgent = new UserAgent(userAgentString);
+        System.out.println(userAgent.getBrowser().getName());
+        System.out.println(userAgent.getBrowserVersion());
+        System.out.println(userAgent.getOperatingSystem().getName());
+        System.out.println(userAgent.getOperatingSystem().getDeviceType().getName());
     }
 
 }

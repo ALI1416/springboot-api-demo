@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <h1>User api</h1>
  *
@@ -91,11 +93,11 @@ public class UserController {
      * 登录
      */
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody User user, HttpServletRequest request) {
         if ((StringUtils.existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
             return Result.e1();
         }
-        return userService.login(user);
+        return userService.login(user, request);
     }
 
     /**
@@ -114,7 +116,8 @@ public class UserController {
      */
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         return userService.changePwd(user);

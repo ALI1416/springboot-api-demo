@@ -1,19 +1,29 @@
 package com.demo.service;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.dao.UserDao;
-import com.demo.entity.po.User;
-import com.demo.entity.pojo.Result;
-import com.demo.entity.pojo.ResultBatch;
-import com.demo.entity.vo.UserVo;
-import com.demo.util.EncoderUtils;
-import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.demo.constant.ResultCodeEnum;
+import com.demo.dao.UserDao;
+import com.demo.entity.po.User;
+import com.demo.entity.po.UserLog;
+import com.demo.entity.pojo.Ip;
+import com.demo.entity.pojo.Result;
+import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.UserVo;
+import com.demo.tool.Function;
+import com.demo.util.ClientInfoUtils;
+import com.demo.util.EncoderUtils;
+import com.demo.util.IpUtils;
+import com.github.pagehelper.PageInfo;
+
+import eu.bitwalker.useragentutils.UserAgent;
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>User服务</h1>
@@ -103,7 +113,7 @@ public class UserService extends BaseService {
     /**
      * 登录
      */
-    public Result login(User user) {
+    public Result login(User user, HttpServletRequest request) {
         // 查找用户，通过account
         User u = userDao.findByAccount(user.getAccount());
         // 用户不存在或密码错误
@@ -111,6 +121,18 @@ public class UserService extends BaseService {
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         u.setPwd(null);
+        // 日志
+        recordLog(new Function<Integer>() {
+            @Override
+            public Integer run() {
+                Ip ip = IpUtils.getIpInfo(ClientInfoUtils.getIp(request));
+                UserAgent userAgent = UserAgent.parseUserAgentString(ClientInfoUtils.getUserAgent(request));
+                UserLog userLog = new UserLog();
+                userLog.setId(u.getId());
+                return null;
+            }
+        });
+
         return Result.o(u);
     }
 

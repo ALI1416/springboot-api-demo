@@ -13,6 +13,24 @@ package com.demo.constant;
 public class Constant {
 
     /**
+     * 部署网站{@value}
+     */
+    public static final String URL = "http://404z.cn:8080/";
+
+    /**
+     * QQ_APP_ID{@value}
+     */
+    public static final String QQ_APP_ID = "101925994";
+    /**
+     * QQ_APP_KEY{@value}
+     */
+    public static final String QQ_APP_KEY = "34ff276c1a1fbf0f32648796c04aaafb";
+    /**
+     * QQ_CALLBACK_URL{@value}
+     */
+    public static final String QQ_CALLBACK_URL = URL + "callback/qq/login";
+
+    /**
      * 分页-默认页码{@value}
      */
     public final static int PAGE_DEFAULT_PAGES = 1;

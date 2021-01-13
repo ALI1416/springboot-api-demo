@@ -1,7 +1,9 @@
 package com.demo.entity.po;
 
 import com.demo.entity.BaseEntity;
-
+import com.demo.util.IpInfo;
+import com.demo.util.IpUtils;
+import eu.bitwalker.useragentutils.UserAgent;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -51,4 +53,32 @@ public class UserLog extends BaseEntity {
      * 浏览器标识-设备类型名
      */
     private String uaDeviceTypeName;
+
+    /**
+     * 设置ip信息<br>
+     * 包括ip,ipCountry,ipProvince,ipCity
+     *
+     * @param ipString IP地址
+     */
+    public void setIpInfo(String ipString) {
+        IpInfo ipInfo = IpUtils.getIpInfo(ipString);
+        this.ip = ipString;
+        this.ipCountry = ipInfo.getCountry();
+        this.ipProvince = ipInfo.getProvince();
+        this.ipCity = ipInfo.getCity();
+    }
+
+    /**
+     * 设置UserAgent信息<br>
+     * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
+     *
+     * @param userAgentString UserAgent
+     */
+    public void setUserAgentInfo(String userAgentString) {
+        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentString);
+        this.userAgent = userAgentString;
+        this.uaOsName = userAgent.getOperatingSystem().getName();
+        this.uaBrowserName = userAgent.getBrowser().getName();
+        this.uaDeviceTypeName = userAgent.getOperatingSystem().getDeviceType().getName();
+    }
 }

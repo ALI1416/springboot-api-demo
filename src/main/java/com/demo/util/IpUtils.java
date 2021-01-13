@@ -1,7 +1,6 @@
 package com.demo.util;
 
 import com.demo.constant.Ip2RegionConstant;
-import com.demo.entity.pojo.Ip;
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -78,60 +77,60 @@ public class IpUtils {
     /**
      * 获取IP信息
      *
-     * @param ip IP地址
+     * @param ipString IP地址
      * @return 错误：属性全为null
      * @see org.lionsoul.ip2region.DbSearcher#memorySearch(String ip)
      */
-    public static Ip getIpInfo(String ip) {
+    public static IpInfo getIpInfo(String ipString) {
         DataBlock block = null;
         try {
-            block = ip2regionSearcher.memorySearch(ip);
+            block = ip2regionSearcher.memorySearch(ipString);
         } catch (Exception e) {
             e.printStackTrace();
         }
         if (block != null) {
-            return new Ip(block.getRegion());
+            return new IpInfo(block.getRegion());
         } else {
-            return new Ip();
+            return new IpInfo();
         }
     }
 
     /**
      * 是字符串IP地址
      *
-     * @param str 字符串IP地址
+     * @param ipString 字符串IP地址
      * @see java.util.regex.Pattern#matches(String regex, CharSequence input)
      * @see #IP_PATTERN
      */
-    public static boolean isIp(String str) {
-        return Pattern.matches(IP_PATTERN, str);
+    public static boolean isIp(String ipString) {
+        return Pattern.matches(IP_PATTERN, ipString);
     }
 
     /**
      * 是数字IP地址
      *
-     * @param n 数字IP地址
+     * @param ipLong 数字IP地址
      */
-    public static boolean isIp(long n) {
-        return (n > -1) && (n < (1L << 32));
+    public static boolean isIp(long ipLong) {
+        return (ipLong > -1) && (ipLong < (1L << 32));
     }
 
     /**
      * IP地址字符串转数字
      *
-     * @param str 字符串IP地址
+     * @param ipString 字符串IP地址
      */
-    public static long ip2Long(String str) {
-        String[] s = str.split("\\.");
+    public static long ip2Long(String ipString) {
+        String[] s = ipString.split("\\.");
         return (Long.parseLong(s[0]) << 24) | (Integer.parseInt(s[1]) << 16) | (Integer.parseInt(s[2]) << 8) | Integer.parseInt(s[3]);
     }
 
     /**
      * IP地址数字转字符串
      *
-     * @param n 数字IP地址
+     * @param ipLong 数字IP地址
      */
-    public static String long2Ip(long n) {
-        return (n >> 24) + "." + (n >> 16 & 0xFF) + "." + (n >> 8 & 0xFF) + "." + (n & 0xFF);
+    public static String long2Ip(long ipLong) {
+        return (ipLong >> 24) + "." + (ipLong >> 16 & 0xFF) + "." + (ipLong >> 8 & 0xFF) + "." + (ipLong & 0xFF);
     }
 }

@@ -20,10 +20,10 @@
 
 	<insert id="log" parameterType="UserLog" keyProperty="id">
 		INSERT
-		user(
-		id,ip,user_agent,ip_country,ip_provice,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
+		login_log(
+		id,ip,user_agent,ip_country,ip_province,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
 		)VALUES(
-		#{id},#{ip},#{userAgent},#{ipCountry},#{ipProvice},#{ipCity},#{uaOsName},#{uaBrowserName},#{uaDeviceTypeName}
+		#{id},#{ip},#{userAgent},#{ipCountry},#{ipProvince},#{ipCity},#{uaOsName},#{uaBrowserName},#{uaDeviceTypeName}
 		)
 	</insert>
 

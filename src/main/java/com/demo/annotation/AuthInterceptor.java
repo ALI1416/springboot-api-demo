@@ -1,5 +1,6 @@
 package com.demo.annotation;
 
+import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.pojo.Result;
 import org.springframework.lang.NonNull;
@@ -42,7 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 // 进行拦截
-                if (AuthImpl.authToken(request.getHeader("timestamp"), request.getHeader("token"))) {
+                if (AuthImpl.authToken(request.getHeader(RedisConstant.REDIS_ID_NAME), request.getHeader(RedisConstant.TOKEN_NAME))) {
                     // token验证成功
                     return true;
                 } else {
@@ -51,7 +52,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                     response.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = response.getWriter();
                     // 返回错误信息
-                    out.print(Result.e(ResultCodeEnum.USER_NOT_LOGGED_IN));
+                    out.print(Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED));
                     out.flush();
                     out.close();
                     return false;

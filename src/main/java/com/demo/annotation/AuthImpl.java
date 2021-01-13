@@ -1,5 +1,6 @@
 package com.demo.annotation;
 
+import com.demo.constant.RedisConstant;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 
@@ -18,15 +19,15 @@ public class AuthImpl {
     /**
      * 检查token是否正确
      *
-     * @param timestamp timestamp
-     * @param token     token
+     * @param tokenId tokenId
+     * @param token   token
      */
-    public static boolean authToken(String timestamp, String token) {
-        System.out.println(timestamp);
-        if (StringUtils.existEmpty(timestamp, token)) {
+    public static boolean authToken(String tokenId, String token) {
+        if (StringUtils.existEmpty(tokenId, token)) {
             return false;
         }
-        String redisToken = (String) RedisUtils.hashGet(timestamp, "token");
+        String redisToken = (String) RedisUtils.hashGet(tokenId, RedisConstant.TOKEN_NAME);
         return token.equals(redisToken);
     }
+
 }

@@ -1,11 +1,11 @@
 package com.demo;
 
+import com.demo.init.Init;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * <h1>启动类</h1>
@@ -41,7 +41,7 @@ public class App {
 
     public static void main(String[] args) {
         context = SpringApplication.run(App.class, args);
-//        Init.init();
+        Init.init();
     }
 
     /**

@@ -3,12 +3,13 @@ package com.demo.entity.po;
 import com.demo.entity.BaseEntity;
 import com.demo.util.IpInfo;
 import com.demo.util.IpUtils;
+
 import eu.bitwalker.useragentutils.UserAgent;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>UserLog持久对象</h1>
+ * <h1>用户登录日志表持久化对象</h1>
  *
  * <p>
  * createDate 2021/01/13 16:14:40
@@ -19,8 +20,16 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class UserLog extends BaseEntity {
+public class UserLoginLog extends BaseEntity {
 
+    /**
+     * 用户id
+     */
+    private Long userId;
+    /**
+     * 登录成功
+     */
+    private Integer loginSuccess;
     /**
      * IP地址
      */

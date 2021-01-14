@@ -18,9 +18,9 @@
 		id=#{id}
 	</insert>
 
-	<insert id="log" parameterType="UserLog" keyProperty="id">
+	<insert id="log" parameterType="UserLoginLog" keyProperty="id">
 		INSERT
-		login_log(
+		user_login_log(
 		id,ip,user_agent,ip_country,ip_province,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
 		)VALUES(
 		#{id},#{ip},#{userAgent},#{ipCountry},#{ipProvince},#{ipCity},#{uaOsName},#{uaBrowserName},#{uaDeviceTypeName}
@@ -157,10 +157,10 @@
 			<if test="year != null">
 				year=#{year},
 			</if>
-			<if test="profile != null and profile != ''">
+			<if test="profile != null">
 				profile=#{profile},
 			</if>
-			<if test="comment != null and comment != ''">
+			<if test="comment != null">
 				comment=#{comment},
 			</if>
 			<if test="isDelete != null">

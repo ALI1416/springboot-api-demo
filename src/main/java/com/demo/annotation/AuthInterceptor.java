@@ -43,7 +43,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 return true;
             } else {
                 // 进行拦截
-                if (AuthImpl.authToken(request.getHeader(RedisConstant.REDIS_ID_NAME), request.getHeader(RedisConstant.TOKEN_NAME))) {
+                if (AuthImpl.authToken(request.getHeader(RedisConstant.REDIS_SIGN_NAME), request.getHeader(RedisConstant.TOKEN_NAME))) {
                     // token验证成功
                     return true;
                 } else {

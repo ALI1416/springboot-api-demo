@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>User值对象</h1>
+ * <h1>用户值对象</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

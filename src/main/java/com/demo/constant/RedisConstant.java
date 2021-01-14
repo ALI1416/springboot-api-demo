@@ -1,24 +1,20 @@
 package com.demo.constant;
 
 /**
- * <h1>TODO TokenConstant Title</h1>
- *
- * <p>
- * TODO TokenConstant Description
- * </p>
- *
+ * <h1>Redis常量</h1>
+ * 
  * <p>
  * createDate 2021/01/13 20:49:41
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class RedisConstant {
     /**
-     * REDIS_ID名字{@value}
+     * REDIS_SIGN名字{@value}
      */
-    public static final String REDIS_ID_NAME = "redis_id";
+    public static final String REDIS_SIGN_NAME = "sign";
     /**
      * REDIS过期时间(秒){@value}(7天)
      */
@@ -36,6 +32,5 @@ public class RedisConstant {
      * QQ第三方登录时的STATE名字{@value}
      */
     public static final String QQ_STATE_NAME = "qq_state";
-
 
 }

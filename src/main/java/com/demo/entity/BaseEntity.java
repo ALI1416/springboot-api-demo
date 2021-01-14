@@ -24,10 +24,6 @@ public class BaseEntity {
 
     /* ==================== po ==================== */
     /**
-     * 自增id(仅用在表名后缀为_bak(备份)和_log(日志)表中)
-     */
-    private Integer autoIncrementId;
-    /**
      * id
      */
     private Long id;

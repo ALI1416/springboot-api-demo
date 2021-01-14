@@ -31,11 +31,11 @@ public class AuthController {
     @Auth(skip = true)
     @PostMapping("getToken")
     public Result getToken() {
-        long redisId = Id.next();
+        long redisSign = Id.next();
         String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, RedisConstant.TOKEN_LENGTH);
-        RedisUtils.hashSet(String.valueOf(redisId), RedisConstant.TOKEN_NAME, token, RedisConstant.REDIS_EXPIRE_TIME);
+        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.TOKEN_NAME, token, RedisConstant.REDIS_EXPIRE_TIME);
         Map<String, Object> map = new HashMap<>();
-        map.put(RedisConstant.REDIS_ID_NAME, redisId);
+        map.put(RedisConstant.REDIS_SIGN_NAME, redisSign);
         map.put(RedisConstant.TOKEN_NAME, token);
         return Result.o(map);
     }

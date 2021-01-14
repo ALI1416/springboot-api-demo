@@ -8,6 +8,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.wf.captcha.SpecCaptcha;
 
+/**
+ * <h1>验证码api</h1>
+ *
+ * <p>
+ * createDate 2021/01/14 14:32:16
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
+ **/
 @Controller
 public class CaptchaController {
 

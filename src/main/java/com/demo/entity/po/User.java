@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>User持久对象</h1>
+ * <h1>用户表持久化对象</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11

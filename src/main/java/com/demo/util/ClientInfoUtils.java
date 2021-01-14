@@ -5,17 +5,13 @@ import java.net.InetAddress;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <h1>客户端信息工具类</h1>
- *
- * <p>
- * 获取客户端的信息
- * </p>
+ * <h1>客户端信息工具</h1>
  *
  * <p>
  * createDate 2021/01/12 21:29:25
  * </p>
  *
- * @author ALI[1416978277@qq.com]
+ * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
 public class ClientInfoUtils {

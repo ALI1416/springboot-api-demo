@@ -3,7 +3,7 @@ package com.demo.dao;
 import java.util.List;
 
 import com.demo.entity.po.User;
-import com.demo.entity.po.UserLog;
+import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.vo.UserVo;
 
 /**
@@ -26,7 +26,7 @@ public interface UserDao {
     /**
      * 登录后记录日志
      */
-    int log(UserLog userLog);
+    int log(UserLoginLog userLoginLog);
 
     /**
      * 注册

@@ -3,7 +3,7 @@ package com.demo.service;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserDao;
 import com.demo.entity.po.User;
-import com.demo.entity.po.UserLog;
+import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * <h1>User服务</h1>
+ * <h1>用户服务</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -118,11 +118,11 @@ public class UserService extends BaseService {
         recordLog(() -> {
             String ipString = ClientInfoUtils.getIp(request);
             String userAgentString = ClientInfoUtils.getUserAgent(request);
-            UserLog userLog = new UserLog();
-            userLog.setId(u.getId());
-            userLog.setIpInfo(ipString);
-            userLog.setUserAgentInfo(userAgentString);
-            return userDao.log(userLog);
+            UserLoginLog userLoginLog = new UserLoginLog();
+            userLoginLog.setId(u.getId());
+            userLoginLog.setIpInfo(ipString);
+            userLoginLog.setUserAgentInfo(userAgentString);
+            return userDao.log(userLoginLog);
         });
         return Result.o(u);
     }

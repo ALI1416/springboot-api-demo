@@ -1,7 +1,6 @@
 package com.demo.entity.po;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.demo.tool.Id;
 
 /**
  * <h1>用户备份表持久化对象</h1>
@@ -13,13 +12,22 @@ import lombok.Setter;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Getter
-@Setter
 public class UserBak extends User {
 
     /**
-     * 用户id
+     * 构造函数(自动生成id)
      */
-    private Long userId;
+    public UserBak() {
+        setId(Id.next());
+    }
 
+    /**
+     * 构造函数(自动生成id)
+     * 
+     * @param refId refId
+     */
+    public UserBak(Long refId) {
+        setId(Id.next());
+        setRefId(refId);
+    }
 }

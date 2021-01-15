@@ -1,4 +1,4 @@
-package com.demo.util;
+package com.demo.util.pojo;
 
 import lombok.Getter;
 import lombok.Setter;

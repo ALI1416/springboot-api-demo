@@ -1,8 +1,8 @@
 package com.demo.util;
 
-import com.demo.constant.RedisConstant;
-
 import javax.servlet.http.HttpServletRequest;
+
+import com.demo.constant.RedisConstant;
 
 /**
  * <h1>权限认证工具</h1>
@@ -16,10 +16,20 @@ import javax.servlet.http.HttpServletRequest;
  **/
 public class AuthUtils {
 
-    public static String getRedisId(HttpServletRequest request) {
+    /**
+     * 获取REDIS_SIGN_NAME
+     * 
+     * @param request HttpServletRequest
+     */
+    public static String getRedisSign(HttpServletRequest request) {
         return request.getHeader(RedisConstant.REDIS_SIGN_NAME);
     }
 
+    /**
+     * 获取TOKEN_NAME
+     * 
+     * @param request HttpServletRequest
+     */
     public static String getToken(HttpServletRequest request) {
         return request.getHeader(RedisConstant.TOKEN_NAME);
     }

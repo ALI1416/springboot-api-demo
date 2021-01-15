@@ -1,5 +1,7 @@
 package com.demo.dao;
 
+import com.demo.entity.po.UserLoginLog;
+
 /**
  * <h1>用户登录日志业务逻辑接口</h1>
  *
@@ -10,6 +12,10 @@ package com.demo.dao;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class UserLoginLogDao {
+public interface UserLoginLogDao {
 
+    /**
+     * 登录后记录日志
+     */
+    int insert(UserLoginLog userLoginLog);
 }

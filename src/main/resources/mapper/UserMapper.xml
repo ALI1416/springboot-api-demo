@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.UserDao">
 
-	<sql id="col">id,account,pwd,name,gender,year,profile,comment,is_delete,create_id,create_time,update_id,update_time,version
+	<sql id="col">id,account,pwd,name,gender,year,profile,comment,qq_openid,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
-	<insert id="bak" parameterType="Long" keyProperty="id">
+	<insert id="bak" parameterType="Long">
 		INSERT
 		user_bak(
 		<include refid="col" />
@@ -18,7 +18,7 @@
 		id=#{id}
 	</insert>
 
-	<insert id="log" parameterType="UserLoginLog" keyProperty="id">
+	<insert id="log" parameterType="UserLoginLog">
 		INSERT
 		user_login_log(
 		id,ip,user_agent,ip_country,ip_province,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
@@ -27,7 +27,7 @@
 		)
 	</insert>
 
-	<insert id="register" parameterType="User" keyProperty="id">
+	<insert id="register" parameterType="User">
 		INSERT
 		user(
 		id,account,pwd,name
@@ -162,6 +162,9 @@
 			</if>
 			<if test="comment != null">
 				comment=#{comment},
+			</if>
+			<if test="qqOpenid != null">
+				qq_openid=#{qqOpenid},
 			</if>
 			<if test="isDelete != null">
 				is_delete=#{isDelete},

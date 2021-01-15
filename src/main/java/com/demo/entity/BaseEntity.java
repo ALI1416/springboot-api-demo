@@ -23,10 +23,12 @@ import lombok.Setter;
 public class BaseEntity {
 
     /* ==================== po ==================== */
+    /* -------------------- 所有表 -------------------- */
     /**
      * id
      */
     private Long id;
+    /* -------------------- 大多数表 -------------------- */
     /**
      * 已删除
      */
@@ -51,8 +53,47 @@ public class BaseEntity {
      * 版本
      */
     private Integer version;
+    /* -------------------- 备份、日志表 -------------------- */
+    /**
+     * 参考id
+     */
+    private Long refId;
+    /* -------------------- 日志表 -------------------- */
+    /**
+     * IP地址
+     */
+    private String ip;
+    /**
+     * 浏览器标识
+     */
+    private String userAgent;
+    /**
+     * IP地址-国家
+     */
+    private String ipCountry;
+    /**
+     * IP地址-省份
+     */
+    private String ipProvince;
+    /**
+     * IP地址-城市
+     */
+    private String ipCity;
+    /**
+     * 浏览器标识-操作系统名
+     */
+    private String uaOsName;
+    /**
+     * 浏览器标识-浏览器名
+     */
+    private String uaBrowserName;
+    /**
+     * 浏览器标识-设备类型名
+     */
+    private String uaDeviceTypeName;
 
     /* ==================== vo ==================== */
+    /* -------------------- 分页 -------------------- */
     /**
      * 分页-页码
      */
@@ -74,7 +115,7 @@ public class BaseEntity {
     @Override
     public String toString() {
         return JSON.toJSONStringWithDateFormat(//
-                this, // 对象本身
+                this, //
                 "yyyy-MM-dd HH:mm:ss", // 日期格式化样式
                 SerializerFeature.DisableCircularReferenceDetect, // 禁用对象循环引用：避免$ref
                 SerializerFeature.WriteNonStringValueAsString// 非String转为String：防止long丢失精度

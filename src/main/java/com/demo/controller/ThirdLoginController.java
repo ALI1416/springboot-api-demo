@@ -34,21 +34,19 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ThirdLoginController {
 
+    private HttpServletRequest request;
     private ThirdLoginService thirdLoginService;
 
-    /**
-     * @param request HttpServletRequest
-     */
     @Auth
     @PostMapping("/qq")
-    public Result qq(HttpServletRequest request) {
+    public Result qq() {
         String uri = "https://graph.qq.com/oauth2.0/authorize" + //
                 "?response_type=code" + //
                 "&client_id=%s" + //
                 "&redirect_uri=%s" + //
                 "&state=%s" + //
                 "&scope=get_user_info";
-        String redisSign = AuthUtils.getRedisId(request);
+        String redisSign = AuthUtils.getRedisSign(request);
         String qqState = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 32);
         String state = redisSign + "_" + qqState;
         RedisUtils.hashSet(redisSign, RedisConstant.QQ_STATE_NAME, qqState);

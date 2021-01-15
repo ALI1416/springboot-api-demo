@@ -1,13 +1,18 @@
 package com.demo.controller;
 
-import java.sql.Timestamp;
+import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
+import com.demo.service.TestService;
+import com.demo.util.ClientInfoUtils;
+import com.demo.util.UserAgentUtils;
+import com.demo.util.pojo.UserAgentInfo;
+
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>测试api</h1>
@@ -20,15 +25,21 @@ import com.demo.entity.pojo.Result;
  * @since 1.0.0
  **/
 @RestController
-@RequestMapping("test")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class TestController {
-    @PostMapping("/a")
+
+    private HttpServletRequest request;
+    private TestService testService;
+
+    @GetMapping("")
+    public Result index() {
+        UserAgentInfo a = UserAgentUtils.getUserAgentInfo(ClientInfoUtils.getUserAgent(request));
+        return Result.o(a);
+    }
+
+    @GetMapping("/a")
     public Result a() {
-        User u = new User();
-        u.setAccount("aaaaa");
-        u.setId(121212L);
-        u.setCreateTime(new Timestamp(1610352200549L));
-        return Result.o(u);
+        return Result.o(testService.a(request));
     }
 
 }

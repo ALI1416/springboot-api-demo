@@ -3,7 +3,6 @@ package com.demo.dao;
 import java.util.List;
 
 import com.demo.entity.po.User;
-import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.vo.UserVo;
 
 /**
@@ -17,16 +16,6 @@ import com.demo.entity.vo.UserVo;
  * @since 1.0.0
  **/
 public interface UserDao {
-
-    /**
-     * 插入后或更新后备份
-     */
-    int bak(long id);
-
-    /**
-     * 登录后记录日志
-     */
-    int log(UserLoginLog userLoginLog);
 
     /**
      * 注册

@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ClientInfoUtils {
 
     /**
-     * 获取ip
+     * 获取IP
      *
      * @param request HttpServletRequest
      */
@@ -49,6 +49,11 @@ public class ClientInfoUtils {
         return ip;
     }
 
+    /**
+     * 获取UserAgent
+     * 
+     * @param request HttpServletRequest
+     */
     public static String getUserAgent(HttpServletRequest request) {
         return request.getHeader("User-Agent");
     }

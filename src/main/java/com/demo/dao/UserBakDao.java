@@ -1,4 +1,7 @@
 package com.demo.dao;
+
+import com.demo.entity.po.UserBak;
+
 /**
  * <h1>用户备份业务逻辑接口</h1>
  *
@@ -9,6 +12,10 @@ package com.demo.dao;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class UserBakDao {
+public interface UserBakDao {
 
+    /**
+     * 插入后或更新后备份
+     */
+    int insert(UserBak userBak);
 }

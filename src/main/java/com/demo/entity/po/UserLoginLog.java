@@ -1,10 +1,15 @@
 package com.demo.entity.po;
 
-import com.demo.entity.BaseEntity;
-import com.demo.util.IpInfo;
-import com.demo.util.IpUtils;
+import javax.servlet.http.HttpServletRequest;
 
-import eu.bitwalker.useragentutils.UserAgent;
+import com.demo.entity.BaseEntity;
+import com.demo.tool.Id;
+import com.demo.util.ClientInfoUtils;
+import com.demo.util.IpUtils;
+import com.demo.util.UserAgentUtils;
+import com.demo.util.pojo.IpInfo;
+import com.demo.util.pojo.UserAgentInfo;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,45 +28,35 @@ import lombok.Setter;
 public class UserLoginLog extends BaseEntity {
 
     /**
-     * 用户id
-     */
-    private Long userId;
-    /**
      * 登录成功
      */
     private Integer loginSuccess;
+
     /**
-     * IP地址
+     * 构造函数(自动生成id)
      */
-    private String ip;
+    public UserLoginLog() {
+        setId(Id.next());
+    }
+
     /**
-     * 浏览器标识
+     * 登录成功构造函数(自动生成id)<br>
+     * 设置ip信息<br>
+     * 包括ip,ipCountry,ipProvince,ipCity<br>
+     * 设置userAgent信息<br>
+     * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
+     * 
+     * @param request      HttpServletRequest
+     * @param refId        refId
+     * @param loginSuccess 登录成功
      */
-    private String userAgent;
-    /**
-     * IP地址-国家
-     */
-    private String ipCountry;
-    /**
-     * IP地址-省份
-     */
-    private String ipProvince;
-    /**
-     * IP地址-城市
-     */
-    private String ipCity;
-    /**
-     * 浏览器标识-操作系统名
-     */
-    private String uaOsName;
-    /**
-     * 浏览器标识-浏览器名
-     */
-    private String uaBrowserName;
-    /**
-     * 浏览器标识-设备类型名
-     */
-    private String uaDeviceTypeName;
+    public UserLoginLog(HttpServletRequest request, Long refId, boolean loginSuccess) {
+        setId(Id.next());
+        setIpInfo(ClientInfoUtils.getIp(request));
+        setUserAgentInfo(ClientInfoUtils.getUserAgent(request));
+        setRefId(refId == null ? 0L : refId);
+        setLoginSuccess(loginSuccess ? 1 : 0);
+    }
 
     /**
      * 设置ip信息<br>
@@ -71,23 +66,23 @@ public class UserLoginLog extends BaseEntity {
      */
     public void setIpInfo(String ipString) {
         IpInfo ipInfo = IpUtils.getIpInfo(ipString);
-        this.ip = ipString;
-        this.ipCountry = ipInfo.getCountry();
-        this.ipProvince = ipInfo.getProvince();
-        this.ipCity = ipInfo.getCity();
+        setIp(ipString);
+        setIpCountry(ipInfo.getCountry());
+        setIpProvince(ipInfo.getProvince());
+        setIpCity(ipInfo.getCity());
     }
 
     /**
-     * 设置UserAgent信息<br>
+     * 设置userAgent信息<br>
      * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
      *
      * @param userAgentString UserAgent
      */
     public void setUserAgentInfo(String userAgentString) {
-        UserAgent userAgent = UserAgent.parseUserAgentString(userAgentString);
-        this.userAgent = userAgentString;
-        this.uaOsName = userAgent.getOperatingSystem().getName();
-        this.uaBrowserName = userAgent.getBrowser().getName();
-        this.uaDeviceTypeName = userAgent.getOperatingSystem().getDeviceType().getName();
+        UserAgentInfo userAgentInfo = UserAgentUtils.getUserAgentInfo(userAgentString);
+        setUserAgent(userAgentString);
+        setUaOsName(userAgentInfo.getOperatingSystemName());
+        setUaBrowserName(userAgentInfo.getBrowserName());
+        setUaDeviceTypeName(userAgentInfo.getDeviceTypeName());
     }
 }

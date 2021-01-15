@@ -1,22 +1,27 @@
 package com.demo.service;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.dao.UserDao;
-import com.demo.entity.po.User;
-import com.demo.entity.po.UserLoginLog;
-import com.demo.entity.pojo.Result;
-import com.demo.entity.pojo.ResultBatch;
-import com.demo.entity.vo.UserVo;
-import com.demo.util.ClientInfoUtils;
-import com.demo.util.EncoderUtils;
-import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import com.demo.constant.ResultCodeEnum;
+import com.demo.dao.UserBakDao;
+import com.demo.dao.UserDao;
+import com.demo.dao.UserLoginLogDao;
+import com.demo.entity.po.User;
+import com.demo.entity.po.UserBak;
+import com.demo.entity.po.UserLoginLog;
+import com.demo.entity.pojo.Result;
+import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.UserVo;
+import com.demo.util.EncoderUtils;
+import com.github.pagehelper.PageInfo;
+
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>用户服务</h1>
@@ -33,6 +38,8 @@ import java.util.List;
 public class UserService extends BaseService {
 
     private final UserDao userDao;
+    private final UserBakDao userBakDao;
+    private final UserLoginLogDao userLoginLogDao;
 
     /**
      * 存在id
@@ -98,7 +105,7 @@ public class UserService extends BaseService {
             return result;
         }
         // 备份
-        recordBak(() -> userDao.bak(user.getId()));
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         user.setPwd(null);
         return Result.o(user);
     }
@@ -111,19 +118,17 @@ public class UserService extends BaseService {
         User u = userDao.findByAccount(user.getAccount());
         // 用户不存在或密码错误
         if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
+            // 日志(登录失败)
+            if (u == null) {
+                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, null, false)));
+            } else {
+                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), false)));
+            }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
+        // 日志(登录成功)
+        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), true)));
         u.setPwd(null);
-        // 日志
-        recordLog(() -> {
-            String ipString = ClientInfoUtils.getIp(request);
-            String userAgentString = ClientInfoUtils.getUserAgent(request);
-            UserLoginLog userLoginLog = new UserLoginLog();
-            userLoginLog.setId(u.getId());
-            userLoginLog.setIpInfo(ipString);
-            userLoginLog.setUserAgentInfo(userAgentString);
-            return userDao.log(userLoginLog);
-        });
         return Result.o(u);
     }
 
@@ -160,7 +165,7 @@ public class UserService extends BaseService {
             return result;
         }
         // 备份
-        recordBak(() -> userDao.bak(user.getId()));
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         return Result.o(user);
     }
 
@@ -189,7 +194,7 @@ public class UserService extends BaseService {
             return result;
         }
         // 备份
-        recordBak(() -> userDao.bak(u.getId()));
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         return Result.o();
     }
 
@@ -209,7 +214,7 @@ public class UserService extends BaseService {
             return result;
         }
         // 备份
-        recordBak(() -> userDao.bak(id));
+        recordBak(() -> userBakDao.insert(new UserBak(id)));
         return Result.o();
     }
 
@@ -226,7 +231,7 @@ public class UserService extends BaseService {
             result.add(ok.isOk(), user, ok.getMsg());
             if (ok.isOk()) {
                 // 备份
-                recordBak(() -> userDao.bak(user.getId()));
+                recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
             }
         }
         return Result.o(result);

@@ -47,5 +47,9 @@ public class User extends BaseEntity {
      * 备注
      */
     private String comment;
+    /**
+     * qqOpenid
+     */
+    private String qqOpenid;
 
 }

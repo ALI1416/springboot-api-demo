@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.demo.constant.RedisConstant;
+import com.demo.util.AuthUtils;
+import com.demo.util.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -113,7 +116,7 @@ public class UserService extends BaseService {
     /**
      * 登录
      */
-    public Result login(User user, HttpServletRequest request) {
+    public Result login(HttpServletRequest request, User user) {
         // 查找用户，通过account
         User u = userDao.findByAccount(user.getAccount());
         // 用户不存在或密码错误
@@ -129,6 +132,9 @@ public class UserService extends BaseService {
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), true)));
         u.setPwd(null);
+        String sign = AuthUtils.getSign(request);
+        // redis放入userId
+        RedisUtils.hashSet(sign, RedisConstant.USER_ID_NAME, u.getId());
         return Result.o(u);
     }
 

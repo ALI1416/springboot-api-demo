@@ -1,5 +1,6 @@
 package com.demo.controller;
 
+import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -36,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
+    private final HttpServletRequest request;
     private final UserService userService;
 
     /**
@@ -92,17 +94,19 @@ public class UserController {
     /**
      * 登录
      */
+    @Auth(skipLogin = true)
     @PostMapping("/login")
-    public Result login(@RequestBody User user, HttpServletRequest request) {
+    public Result login(@RequestBody User user) {
         if ((StringUtils.existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
             return Result.e1();
         }
-        return userService.login(user, request);
+        return userService.login(request, user);
     }
 
     /**
      * 修改用户信息
      */
+    @Auth
     @PostMapping("/changeInfo")
     public Result changeInfo(@RequestBody User user) {
         if (user.getId() == null) {
@@ -114,10 +118,10 @@ public class UserController {
     /**
      * 修改密码
      */
+    @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         return userService.changePwd(user);
@@ -126,6 +130,7 @@ public class UserController {
     /**
      * 删除
      */
+    @Auth
     @PostMapping("/deleteById")
     public Result deleteById(long id) {
         return userService.deleteById(id);

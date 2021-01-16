@@ -1,7 +1,5 @@
 package com.demo.annotation;
 
-import com.demo.constant.RedisConstant;
-import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.pojo.Result;
 import org.springframework.lang.NonNull;
 import org.springframework.web.method.HandlerMethod;
@@ -38,25 +36,53 @@ public class AuthInterceptor implements HandlerInterceptor {
             Auth authMethod = method.getAnnotation(Auth.class);
             // 类的注解
             Auth authClazz = clazz.getAnnotation(Auth.class);
-            if ((authClazz == null && authMethod == null) || (authMethod != null && authMethod.skip())) {
-                // 类和方法都没注解 或 方法注解跳过 不拦截
+            /* 没有注解，放过 */
+            if (authClazz == null && authMethod == null) {
                 return true;
-            } else {
-                // 进行拦截
-                if (AuthImpl.authToken(request.getHeader(RedisConstant.REDIS_SIGN_NAME), request.getHeader(RedisConstant.TOKEN_NAME))) {
-                    // token验证成功
+            }
+            // 查找所需权限
+            boolean skip = false;
+            boolean skipLogin = false;
+            if (authClazz != null) {
+                skip = authClazz.skip();
+                skipLogin = authClazz.skipLogin();
+            }
+            if (authMethod != null) {
+                skip = authMethod.skip();
+                skipLogin = authMethod.skipLogin();
+            }
+            /* 不需权限，跳过 */
+            if (skip) {
+                return true;
+            }
+            // 所需权限，由多到少依次判断
+            /* 需要登录权限 */
+            if (!skipLogin) {
+                Result result = AuthImpl.login(request);
+                if (result.isOk()) {
                     return true;
                 } else {
-                    // token验证失败
                     response.setCharacterEncoding("UTF-8");
                     response.setContentType("application/json;charset=UTF-8");
                     PrintWriter out = response.getWriter();
-                    // 返回错误信息
-                    out.print(Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED));
+                    out.print(result);
                     out.flush();
                     out.close();
                     return false;
                 }
+            }
+            /* 需要普通权限 */
+            Result result = AuthImpl.token(request);
+            if (result.isOk()) {
+                return true;
+            } else {
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("application/json;charset=UTF-8");
+                PrintWriter out = response.getWriter();
+                out.print(result);
+                out.flush();
+                out.close();
+                return false;
             }
         } else {
             return true;

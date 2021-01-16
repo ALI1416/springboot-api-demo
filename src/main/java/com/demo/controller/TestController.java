@@ -28,8 +28,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class TestController {
 
-    private HttpServletRequest request;
-    private TestService testService;
+    private final HttpServletRequest request;
+    private final TestService testService;
 
     @GetMapping("")
     public Result index() {

@@ -1,13 +1,5 @@
 package com.demo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
@@ -16,8 +8,14 @@ import com.demo.service.ThirdLoginService;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>第三方登录api</h1>
@@ -34,8 +32,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ThirdLoginController {
 
-    private HttpServletRequest request;
-    private ThirdLoginService thirdLoginService;
+    private final HttpServletRequest request;
+    private final ThirdLoginService thirdLoginService;
 
     @Auth
     @PostMapping("/qq")
@@ -46,7 +44,7 @@ public class ThirdLoginController {
                 "&redirect_uri=%s" + //
                 "&state=%s" + //
                 "&scope=get_user_info";
-        String redisSign = AuthUtils.getRedisSign(request);
+        String redisSign = AuthUtils.getSign(request);
         String qqState = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 32);
         String state = redisSign + "_" + qqState;
         RedisUtils.hashSet(redisSign, RedisConstant.QQ_STATE_NAME, qqState);
@@ -62,7 +60,7 @@ public class ThirdLoginController {
         if (StringUtils.existEmpty(code, state)) {
             return Result.e1();
         }
-        String stateSpilt[] = state.split("_");
+        String[] stateSpilt = state.split("_");
         if (stateSpilt.length != 2) {
             return Result.e1();
         }

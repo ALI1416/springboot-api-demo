@@ -2,43 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.UserDao">
 
-	<sql id="col">id,account,pwd,name,gender,year,profile,comment,qq_openid,is_delete,create_id,create_time,update_id,update_time,version
+	<sql id="col">id,account,pwd,name,gender,year,profile,comment,mail_address,use_mail_login,qq_openid,qq_name,use_qq_login,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
-
-	<insert id="bak" parameterType="Long">
-		INSERT
-		user_bak(
-		<include refid="col" />
-		)
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		WHERE
-		id=#{id}
-	</insert>
-
-	<insert id="log" parameterType="UserLoginLog">
-		INSERT
-		user_login_log(
-		id,ip,user_agent,ip_country,ip_province,ip_city,ua_os_name,ua_browser_name,ua_device_type_name
-		)VALUES(
-		#{id},#{ip},#{userAgent},#{ipCountry},#{ipProvince},#{ipCity},#{uaOsName},#{uaBrowserName},#{uaDeviceTypeName}
-		)
-	</insert>
 
 	<insert id="register" parameterType="User">
 		INSERT
 		user(
-		id,account,pwd,name
+		id,account,pwd,name,qq_openid,mail_address
 		)VALUES(
-		#{id},#{account},#{pwd},#{name}
+		#{id},#{account},#{pwd},#{name},#{id},#{id}
 		)
 	</insert>
 
 	<select id="findById" parameterType="Long" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
@@ -46,9 +24,9 @@
 	</select>
 
 	<select id="findByAccount" parameterType="String"
-		resultType="User">
+			resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
@@ -57,7 +35,7 @@
 
 	<select id="findExact" parameterType="User" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -84,7 +62,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="User">
 		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		<where>
@@ -92,11 +70,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'" />
+				<bind name="account1" value="'%'+ account +'%'"/>
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'" />
+				<bind name="name1" value="'%'+ name +'%'"/>
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -104,7 +82,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null" />
+				<when test="year == null and yearEnd == null"/>
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">
@@ -142,13 +120,13 @@
 	<update id="updateById" parameterType="User">
 		UPDATE user
 		<set>
-			<if test="account != null and account != ''">
+			<if test="account != null">
 				account=#{account},
 			</if>
-			<if test="pwd != null and pwd != ''">
+			<if test="pwd != null">
 				pwd=#{pwd},
 			</if>
-			<if test="name != null and name != ''">
+			<if test="name != null">
 				name=#{name},
 			</if>
 			<if test="gender != null">
@@ -166,6 +144,12 @@
 			<if test="qqOpenid != null">
 				qq_openid=#{qqOpenid},
 			</if>
+			<if test="qqName != null">
+				qq_name=#{qqName},
+			</if>
+			<if test="useQqLogin != null">
+				use_qq_login=#{useQqLogin},
+			</if>
 			<if test="isDelete != null">
 				is_delete=#{isDelete},
 			</if>
@@ -179,16 +163,11 @@
 		id=#{id}
 	</update>
 
-	<!-- <delete id="deleteById" parameterType="Long"> -->
-	<!-- DELETE FROM user -->
-	<!-- WHERE -->
-	<!-- id=#{id} -->
-	<!-- </delete> -->
-
 	<update id="deleteById" parameterType="Long">
 		UPDATE user
 		SET
-		is_delete=1
+		is_delete=1,
+		qq_openid=#{id}
 		WHERE
 		id=#{id}
 	</update>

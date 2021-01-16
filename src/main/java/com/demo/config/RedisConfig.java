@@ -1,16 +1,20 @@
 package com.demo.config;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.parser.Feature;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
-import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * <h1>Redis配置</h1>
@@ -30,32 +34,19 @@ public class RedisConfig extends CachingConfigurerSupport {
      * redisTemplate配置
      */
     @Bean
-    @SuppressWarnings("deprecation")
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        // 配置连接工厂
-        template.setConnectionFactory(factory);
-        ObjectMapper om = new ObjectMapper();
-        // 指定序列化的域ALL：field、get、set；修饰符范围ANY：private、public
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 指定序列化输入的类型，类必须是非final修饰的
-        om.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        // Json序列化
-        Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer =
-                new Jackson2JsonRedisSerializer<>(Object.class);
-        jackson2JsonRedisSerializer.setObjectMapper(om);
-        // value采用json序列化
-        template.setValueSerializer(jackson2JsonRedisSerializer);
-        // hash的value使用Json序列化
-        template.setHashValueSerializer(jackson2JsonRedisSerializer);
-        // String序列化
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(factory);
+        //key采用String序列化
         StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        // key使用String序列化
-        template.setKeySerializer(stringRedisSerializer);
-        // hash的key使用Json序列化
-        template.setHashKeySerializer(stringRedisSerializer);
-        template.afterPropertiesSet();
-        return template;
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        //value采用fastJson序列化
+        RedisSerializer<?> fastJson2JsonRedisSerializer = new FastJson2JsonRedisSerializer<>(Object.class);
+        redisTemplate.setValueSerializer(fastJson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(fastJson2JsonRedisSerializer);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
     }
 
     /**
@@ -98,4 +89,40 @@ public class RedisConfig extends CachingConfigurerSupport {
         return redisTemplate.opsForZSet();
     }
 
+}
+
+/**
+ * fastjson序列化
+ */
+class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
+
+    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+
+    private final Class<T> clazz;
+
+    public FastJson2JsonRedisSerializer(Class<T> clazz) {
+        super();
+        this.clazz = clazz;
+    }
+
+    public byte[] serialize(T t) throws SerializationException {
+        if (t == null) {
+            return new byte[0];
+        }
+        return JSON.toJSONStringWithDateFormat(//
+                t,//
+                "yyyy-MM-dd HH:mm:ss", // 日期格式化样式
+                SerializerFeature.DisableCircularReferenceDetect, // 禁用对象循环引用：避免$ref
+                SerializerFeature.WriteNonStringValueAsString,// 非String转为String：防止long丢失精度
+                SerializerFeature.WriteClassName// 写入类名
+        ).getBytes(DEFAULT_CHARSET);
+    }
+
+    public T deserialize(byte[] bytes) throws SerializationException {
+        if (bytes == null || bytes.length <= 0) {
+            return null;
+        }
+        String s = new String(bytes, DEFAULT_CHARSET);
+        return JSON.parseObject(s, clazz, Feature.SupportAutoType);
+    }
 }

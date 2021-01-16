@@ -27,11 +27,11 @@ import java.util.Map;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Auth
-@RequestMapping("/auth")
+@Auth(skipLogin = true)
+@RequestMapping("/auth3")
 @RestController
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class AuthController {
+public class Auth3Controller {
 
     private final HttpServletRequest request;
 
@@ -48,10 +48,10 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public Long login() {
+    public String login() {
         String redisSign = AuthUtils.getSign(request);
         RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.USER_ID_NAME, 1L, RedisConstant.REDIS_EXPIRE_TIME);
-        return AuthUtils.getUserId(request);
+        return "ok";
     }
 
     @Auth(skipLogin = true)

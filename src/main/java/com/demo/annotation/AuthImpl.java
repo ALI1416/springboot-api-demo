@@ -1,8 +1,12 @@
 package com.demo.annotation;
 
 import com.demo.constant.RedisConstant;
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.pojo.Result;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>权限认证注解实现</h1>
@@ -17,17 +21,53 @@ import com.demo.util.StringUtils;
 public class AuthImpl {
 
     /**
-     * 检查token是否正确
+     * 普通权限
      *
-     * @param tokenId tokenId
-     * @param token   token
+     * @param request HttpServletRequest
      */
-    public static boolean authToken(String tokenId, String token) {
-        if (StringUtils.existEmpty(tokenId, token)) {
-            return false;
+    public static Result token(HttpServletRequest request) {
+        String sign = request.getHeader(RedisConstant.SIGN_NAME);
+        String token = request.getHeader(RedisConstant.TOKEN_NAME);
+        if (StringUtils.existEmpty(sign, token)) {
+            return Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED);
         }
-        String redisToken = (String) RedisUtils.hashGet(tokenId, RedisConstant.TOKEN_NAME);
-        return token.equals(redisToken);
+        // 查找token
+        String redisToken = (String) RedisUtils.hashGet(sign, RedisConstant.TOKEN_NAME);
+        // token错误
+        if (!token.equals(redisToken)) {
+            return Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED);
+        }
+        return Result.o();
+    }
+
+    /**
+     * 登录权限
+     *
+     * @param request HttpServletRequest
+     */
+    public static Result login(HttpServletRequest request) {
+        String sign = request.getHeader(RedisConstant.SIGN_NAME);
+        String token = request.getHeader(RedisConstant.TOKEN_NAME);
+        if (StringUtils.existEmpty(sign, token)) {
+            return Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED);
+        }
+        // 查找token
+        String redisToken = (String) RedisUtils.hashGet(sign, RedisConstant.TOKEN_NAME);
+        // token错误
+        if (!token.equals(redisToken)) {
+            return Result.e(ResultCodeEnum.TOKEN_IS_EXPIRED);
+        }
+        // 查找userId
+        Long userId = (Long) RedisUtils.hashGet(sign, RedisConstant.USER_ID_NAME);
+        // userId为空
+        if (userId == null) {
+            return Result.e(ResultCodeEnum.USER_NOT_LOGGED_IN);
+        }
+        // userId为0
+        if (userId == 0) {
+            return Result.e(ResultCodeEnum.USER_OFFLINE);
+        }
+        return Result.o();
     }
 
 }

@@ -1,7 +1,6 @@
 package com.demo.entity.po;
 
 import com.demo.entity.BaseEntity;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -48,8 +47,24 @@ public class User extends BaseEntity {
      */
     private String comment;
     /**
+     * 邮箱地址
+     */
+    private String mailAddress;
+    /**
+     * 使用邮箱登录
+     */
+    private Integer useMailLogin;
+    /**
      * qqOpenid
      */
     private String qqOpenid;
+    /**
+     * qq昵称
+     */
+    private String qqName;
+    /**
+     * 使用qq登录
+     */
+    private Integer useQqLogin;
 
 }

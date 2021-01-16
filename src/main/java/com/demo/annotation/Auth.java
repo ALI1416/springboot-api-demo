@@ -7,7 +7,17 @@ import java.lang.annotation.*;
  *
  * <p>
  * 此注解@Auth可以放到类上或方法上<br>
- * 放到类上可以使类下的所有方法生效，可以使用@Auth(skip = true)跳过某个方法
+ * 默认需要login权限，可以使用skipLogin = true来跳过<br>
+ * 使用skip = true来跳过普通权限<br>
+ * 注解到方法上，会覆类上的值<br>
+ * </p>
+ * <p>
+ * 权限对照表<br>
+ * Method           Class   None    Auth    Auth(skipLogin = true)<br>
+ * None                             login   token<br>
+ * Auth                     login   login   login<br>
+ * Auth(skipLogin = true)   token   token   token<br>
+ * Auth(skip = true)和Auth(skip = true, skipLogin = true)等同于None，此表不再列出<br>
  * </p>
  *
  * <h2>@Target      表明该注解可以应用的Java元素类型</h2>
@@ -43,8 +53,14 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Auth {
+
     /**
-     * 是否跳过这个方法
+     * 不进行普通权限验证
      */
     boolean skip() default false;
+
+    /**
+     * 不进行登录权限验证
+     */
+    boolean skipLogin() default false;
 }

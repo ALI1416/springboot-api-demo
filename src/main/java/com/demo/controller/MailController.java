@@ -19,6 +19,7 @@ import com.demo.util.MailUtils;
 @RequestMapping("/mail")
 @RestController
 public class MailController {
+
     @GetMapping("")
     public String index() {
         MailUtils.sendMail("1416978277@qq.com", "主题", "内容");

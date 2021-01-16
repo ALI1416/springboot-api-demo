@@ -2,7 +2,7 @@ package com.demo.constant;
 
 /**
  * <h1>Redis常量</h1>
- * 
+ *
  * <p>
  * createDate 2021/01/13 20:49:41
  * </p>
@@ -12,9 +12,9 @@ package com.demo.constant;
  **/
 public class RedisConstant {
     /**
-     * REDIS_SIGN名字{@value}
+     * SIGN名字{@value}
      */
-    public static final String REDIS_SIGN_NAME = "sign";
+    public static final String SIGN_NAME = "sign";
     /**
      * REDIS过期时间(秒){@value}(7天)
      */
@@ -29,8 +29,12 @@ public class RedisConstant {
     public static final int TOKEN_LENGTH = 128;
 
     /**
+     * 用户id名字{@value}
+     */
+    public static final String USER_ID_NAME = "userId";
+    /**
      * QQ第三方登录时的STATE名字{@value}
      */
-    public static final String QQ_STATE_NAME = "qq_state";
+    public static final String QQ_STATE_NAME = "qqState";
 
 }

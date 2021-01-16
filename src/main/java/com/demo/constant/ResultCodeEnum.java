@@ -53,6 +53,10 @@ public enum ResultCodeEnum {
      */
     TOKEN_IS_EXPIRED(1000, "token过期"),
     /**
+     * 用户离线1000
+     */
+    USER_OFFLINE(1000, "用户离线"),
+    /**
      * 用户未登录或登录已过期1001
      */
     USER_NOT_LOGGED_IN(1001, "账号未登录或登录已过期"),

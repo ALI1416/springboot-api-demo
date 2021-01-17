@@ -1,16 +1,5 @@
 package com.demo.service;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import com.demo.constant.RedisConstant;
-import com.demo.util.AuthUtils;
-import com.demo.util.RedisUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserBakDao;
 import com.demo.dao.UserDao;
@@ -21,10 +10,17 @@ import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
+import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
+import com.demo.util.RegexUtils;
 import com.github.pagehelper.PageInfo;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <h1>用户服务</h1>
@@ -93,10 +89,10 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 注册
+     * 注册，通过account
      */
     @Transactional
-    public Result register(User user) {
+    public Result register(HttpServletRequest request, User user) {
         // 查找用户，通过account。用户已存在
         if (userDao.findByAccount(user.getAccount()) != null) {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
@@ -109,16 +105,47 @@ public class UserService extends BaseService {
         }
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
-        user.setPwd(null);
-        return Result.o(user);
+        // redis放入userId
+        AuthUtils.setUserId(request, user.getId());
+        return Result.o();
+    }
+
+    /**
+     * 注册，通过email
+     */
+    @Transactional
+    public Result registerByEmail(HttpServletRequest request, UserVo user) {
+        // 查找email，已注册
+        if (userDao.findByEmail(user.getEmail()) != null) {
+            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
+        }
+        // 插入
+        Result result = tryif(() -> (userDao.registerByEmail(user) == 1));
+        // 失败
+        if (!result.isOk()) {
+            return result;
+        }
+        // 备份
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        // redis放入userId
+        AuthUtils.setUserId(request, user.getId());
+        return Result.o();
     }
 
     /**
      * 登录
      */
     public Result login(HttpServletRequest request, User user) {
-        // 查找用户，通过account
-        User u = userDao.findByAccount(user.getAccount());
+        User u;
+        if (RegexUtils.isAccount(user.getAccount())) {
+            // 查找用户，通过account
+            u = userDao.findByAccount(user.getAccount());
+        } else if (RegexUtils.isEmail(user.getAccount())) {
+            // 查找用户，通过email
+            u = userDao.findByEmail(user.getEmail());
+        } else {
+            return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
+        }
         // 用户不存在或密码错误
         if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             // 日志(登录失败)
@@ -132,9 +159,8 @@ public class UserService extends BaseService {
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), true)));
         u.setPwd(null);
-        String sign = AuthUtils.getSign(request);
         // redis放入userId
-        RedisUtils.hashSet(sign, RedisConstant.USER_ID_NAME, u.getId());
+        AuthUtils.setUserId(request, user.getId());
         return Result.o(u);
     }
 

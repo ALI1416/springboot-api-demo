@@ -8,7 +8,9 @@ import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
 import com.demo.tool.Id;
+import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
+import com.demo.util.RegexUtils;
 import com.demo.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * <h1>User api</h1>
@@ -60,22 +62,6 @@ public class UserController {
     }
 
     /**
-     * 注册
-     */
-    @PostMapping("/register")
-    public Result register(@RequestBody User user) {
-        if (StringUtils.existEmpty(user.getAccount(), user.getPwd()) || user.getPwd().length() != 32) {
-            return Result.e1();
-        }
-        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (StringUtils.existEmpty(user.getName())) {
-            user.setName(user.getAccount());
-        }
-        user.setId(Id.next());
-        return userService.register(user);
-    }
-
-    /**
      * 查找用户，通过id
      */
     @PostMapping("/findById")
@@ -92,7 +78,72 @@ public class UserController {
     }
 
     /**
-     * 登录
+     * 注册，通过account
+     */
+    @Auth(skipLogin = true)
+    @PostMapping("/register")
+    public Result register(@RequestBody UserVo user) {
+        if (StringUtils.existEmpty(user.getAccount(), user.getPwd(), user.getCaptcha()) //
+                || !RegexUtils.isAccount(user.getAccount()) //
+                || user.getPwd().length() != 32) {
+            return Result.e1();
+        }
+        Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
+        // 验证码过期
+        if (correct == null) {
+            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED);
+        }
+        // 验证码错误
+        if (!correct) {
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
+        }
+        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
+        if (StringUtils.existEmpty(user.getName())) {
+            user.setName(user.getAccount());
+        }
+        user.setId(Id.next());
+        return userService.register(request, user);
+    }
+
+    /**
+     * 注册，通过email
+     */
+    @Auth(skipLogin = true)
+    @PostMapping("/registerByEmail")
+    public Result registerByEmail(@RequestBody UserVo user) {
+        if (StringUtils.existEmpty(user.getEmail(), user.getPwd(), user.getCaptcha(), user.getEmailCaptcha()) //
+                || !RegexUtils.isEmail(user.getEmail())//
+                || user.getPwd().length() != 32) {
+            return Result.e1();
+        }
+        Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
+        // 验证码过期
+        if (correct == null) {
+            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED);
+        }
+        // 验证码错误
+        if (!correct) {
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
+        }
+        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmailCaptcha());
+        // 邮件验证码过期
+        if (correctEmail == null) {
+            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED, "邮件验证码过期");
+        }
+        // 邮件验证码错误
+        if (!correctEmail) {
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
+        }
+        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
+        if (StringUtils.existEmpty(user.getName())) {
+            user.setName(user.getAccount());
+        }
+        user.setId(Id.next());
+        return userService.registerByEmail(request, user);
+    }
+
+    /**
+     * 登录，account和email都可以，需要放入account中
      */
     @Auth(skipLogin = true)
     @PostMapping("/login")
@@ -109,9 +160,7 @@ public class UserController {
     @Auth
     @PostMapping("/changeInfo")
     public Result changeInfo(@RequestBody User user) {
-        if (user.getId() == null) {
-            return Result.e1();
-        }
+        user.setId(AuthUtils.getUserId(request));
         return userService.changeInfo(user);
     }
 
@@ -121,9 +170,10 @@ public class UserController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getId() == null || user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
+        user.setId(AuthUtils.getUserId(request));
         return userService.changePwd(user);
     }
 
@@ -132,8 +182,8 @@ public class UserController {
      */
     @Auth
     @PostMapping("/deleteById")
-    public Result deleteById(long id) {
-        return userService.deleteById(id);
+    public Result deleteById() {
+        return userService.deleteById(AuthUtils.getUserId(request));
     }
 
     /**

@@ -40,7 +40,7 @@ public class Auth3Controller {
     public Result getToken() {
         long redisSign = Id.next();
         String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, RedisConstant.TOKEN_LENGTH);
-        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.TOKEN_NAME, token, RedisConstant.REDIS_EXPIRE_TIME);
+        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.TOKEN_NAME, token, RedisConstant.EXPIRE_TIME);
         Map<String, Object> map = new HashMap<>();
         map.put(RedisConstant.SIGN_NAME, redisSign);
         map.put(RedisConstant.TOKEN_NAME, token);
@@ -50,7 +50,7 @@ public class Auth3Controller {
     @PostMapping("login")
     public String login() {
         String redisSign = AuthUtils.getSign(request);
-        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.USER_ID_NAME, 1L, RedisConstant.REDIS_EXPIRE_TIME);
+        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.USER_ID_NAME, 1L, RedisConstant.EXPIRE_TIME);
         return "ok";
     }
 

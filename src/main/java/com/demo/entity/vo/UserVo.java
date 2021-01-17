@@ -30,4 +30,12 @@ public class UserVo extends User {
      * 出生年-结束
      */
     private Integer yearEnd;
+    /**
+     * 验证码
+     */
+    private String captcha;
+    /**
+     * 邮箱验证码
+     */
+    private String emailCaptcha;
 }

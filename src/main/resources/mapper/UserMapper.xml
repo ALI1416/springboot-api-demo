@@ -2,15 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.UserDao">
 
-	<sql id="col">id,account,pwd,name,gender,year,profile,comment,mail_address,use_mail_login,qq_openid,qq_name,use_qq_login,is_delete,create_id,create_time,update_id,update_time,version
+	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,use_email_login,qq_openid,qq_name,use_qq_login,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
 	<insert id="register" parameterType="User">
 		INSERT
 		user(
-		id,account,pwd,name,qq_openid,mail_address
+		id,account,pwd,name,qq_openid,email
 		)VALUES(
-		#{id},#{account},#{pwd},#{name},#{id},#{id}
+		#{id},#{account},#{pwd},#{id},#{id},#{id}
+		)
+	</insert>
+
+	<insert id="registerByEmail" parameterType="User">
+		INSERT
+		user(
+		id,account,pwd,name,qq_openid,email,use_email_login
+		)VALUES(
+		#{id},#{id},#{pwd},#{id},#{id},#{email},1
 		)
 	</insert>
 
@@ -31,6 +40,16 @@
 		user
 		WHERE
 		account=#{account}
+	</select>
+
+	<select id="findByEmail" parameterType="String"
+			resultType="User">
+		SELECT
+		<include refid="col"/>
+		FROM
+		user
+		WHERE
+		email=#{email}
 	</select>
 
 	<select id="findExact" parameterType="User" resultType="User">
@@ -141,6 +160,12 @@
 			<if test="comment != null">
 				comment=#{comment},
 			</if>
+			<if test="email != null">
+				email=#{email},
+			</if>
+			<if test="useEmailLogin != null">
+				use_email_login=#{useEmailLogin},
+			</if>
 			<if test="qqOpenid != null">
 				qq_openid=#{qqOpenid},
 			</if>
@@ -150,12 +175,7 @@
 			<if test="useQqLogin != null">
 				use_qq_login=#{useQqLogin},
 			</if>
-			<if test="isDelete != null">
-				is_delete=#{isDelete},
-			</if>
-			<if test="updateId != null">
-				update_id=#{updateId},
-			</if>
+			update_id=#{id},
 			update_time=CURRENT_TIMESTAMP,
 			version=version+1,
 		</set>
@@ -167,7 +187,11 @@
 		UPDATE user
 		SET
 		is_delete=1,
-		qq_openid=#{id}
+		qq_openid=#{id},
+		email=#{id},
+		update_id=#{id},
+		update_time=CURRENT_TIMESTAMP,
+		version=version+1,
 		WHERE
 		id=#{id}
 	</update>

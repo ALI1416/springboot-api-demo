@@ -23,6 +23,11 @@ public interface UserDao {
     int register(User user);
 
     /**
+     * 注册
+     */
+    int registerByEmail(User user);
+
+    /**
      * 查询，通过id
      */
     User findById(Long id);
@@ -31,6 +36,11 @@ public interface UserDao {
      * 查询，通过account
      */
     User findByAccount(String account);
+
+    /**
+     * 查询，通过email
+     */
+    User findByEmail(String email);
 
     /**
      * 精确查询

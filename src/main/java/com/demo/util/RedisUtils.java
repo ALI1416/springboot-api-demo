@@ -97,14 +97,19 @@ public class RedisUtils {
     }
 
     /**
-     * 放入并设置时间(秒，time<=0无限期)
+     * 放入并设置时间(秒，time<=0永久)<br>
+     * 重复放入，时间会覆盖
      */
     public static void set(String key, Object value, long time) {
+        redisTemplate.opsForValue().set(key, value);
         if (time > 0) {
-            redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
-        } else {
-            redisTemplate.opsForValue().set(key, value);
+            expire(key, time);
         }
+        // if (time > 0) {
+        //     redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
+        // } else {
+        //     redisTemplate.opsForValue().set(key, value);
+        // }
     }
 
     /**

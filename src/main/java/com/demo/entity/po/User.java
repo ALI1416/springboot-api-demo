@@ -47,13 +47,13 @@ public class User extends BaseEntity {
      */
     private String comment;
     /**
-     * 邮箱地址
+     * 电子邮箱
      */
-    private String mailAddress;
+    private String email;
     /**
      * 使用邮箱登录
      */
-    private Integer useMailLogin;
+    private Integer useEmailLogin;
     /**
      * qqOpenid
      */

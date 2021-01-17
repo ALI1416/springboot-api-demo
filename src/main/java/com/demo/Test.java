@@ -2,6 +2,7 @@ package com.demo;
 
 import java.sql.Timestamp;
 
+import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
@@ -78,6 +79,8 @@ public class Test {
         System.out.println(userAgent.getBrowserVersion());
         System.out.println(userAgent.getOperatingSystem().getName());
         System.out.println(userAgent.getOperatingSystem().getDeviceType().getName());
+
+        System.out.println(CaptchaTypeEnum.findByType(1));
     }
 
 }

@@ -3,7 +3,7 @@ package com.demo.constant;
 import lombok.Getter;
 
 /**
- * <h1>返回结果状态</h1>
+ * <h1>返回结果状态枚举</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -53,6 +53,14 @@ public enum ResultCodeEnum {
      */
     TOKEN_IS_EXPIRED(1000, "token过期"),
     /**
+     * 验证码过期
+     */
+    CAPTCHA_IS_EXPIRED(1000, "验证码过期"),
+    /**
+     * 验证码错误
+     */
+    CAPTCHA_ERROR(1000, "验证码错误"),
+    /**
      * 用户离线1000
      */
     USER_OFFLINE(1000, "用户离线"),
@@ -76,6 +84,10 @@ public enum ResultCodeEnum {
      * 用户已存在1005
      */
     USER_HAS_EXISTED(1005, "账号已存在"),
+    /**
+     * 邮箱已注册1005
+     */
+    EMAIL_HAS_EXISTED(1005, "邮箱已注册"),
     /**
      * 第三方登录失败1006
      */

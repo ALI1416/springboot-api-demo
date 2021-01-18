@@ -33,7 +33,7 @@ public class EmailController {
      * 发送邮件
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = {"", "/", "index"})
+    @PostMapping(value = {"", "/"})
     public Result index(HttpServletRequest request, @RequestBody UserVo user) {
         if (StringUtils.existEmpty(user.getEmail(), user.getCaptcha())) {
             return Result.e1();
@@ -50,8 +50,8 @@ public class EmailController {
         }
         // 生成邮件验证码
         String captcha = StringUtils.getRandom(StringUtils.NUMBER_UPPER_LETTER, 8);
-        AuthUtils.setEmailCaptcha(request, captcha);
-        MailUtils.sendMail(user.getEmail(), "注册验证码", "您的验证码为：" + captcha);
+        AuthUtils.setEmailCaptcha(request, user.getEmail(), captcha);
+        // MailUtils.sendMail(user.getEmail(), "注册验证码", "您的验证码为：" + captcha);
         return Result.o();
     }
 

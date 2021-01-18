@@ -85,9 +85,17 @@ public enum ResultCodeEnum {
      */
     USER_HAS_EXISTED(1005, "账号已存在"),
     /**
+     * 邮箱不存在1005
+     */
+    EMAIL_NOT_EXIST(1005, "邮箱不存在"),
+    /**
      * 邮箱已注册1005
      */
     EMAIL_HAS_EXISTED(1005, "邮箱已注册"),
+    /**
+     * 邮箱错误1005
+     */
+    EMAIL_ERROR(1005, "邮箱错误"),
     /**
      * 第三方登录失败1006
      */

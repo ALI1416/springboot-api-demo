@@ -63,6 +63,17 @@ public class UserService extends BaseService {
     }
 
     /**
+     * 存在email
+     */
+    public Result existEmail(String email) {
+        // 查找用户，通过account。用户不存在
+        if (userDao.findByEmail(email) == null) {
+            return Result.e(ResultCodeEnum.EMAIL_NOT_EXIST);
+        }
+        return Result.o();
+    }
+
+    /**
      * 查找用户，通过id
      */
     public Result findById(long id) {
@@ -89,14 +100,23 @@ public class UserService extends BaseService {
     }
 
     /**
+     * 查找用户，通过email
+     */
+    public Result findByEmail(String email) {
+        // 查找用户，通过email
+        User u = userDao.findByEmail(email);
+        // 用户不存在
+        if (u == null) {
+            return Result.e(ResultCodeEnum.EMAIL_NOT_EXIST);
+        }
+        return Result.o(u);
+    }
+
+    /**
      * 注册，通过account
      */
     @Transactional
     public Result register(HttpServletRequest request, User user) {
-        // 查找用户，通过account。用户已存在
-        if (userDao.findByAccount(user.getAccount()) != null) {
-            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
-        }
         // 插入
         Result result = tryif(() -> (userDao.register(user) == 1));
         // 失败
@@ -115,10 +135,6 @@ public class UserService extends BaseService {
      */
     @Transactional
     public Result registerByEmail(HttpServletRequest request, UserVo user) {
-        // 查找email，已注册
-        if (userDao.findByEmail(user.getEmail()) != null) {
-            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
-        }
         // 插入
         Result result = tryif(() -> (userDao.registerByEmail(user) == 1));
         // 失败
@@ -169,25 +185,6 @@ public class UserService extends BaseService {
      */
     @Transactional
     public Result changeInfo(User user) {
-        // 查找用户，通过id
-        User u = userDao.findById(user.getId());
-        // 用户不存在
-        if (u == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
-        // 修改account
-        if (user.getAccount() != null) {
-            // 要修改的account和以前的需要一样
-            if (!user.getAccount().equals(u.getAccount())) {
-                // 查找用户，通过account
-                if (userDao.findByAccount(user.getAccount()) != null) {
-                    // 用户已存在
-                    return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
-                }
-            } else {
-                user.setAccount(null);
-            }
-        }
         // 不能修改密码
         user.setPwd(null);
         // 更新
@@ -206,12 +203,8 @@ public class UserService extends BaseService {
      */
     @Transactional
     public Result changePwd(UserVo user) {
-        // 查找用户，通过id
+        // 查找用户
         User u = userDao.findById(user.getId());
-        // 用户不存在
-        if (u == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
         // 旧密码错误
         if (!EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
@@ -235,10 +228,6 @@ public class UserService extends BaseService {
      */
     @Transactional
     public Result deleteById(long id) {
-        // 查找用户，通过id。用户不存在
-        if (userDao.findById(id) == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
         // 删除
         Result result = tryif(() -> (userDao.deleteById(id) == 1));
         // 失败

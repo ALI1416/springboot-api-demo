@@ -34,4 +34,9 @@ public class RedisController {
     public Boolean redisExpire(String key) {
         return RedisUtils.expire(key, 60);
     }
+
+    @PostMapping("delete")
+    public Boolean redisDelete(String key) {
+        return RedisUtils.delete(key);
+    }
 }

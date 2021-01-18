@@ -36,7 +36,7 @@ public class CaptchaController {
      * @param type     验证码类型
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = {"", "/", "index"})
+    @PostMapping(value = {"", "/"})
     public void index(HttpServletRequest request, HttpServletResponse response, Integer type) throws Exception {
         if (type == null) {
             return;
@@ -49,7 +49,6 @@ public class CaptchaController {
         }
         /* 生成验证码，png格式 */
         SpecCaptcha captcha = new SpecCaptcha(150, 50, 5);
-        System.out.println(captcha.text().toLowerCase());
         /* redis储存验证码 */
         AuthUtils.setCaptcha(request, captchaTypeEnum, captcha.text());
         /* 设置请求头为输出图片类型 */

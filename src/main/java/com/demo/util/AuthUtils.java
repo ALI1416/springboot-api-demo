@@ -4,6 +4,7 @@ import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.RedisConstant;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * <h1>权限认证工具</h1>
@@ -104,31 +105,36 @@ public class AuthUtils {
      * 设置邮箱验证码(大小写不敏感)
      *
      * @param request HttpServletRequest
+     * @param email   邮箱地址
      * @param captcha 验证码
      */
-    public static void setEmailCaptcha(HttpServletRequest request, String captcha) {
+    public static void setEmailCaptcha(HttpServletRequest request, String email, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
-        RedisUtils.set(name, captcha.toLowerCase(), RedisConstant.EMAIL_CAPTCHA_EXPIRE_TIME);
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME, email.toLowerCase(),
+                RedisConstant.EMAIL_CAPTCHA_EXPIRE_TIME);
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME, captcha.toLowerCase());
     }
 
     /**
      * 邮箱验证码是否正确(大小写不敏感)
      *
      * @param request HttpServletRequest
+     * @param email   邮箱地址
      * @param captcha 验证码
      * @return null:过期,true:正确,false:错误
      */
-    public static Boolean correctEmailCaptcha(HttpServletRequest request, String captcha) {
+    public static Boolean correctEmailCaptcha(HttpServletRequest request, String email, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
-        String redisCaptcha = (String) RedisUtils.get(name);
-        if (redisCaptcha == null) {
+        Map<Object, Object> map = RedisUtils.hashGet(name);
+        String redisEmail = (String) map.get(RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME);
+        String redisCaptcha = (String) map.get(RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME);
+        if (redisEmail == null || redisCaptcha == null) {
             return null;
         }
         // 验证后一定要删除
-        RedisUtils.delete(name);
-        return redisCaptcha.equals(captcha.toLowerCase());
+        return redisEmail.equals(email.toLowerCase()) && redisCaptcha.equals(captcha.toLowerCase());
     }
 
 }

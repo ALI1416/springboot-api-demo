@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.regex.Pattern;
 
 /**
  * <h1>User api</h1>
@@ -88,6 +87,10 @@ public class UserController {
                 || user.getPwd().length() != 32) {
             return Result.e1();
         }
+        // 用户已存在
+        if (userService.existAccount(user.getAccount()).isOk()) {
+            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
+        }
         Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
         // 验证码过期
         if (correct == null) {
@@ -116,6 +119,10 @@ public class UserController {
                 || user.getPwd().length() != 32) {
             return Result.e1();
         }
+        // 邮箱已存在
+        if (userService.existEmail(user.getEmail()).isOk()) {
+            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
+        }
         Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
         // 验证码过期
         if (correct == null) {
@@ -125,7 +132,7 @@ public class UserController {
         if (!correct) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
-        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmailCaptcha());
+        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha());
         // 邮件验证码过期
         if (correctEmail == null) {
             return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED, "邮件验证码过期");
@@ -140,6 +147,58 @@ public class UserController {
         }
         user.setId(Id.next());
         return userService.registerByEmail(request, user);
+    }
+
+    /**
+     * 绑定email
+     */
+    @Auth(skipLogin = true)
+    @PostMapping("/bindEmail")
+    public Result bindEmail(@RequestBody UserVo user) {
+        if (StringUtils.existEmpty(user.getEmail(), user.getEmailCaptcha()) //
+                || !RegexUtils.isEmail(user.getEmail())) {
+            return Result.e1();
+        }
+        // 邮箱已存在
+        if (userService.existEmail(user.getEmail()).isOk()) {
+            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
+        }
+        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha());
+        // 邮件验证码过期
+        if (correctEmail == null) {
+            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED, "邮件验证码过期");
+        }
+        // 邮件验证码错误
+        if (!correctEmail) {
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
+        }
+        User u = new User();
+        u.setId(AuthUtils.getUserId(request));
+        u.setEmail(user.getEmail());
+        u.setUseEmailLogin(1);
+        return userService.changeInfo(u);
+    }
+
+    /**
+     * 解绑email
+     */
+    @Auth(skipLogin = true)
+    @PostMapping("/unbindEmail")
+    public Result unbindEmail(@RequestBody UserVo user) {
+        if (StringUtils.existEmpty(user.getEmail()) || !RegexUtils.isEmail(user.getEmail())) {
+            return Result.e1();
+        }
+        User u1 = (User) userService.findByEmail(user.getEmail()).getData();
+        // 邮箱不匹配
+        if (!user.getEmail().equals(u1.getEmail())) {
+            return Result.e(ResultCodeEnum.EMAIL_ERROR);
+        }
+        User u = new User();
+        Long id = AuthUtils.getUserId(request);
+        u.setId(id);
+        u.setEmail(String.valueOf(id));
+        u.setUseEmailLogin(0);
+        return userService.changeInfo(u);
     }
 
     /**

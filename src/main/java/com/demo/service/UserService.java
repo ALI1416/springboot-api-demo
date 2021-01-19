@@ -1,5 +1,13 @@
 package com.demo.service;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.demo.constant.ResultCodeEnum;
 import com.demo.dao.UserBakDao;
 import com.demo.dao.UserDao;
@@ -14,13 +22,8 @@ import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RegexUtils;
 import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>用户服务</h1>
@@ -43,73 +46,57 @@ public class UserService extends BaseService {
     /**
      * 存在id
      */
-    public Result existId(long id) {
-        // 查找用户，通过id。用户不存在
-        if (userDao.findById(id) == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
-        return Result.o();
-    }
-
-    /**
-     * 存在account
-     */
-    public Result existAccount(String account) {
-        // 查找用户，通过account。用户不存在
-        if (userDao.findByAccount(account) == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
-        return Result.o();
-    }
-
-    /**
-     * 存在email
-     */
-    public Result existEmail(String email) {
-        // 查找用户，通过account。用户不存在
-        if (userDao.findByEmail(email) == null) {
-            return Result.e(ResultCodeEnum.EMAIL_NOT_EXIST);
-        }
-        return Result.o();
+    public boolean existId(long id) {
+        return userDao.existId(id);
     }
 
     /**
      * 查找用户，通过id
      */
-    public Result findById(long id) {
-        // 查找用户，通过id
-        User u = userDao.findById(id);
-        // 用户不存在
-        if (u == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
-        return Result.o(u);
+    public User findById(long id) {
+        return userDao.findById(id);
+    }
+
+    /**
+     * 存在account
+     */
+    public boolean existAccount(String account) {
+        return userDao.existAccount(account);
     }
 
     /**
      * 查找用户，通过account
      */
-    public Result findByAccount(String account) {
-        // 查找用户，通过account
-        User u = userDao.findByAccount(account);
-        // 用户不存在
-        if (u == null) {
-            return Result.e(ResultCodeEnum.USER_NOT_EXIST);
-        }
-        return Result.o(u);
+    public User findByAccount(String account) {
+        return userDao.findByAccount(account);
+    }
+
+    /**
+     * 存在email
+     */
+    public boolean existEmail(String email) {
+        return userDao.existEmail(email);
     }
 
     /**
      * 查找用户，通过email
      */
-    public Result findByEmail(String email) {
-        // 查找用户，通过email
-        User u = userDao.findByEmail(email);
-        // 用户不存在
-        if (u == null) {
-            return Result.e(ResultCodeEnum.EMAIL_NOT_EXIST);
-        }
-        return Result.o(u);
+    public User findByEmail(String email) {
+        return userDao.findByEmail(email);
+    }
+
+    /**
+     * 存在qqOpenid
+     */
+    public boolean existQqOpenid(String qqOpenid) {
+        return userDao.existQqOpenid(qqOpenid);
+    }
+
+    /**
+     * 查找用户，通过qqOpenid
+     */
+    public User findByQqOpenid(String qqOpenid) {
+        return userDao.findByQqOpenid(qqOpenid);
     }
 
     /**

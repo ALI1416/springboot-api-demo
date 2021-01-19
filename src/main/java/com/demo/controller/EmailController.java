@@ -1,19 +1,21 @@
 package com.demo.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.demo.annotation.Auth;
 import com.demo.constant.CaptchaTypeEnum;
-import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.UserVo;
 import com.demo.util.AuthUtils;
-import com.demo.util.RedisUtils;
-import com.demo.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-
 import com.demo.util.MailUtils;
-
-import javax.servlet.http.HttpServletRequest;
+import com.demo.util.StringUtils;
 
 /**
  * <h1>邮件api</h1>
@@ -33,19 +35,13 @@ public class EmailController {
      * 发送邮件
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = {"", "/"})
+    @PostMapping(value = { "", "/" })
     public Result index(HttpServletRequest request, @RequestBody UserVo user) {
         if (StringUtils.existEmpty(user.getEmail(), user.getCaptcha())) {
             return Result.e1();
         }
-        /* 判断验证码是否正确 */
-        Boolean correct = AuthUtils.correctCaptcha(request, CaptchaTypeEnum.EMAIL, user.getCaptcha());
-        // 验证码过期
-        if (correct == null) {
-            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED);
-        }
         // 验证码错误
-        if (!correct) {
+        if (!AuthUtils.correctCaptcha(request, CaptchaTypeEnum.EMAIL, user.getCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
         // 生成邮件验证码

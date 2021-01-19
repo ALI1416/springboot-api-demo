@@ -23,14 +23,34 @@ public interface UserDao {
     int register(User user);
 
     /**
-     * 注册
+     * 注册，通过email
      */
     int registerByEmail(User user);
 
     /**
+     * 存在id
+     */
+    boolean existId(long id);
+
+    /**
+     * 存在account
+     */
+    boolean existAccount(String account);
+
+    /**
+     * 存在email
+     */
+    boolean existEmail(String email);
+
+    /**
+     * 存在qqOpenid
+     */
+    boolean existQqOpenid(String qqOpenid);
+
+    /**
      * 查询，通过id
      */
-    User findById(Long id);
+    User findById(long id);
 
     /**
      * 查询，通过account
@@ -41,6 +61,11 @@ public interface UserDao {
      * 查询，通过email
      */
     User findByEmail(String email);
+
+    /**
+     * 查询，通过qqOpenid
+     */
+    User findByQqOpenid(String qqOpenid);
 
     /**
      * 精确查询

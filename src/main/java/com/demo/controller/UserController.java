@@ -1,5 +1,16 @@
 package com.demo.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
@@ -12,16 +23,8 @@ import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RegexUtils;
 import com.demo.util.StringUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>User api</h1>
@@ -46,18 +49,7 @@ public class UserController {
      */
     @PostMapping("/existId")
     public Result existId(long id) {
-        return userService.existId(id);
-    }
-
-    /**
-     * 是否存在该账号
-     */
-    @PostMapping("/existAccount")
-    public Result existAccount(String account) {
-        if (StringUtils.existEmpty(account)) {
-            return Result.e1();
-        }
-        return userService.existAccount(account);
+        return Result.o(userService.existId(id));
     }
 
     /**
@@ -91,13 +83,8 @@ public class UserController {
         if (userService.existAccount(user.getAccount()).isOk()) {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
-        Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
-        // 验证码过期
-        if (correct == null) {
-            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED);
-        }
         // 验证码错误
-        if (!correct) {
+        if (!AuthUtils.correctCaptcha(request, user.getCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
@@ -123,22 +110,12 @@ public class UserController {
         if (userService.existEmail(user.getEmail()).isOk()) {
             return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
         }
-        Boolean correct = AuthUtils.correctCaptcha(request, user.getCaptcha());
-        // 验证码过期
-        if (correct == null) {
-            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED);
-        }
         // 验证码错误
-        if (!correct) {
+        if (!AuthUtils.correctCaptcha(request, user.getCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
-        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha());
-        // 邮件验证码过期
-        if (correctEmail == null) {
-            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED, "邮件验证码过期");
-        }
         // 邮件验证码错误
-        if (!correctEmail) {
+        if (!AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
@@ -163,13 +140,8 @@ public class UserController {
         if (userService.existEmail(user.getEmail()).isOk()) {
             return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
         }
-        Boolean correctEmail = AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha());
-        // 邮件验证码过期
-        if (correctEmail == null) {
-            return Result.e(ResultCodeEnum.CAPTCHA_IS_EXPIRED, "邮件验证码过期");
-        }
         // 邮件验证码错误
-        if (!correctEmail) {
+        if (!AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
         }
         User u = new User();
@@ -229,7 +201,8 @@ public class UserController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         user.setId(AuthUtils.getUserId(request));

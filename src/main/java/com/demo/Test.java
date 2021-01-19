@@ -80,6 +80,10 @@ public class Test {
         System.out.println(userAgent.getOperatingSystem().getDeviceType().getName());
 
         System.out.println(CaptchaTypeEnum.findByType(1));
+
+        String a1 = "Ab";
+        String a2 = "aB";
+        System.out.println(a1.equalsIgnoreCase(a2));
     }
 
 }

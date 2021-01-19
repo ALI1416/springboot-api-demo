@@ -64,12 +64,12 @@ public class AuthUtils {
      * @param captcha 图片验证码
      * @return null:过期,true:正确,false:错误
      */
-    public static Boolean correctCaptcha(HttpServletRequest request, String captcha) {
+    public static boolean correctCaptcha(HttpServletRequest request, String captcha) {
         return correctCaptcha(request, CaptchaTypeEnum.DEFAULT, captcha);
     }
 
     /**
-     * 设置图片验证码(大小写不敏感)
+     * 设置图片验证码
      *
      * @param request         HttpServletRequest
      * @param captchaTypeEnum 图片验证码类型枚举
@@ -78,7 +78,7 @@ public class AuthUtils {
     public static void setCaptcha(HttpServletRequest request, CaptchaTypeEnum captchaTypeEnum, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.CAPTCHA_INFIX + captchaTypeEnum.getType();
-        RedisUtils.set(name, captcha.toLowerCase(), captchaTypeEnum.getExpire());
+        RedisUtils.set(name, captcha, captchaTypeEnum.getExpire());
     }
 
     /**
@@ -87,22 +87,21 @@ public class AuthUtils {
      * @param request         HttpServletRequest
      * @param captchaTypeEnum 图片验证码类型枚举
      * @param captcha         图片验证码
-     * @return null:过期,true:正确,false:错误
      */
-    public static Boolean correctCaptcha(HttpServletRequest request, CaptchaTypeEnum captchaTypeEnum, String captcha) {
+    public static boolean correctCaptcha(HttpServletRequest request, CaptchaTypeEnum captchaTypeEnum, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.CAPTCHA_INFIX + captchaTypeEnum.getType();
         String redisCaptcha = (String) RedisUtils.get(name);
         if (redisCaptcha == null) {
-            return null;
+            return false;
         }
-        // 验证后一定要删除
+        // 验证后一定要删除(无论成功失败)
         RedisUtils.delete(name);
-        return redisCaptcha.equals(captcha.toLowerCase());
+        return redisCaptcha.equalsIgnoreCase(captcha);
     }
 
     /**
-     * 设置邮箱验证码(大小写不敏感)
+     * 设置邮箱验证码
      *
      * @param request HttpServletRequest
      * @param email   邮箱地址
@@ -111,9 +110,9 @@ public class AuthUtils {
     public static void setEmailCaptcha(HttpServletRequest request, String email, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
-        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME, email.toLowerCase(),
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME, email,
                 RedisConstant.EMAIL_CAPTCHA_EXPIRE_TIME);
-        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME, captcha.toLowerCase());
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME, captcha);
     }
 
     /**
@@ -122,19 +121,22 @@ public class AuthUtils {
      * @param request HttpServletRequest
      * @param email   邮箱地址
      * @param captcha 验证码
-     * @return null:过期,true:正确,false:错误
      */
-    public static Boolean correctEmailCaptcha(HttpServletRequest request, String email, String captcha) {
+    public static boolean correctEmailCaptcha(HttpServletRequest request, String email, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN_NAME);
         String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
         Map<Object, Object> map = RedisUtils.hashGet(name);
         String redisEmail = (String) map.get(RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME);
         String redisCaptcha = (String) map.get(RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME);
         if (redisEmail == null || redisCaptcha == null) {
-            return null;
+            return false;
         }
-        // 验证后一定要删除
-        return redisEmail.equals(email.toLowerCase()) && redisCaptcha.equals(captcha.toLowerCase());
+        if (!(redisEmail.equalsIgnoreCase(email) && redisCaptcha.equalsIgnoreCase(captcha))) {
+            return false;
+        }
+        // 验证成功后一定要删除
+        RedisUtils.delete(name);
+        return true;
     }
 
 }

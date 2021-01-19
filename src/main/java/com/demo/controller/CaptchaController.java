@@ -3,15 +3,13 @@ package com.demo.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.demo.annotation.Auth;
-import com.demo.constant.CaptchaTypeEnum;
-import com.demo.constant.RedisConstant;
-import com.demo.util.AuthUtils;
-import com.demo.util.RedisUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.demo.annotation.Auth;
+import com.demo.constant.CaptchaTypeEnum;
+import com.demo.util.AuthUtils;
 import com.wf.captcha.SpecCaptcha;
 
 /**
@@ -36,7 +34,7 @@ public class CaptchaController {
      * @param type     验证码类型
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = {"", "/"})
+    @PostMapping(value = { "", "/" })
     public void index(HttpServletRequest request, HttpServletResponse response, Integer type) throws Exception {
         if (type == null) {
             return;
@@ -72,31 +70,31 @@ public class CaptchaController {
         // png类型
         SpecCaptcha captcha = new SpecCaptcha(130, 48, 5);
         // gif类型
-        //        GifCaptcha captcha = new GifCaptcha(130, 48, 5);
+        // GifCaptcha captcha = new GifCaptcha(130, 48, 5);
         // 中文png类型
-        //         ChineseCaptcha captcha = new ChineseCaptcha(130, 48, 2);
+        // ChineseCaptcha captcha = new ChineseCaptcha(130, 48, 2);
         // 中文gif类型
-        //         ChineseGifCaptcha captcha = new ChineseGifCaptcha(130, 48, 2);
+        // ChineseGifCaptcha captcha = new ChineseGifCaptcha(130, 48, 2);
         // 算术类型
-        //         ArithmeticCaptcha captcha = new ArithmeticCaptcha(130, 48, 2);
+        // ArithmeticCaptcha captcha = new ArithmeticCaptcha(130, 48, 2);
 
         /* 其他设置 */
         // 设置字体
-        //        captcha.setFont(new Font("Verdana", Font.PLAIN, 32));
-        //        captcha.setFont(Captcha.FONT_1);
+        // captcha.setFont(new Font("Verdana", Font.PLAIN, 32));
+        // captcha.setFont(Captcha.FONT_1);
         // 设置类型，纯数字、纯字母、字母数字混合
-        //        captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
-        //        captcha.setCharType(Captcha.TYPE_NUM_AND_UPPER);
+        // captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
+        // captcha.setCharType(Captcha.TYPE_NUM_AND_UPPER);
 
         /* 结果 */
         // 获取运算的公式：3+2=?
-        //         System.out.println(captcha.getArithmeticString());
+        // System.out.println(captcha.getArithmeticString());
         // 获取验证码字符或运算结果
         System.out.println(captcha.text());
 
         /* 储存 */
         // 验证码存入session
-        //         request.getSession().setAttribute("captcha",captcha.text().toLowerCase());
+        // request.getSession().setAttribute("captcha",captcha.text().toLowerCase());
 
         /* 输出 */
         captcha.out(response.getOutputStream());

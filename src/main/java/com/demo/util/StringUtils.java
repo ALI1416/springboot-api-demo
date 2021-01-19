@@ -1,12 +1,12 @@
 package com.demo.util;
 
+import org.ansj.splitWord.analysis.ToAnalysis;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import org.ansj.splitWord.analysis.ToAnalysis;
-import org.springframework.stereotype.Component;
 
 /**
  * <h1>字符串工具</h1>
@@ -136,13 +136,44 @@ public class StringUtils {
      */
     public static String getAnsj(String s) {
         // 标准分词 没有词性 去掉英文标点符号 多个空格合成1个 去除首尾空格
-        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ")
-                .trim();
+        return ToAnalysis.parse(s).toStringWithOutNature(" ").replaceAll("[\\pP`=~$^+|<>]", "").replaceAll(" +", " ").trim();
+    }
+
+    /**
+     * 获取64位uuid(去除-)
+     *
+     * @see java.util.UUID#randomUUID()
+     */
+    public static String getUuid() {
+        return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * 是null对象
+     *
+     * @param obj 对象
+     */
+    public static boolean isNull(Object obj) {
+        return obj == null;
+    }
+
+    /**
+     * 存在null对象
+     *
+     * @param objs 对象
+     */
+    public static boolean existNull(Object... objs) {
+        for (Object obj : objs) {
+            if (obj == null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
      * 是空字符串
-     * 
+     *
      * @param string 字符串
      */
     public static boolean isEmpty(String string) {
@@ -151,7 +182,7 @@ public class StringUtils {
 
     /**
      * 存在空字符串
-     * 
+     *
      * @param strings 字符串
      */
     public static boolean existEmpty(String... strings) {
@@ -165,7 +196,7 @@ public class StringUtils {
 
     /**
      * 是空白字符串
-     * 
+     *
      * @param string 字符串
      */
     public static boolean isBlack(String string) {
@@ -174,7 +205,7 @@ public class StringUtils {
 
     /**
      * 存在空白字符串
-     * 
+     *
      * @param strings 字符串
      */
     public static boolean existBlack(String... strings) {
@@ -187,60 +218,34 @@ public class StringUtils {
     }
 
     /**
-     * 获取64位uuid(去除-)
-     *
-     * @see java.util.UUID#randomUUID()
-     */
-    public static String getUuid() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
-
-    /**
-     * 马赛克字符 星号:{@value}
-     */
-    public static final char MASK_ASTERISK = '*';
-    /**
-     * 马赛克字符 井号:{@value}
-     */
-    public static final char MASK_HASH = '#';
-
-    /**
      * 字符串打码
      *
-     * @param str        原始字符串
-     * @param mask       马赛克字符
-     * @param maskLength 马赛克长度
-     * @param start      字符串保留首部长度
-     * @param end        字符串保留尾部长度
+     * @param string 原始字符串
+     * @param mask   马赛克字符串
+     * @param start  字符串保留首部长度
+     * @param end    字符串保留尾部长度
      * @see java.lang.StringBuilder#replace(int start, int end, String str)
-     * @see #MASK_ASTERISK
-     * @see #MASK_HASH
      */
-    public static String getMask(String str, char mask, int maskLength, int start, int end) {
-        StringBuilder sb = new StringBuilder(str);
-        StringBuilder maskSb = new StringBuilder();
-        // 马赛克字符串
-        for (int i = 0; i < maskLength; i++) {
-            maskSb.append(mask);
-        }
+    public static String getMask(String string, String mask, int start, int end) {
+        StringBuilder sb = new StringBuilder(string);
         // 字符串长度
         int len = sb.length();
         if (len <= start + end) {
             // 字符串长度<=首部保留长度+尾部保留长度
-            return maskSb.toString();
+            return mask;
         } else {
-            return sb.replace(start, len - end, maskSb.toString()).toString();
+            return sb.replace(start, len - end, mask).toString();
         }
     }
 
     /**
-     * 字符串打码(保留首尾1位，马赛克字符是{@value #MASK_ASTERISK}，长度3位)
+     * 字符串打码(保留首尾1位，马赛克字符串是"***")
      *
-     * @param str 原始字符串
-     * @see #getMask(String str, char mask, int maskLength, int start, int end)
+     * @param string 原始字符串
+     * @see #getMask(String string, String mask, int start, int end)
      */
-    public static String getMask(String str) {
-        return getMask(str, MASK_ASTERISK, 3, 1, 1);
+    public static String getMask(String string) {
+        return getMask(string, "***", 1, 1);
     }
 
     /**
@@ -249,17 +254,17 @@ public class StringUtils {
      * @param fileName 文件名
      */
     public static String getSuffix(String fileName) {
-        int a = fileName.lastIndexOf(".") + 1;
-        return a == 0 ? "" : fileName.substring(a);
+        int index = fileName.lastIndexOf(".") + 1;
+        return index == 0 ? "" : fileName.substring(index);
     }
 
     /**
      * 重命名字符串
      *
-     * @param str 字符串列表
+     * @param stringList 字符串列表
      */
-    public static List<String> duplicateRenameStr(List<String> str) {
-        return duplicateRename(str, false);
+    public static List<String> duplicateRenameStr(List<String> stringList) {
+        return duplicateRename(stringList, false);
     }
 
     /**
@@ -274,14 +279,14 @@ public class StringUtils {
     /**
      * 重命名
      *
-     * @param str    字符串或文件名列表
-     * @param isFile 是文件
+     * @param stringList 字符串或文件名列表
+     * @param isFile     是文件
      */
-    public static List<String> duplicateRename(List<String> str, boolean isFile) {
+    public static List<String> duplicateRename(List<String> stringList, boolean isFile) {
         List<String> strTemp = new ArrayList<>();
         List<String> strResult = new ArrayList<>();
         List<Integer> strCount = new ArrayList<>();
-        for (String s : str) {
+        for (String s : stringList) {
             if (!strResult.contains(s)) {
                 strTemp.add(s);
                 strResult.add(s);
@@ -305,8 +310,8 @@ public class StringUtils {
             }
         }
         // 没有重复的
-        if (str.size() == strTemp.size()) {
-            return str;
+        if (stringList.size() == strTemp.size()) {
+            return stringList;
         }
         return strResult;
     }

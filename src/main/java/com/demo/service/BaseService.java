@@ -2,7 +2,6 @@ package com.demo.service;
 
 import com.demo.constant.Constant;
 import com.demo.entity.BaseEntity;
-import com.demo.entity.pojo.Result;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,9 +26,9 @@ public class BaseService {
     /**
      * try-if简化，不符合function条件的回滚
      *
-     * @param function 要执行的函数
+     * @param function 要执行的函数，返回结果为1时才算符合条件
      */
-    public static Result tryif(Function<Boolean> function) {
+    public static boolean tryif(Function<Integer> function) {
         return tryif(true, function);
     }
 
@@ -37,21 +36,71 @@ public class BaseService {
      * try-if简化
      *
      * @param rollbackIf 不符合function条件的是否回滚
+     * @param function   要执行的函数，返回结果为1时才算符合条件
+     */
+    public static boolean tryif(boolean rollbackIf, Function<Integer> function) {
+        try {
+            if (function.run() != 1) {
+                if (rollbackIf) {
+                    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+                }
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("try-if简化捕获到异常", e);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * try-if2简化，不符合function条件的回滚
+     *
+     * @param function 要执行的函数
+     */
+    public static boolean tryif2(Function<Boolean> function) {
+        return tryif2(true, function);
+    }
+
+    /**
+     * try-if2简化
+     *
+     * @param rollbackIf 不符合function条件的是否回滚
      * @param function   要执行的函数
      */
-    public static Result tryif(boolean rollbackIf, Function<Boolean> function) {
+    public static boolean tryif2(boolean rollbackIf, Function<Boolean> function) {
         try {
             if (!function.run()) {
                 if (rollbackIf) {
                     TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
                 }
-                return Result.e();
+                return false;
             }
         } catch (Exception e) {
-            log.error("try-if简化捕获到异常", e);
-            return Result.e();
+            log.error("try-if2简化捕获到异常", e);
+            return false;
         }
-        return Result.o();
+        return true;
+    }
+
+    /**
+     * 分页
+     *
+     * @param <E>        对象类型
+     * @param baseEntity 基实体<br>
+     *                   默认分页，默认排序：baseEntity == null<br>
+     *                   默认页码：pages == null<br>
+     *                   默认每页条数：rows == null || rows <= 0<br>
+     *                   默认排序：orderBy == null<br>
+     *                   全部查询，不排序：pages == 0 && orderBy == ""<br>
+     *                   全部查询，排序：pages == 0 && orderBy != ""<br>
+     *                   分页查询，不排序：pages != 0 && orderBy == ""<br>
+     *                   分页查询，排序：pages != 0 && orderBy != ""<br>
+     * @param function   要执行的查询语句
+     * @return PageInfo封装的对象
+     */
+    public static <E> PageInfo<E> pagination(BaseEntity baseEntity, Function<List<E>> function) {
+        return new PageInfo<>(paginationUnpack(baseEntity, function));
     }
 
     /**
@@ -111,26 +160,6 @@ public class BaseService {
             }
         }
         return function.run();
-    }
-
-    /**
-     * 分页
-     *
-     * @param <E>        对象类型
-     * @param baseEntity 基实体<br>
-     *                   默认分页，默认排序：baseEntity == null<br>
-     *                   默认页码：pages == null<br>
-     *                   默认每页条数：rows == null || rows <= 0<br>
-     *                   默认排序：orderBy == null<br>
-     *                   全部查询，不排序：pages == 0 && orderBy == ""<br>
-     *                   全部查询，排序：pages == 0 && orderBy != ""<br>
-     *                   分页查询，不排序：pages != 0 && orderBy == ""<br>
-     *                   分页查询，排序：pages != 0 && orderBy != ""<br>
-     * @param function   要执行的查询语句
-     * @return PageInfo封装的对象
-     */
-    public static <E> PageInfo<E> pagination(BaseEntity baseEntity, Function<List<E>> function) {
-        return new PageInfo<>(paginationUnpack(baseEntity, function));
     }
 
     /**

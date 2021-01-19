@@ -1,16 +1,5 @@
 package com.demo.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
@@ -22,9 +11,16 @@ import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RegexUtils;
-import com.demo.util.StringUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <h1>User api</h1>
@@ -39,56 +35,48 @@ import lombok.AllArgsConstructor;
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class UserController {
+public class UserController extends BaseController {
 
     private final HttpServletRequest request;
     private final UserService userService;
 
     /**
-     * 是否存在该id
+     * 存在account
      */
-    @PostMapping("/existId")
-    public Result existId(long id) {
-        return Result.o(userService.existId(id));
+    @PostMapping("/existAccount")
+    public Result existAccount(String account) {
+        return Result.o(userService.existAccount(account));
     }
 
     /**
-     * 查找用户，通过id
+     * 存在email
      */
-    @PostMapping("/findById")
-    public Result findById(long id) {
-        return userService.findById(id);
+    @PostMapping("/existEmail")
+    public Result existEmail(String email) {
+        return Result.o(userService.existEmail(email));
     }
 
     /**
-     * 查找用户，通过account
-     */
-    @PostMapping("/findByAccount")
-    public Result findByAccount(String account) {
-        return userService.findByAccount(account);
-    }
-
-    /**
-     * 注册，通过account
+     * 注册，通过account(需要account,pwd,captcha)
      */
     @Auth(skipLogin = true)
     @PostMapping("/register")
     public Result register(@RequestBody UserVo user) {
-        if (StringUtils.existEmpty(user.getAccount(), user.getPwd(), user.getCaptcha()) //
+        if (existEmpty(user.getAccount(), user.getPwd(), user.getCaptcha()) //
                 || !RegexUtils.isAccount(user.getAccount()) //
                 || user.getPwd().length() != 32) {
             return Result.e1();
-        }
-        // 用户已存在
-        if (userService.existAccount(user.getAccount()).isOk()) {
-            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
         // 验证码错误
         if (!AuthUtils.correctCaptcha(request, user.getCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
+        // 用户已存在
+        if (userService.existAccount(user.getAccount())) {
+            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
+        }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (StringUtils.existEmpty(user.getName())) {
+        if (isEmpty(user.getName())) {
             user.setName(user.getAccount());
         }
         user.setId(Id.next());
@@ -96,30 +84,30 @@ public class UserController {
     }
 
     /**
-     * 注册，通过email
+     * 注册，通过email(需要email,captcha,emailCaptcha)
      */
     @Auth(skipLogin = true)
     @PostMapping("/registerByEmail")
     public Result registerByEmail(@RequestBody UserVo user) {
-        if (StringUtils.existEmpty(user.getEmail(), user.getPwd(), user.getCaptcha(), user.getEmailCaptcha()) //
+        if (existEmpty(user.getEmail(), user.getPwd(), user.getCaptcha(), user.getEmailCaptcha()) //
                 || !RegexUtils.isEmail(user.getEmail())//
                 || user.getPwd().length() != 32) {
             return Result.e1();
-        }
-        // 邮箱已存在
-        if (userService.existEmail(user.getEmail()).isOk()) {
-            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
         }
         // 验证码错误
         if (!AuthUtils.correctCaptcha(request, user.getCaptcha())) {
             return Result.e(ResultCodeEnum.CAPTCHA_ERROR);
         }
-        // 邮件验证码错误
+        // 邮箱验证码错误
         if (!AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha())) {
-            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮箱验证码错误");
+        }
+        // 邮箱已存在
+        if (userService.existEmail(user.getEmail())) {
+            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
         }
         user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (StringUtils.existEmpty(user.getName())) {
+        if (isEmpty(user.getName())) {
             user.setName(user.getAccount());
         }
         user.setId(Id.next());
@@ -127,85 +115,108 @@ public class UserController {
     }
 
     /**
-     * 绑定email
-     */
-    @Auth(skipLogin = true)
-    @PostMapping("/bindEmail")
-    public Result bindEmail(@RequestBody UserVo user) {
-        if (StringUtils.existEmpty(user.getEmail(), user.getEmailCaptcha()) //
-                || !RegexUtils.isEmail(user.getEmail())) {
-            return Result.e1();
-        }
-        // 邮箱已存在
-        if (userService.existEmail(user.getEmail()).isOk()) {
-            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
-        }
-        // 邮件验证码错误
-        if (!AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha())) {
-            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮件验证码错误");
-        }
-        User u = new User();
-        u.setId(AuthUtils.getUserId(request));
-        u.setEmail(user.getEmail());
-        u.setUseEmailLogin(1);
-        return userService.changeInfo(u);
-    }
-
-    /**
-     * 解绑email
-     */
-    @Auth(skipLogin = true)
-    @PostMapping("/unbindEmail")
-    public Result unbindEmail(@RequestBody UserVo user) {
-        if (StringUtils.existEmpty(user.getEmail()) || !RegexUtils.isEmail(user.getEmail())) {
-            return Result.e1();
-        }
-        User u1 = (User) userService.findByEmail(user.getEmail()).getData();
-        // 邮箱不匹配
-        if (!user.getEmail().equals(u1.getEmail())) {
-            return Result.e(ResultCodeEnum.EMAIL_ERROR);
-        }
-        User u = new User();
-        Long id = AuthUtils.getUserId(request);
-        u.setId(id);
-        u.setEmail(String.valueOf(id));
-        u.setUseEmailLogin(0);
-        return userService.changeInfo(u);
-    }
-
-    /**
-     * 登录，account和email都可以，需要放入account中
+     * 登录(需要account或email，都用account传输)
      */
     @Auth(skipLogin = true)
     @PostMapping("/login")
     public Result login(@RequestBody User user) {
-        if ((StringUtils.existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
+        if ((existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
             return Result.e1();
         }
         return userService.login(request, user);
     }
 
     /**
-     * 修改用户信息
+     * 绑定email(需要email,emailCaptcha)
      */
     @Auth
-    @PostMapping("/changeInfo")
-    public Result changeInfo(@RequestBody User user) {
-        user.setId(AuthUtils.getUserId(request));
-        return userService.changeInfo(user);
+    @PostMapping("/bindEmail")
+    public Result bindEmail(@RequestBody UserVo user) {
+        if (existEmpty(user.getEmail(), user.getEmailCaptcha()) //
+                || !RegexUtils.isEmail(user.getEmail())) {
+            return Result.e1();
+        }
+        Long id = AuthUtils.getUserId(request);
+        User u1 = userService.findById(id);
+        // 已绑定邮箱，需要先解绑
+        if (u1.getUseEmailLogin() == 1) {
+            return Result.e();
+        }
+        // 邮箱验证码错误
+        if (!AuthUtils.correctEmailCaptcha(request, user.getEmail(), user.getEmailCaptcha())) {
+            return Result.e(ResultCodeEnum.CAPTCHA_ERROR, "邮箱验证码错误");
+        }
+        // 邮箱已存在
+        if (userService.existEmail(user.getEmail())) {
+            return Result.e(ResultCodeEnum.EMAIL_HAS_EXISTED);
+        }
+        UserVo u = new UserVo();
+        u.setId(id);
+        u.setEmail(user.getEmail());
+        u.setUseEmailLogin(1);
+        u.setUpdateId(id);
+        return userService.changeInfo(u);
     }
 
     /**
-     * 修改密码
+     * 解绑email(需要email)
+     */
+    @Auth
+    @PostMapping("/unbindEmail")
+    public Result unbindEmail(@RequestBody UserVo user) {
+        if (isEmpty(user.getEmail()) || !RegexUtils.isEmail(user.getEmail())) {
+            return Result.e1();
+        }
+        Long id = AuthUtils.getUserId(request);
+        User u2 = userService.findById(id);
+        // 未绑定邮箱，不能解绑
+        if (u2.getUseEmailLogin() == 0) {
+            return Result.e();
+        }
+        User u1 = userService.findByEmail(user.getEmail());
+        // 邮箱不匹配
+        if (!user.getEmail().equals(u1.getEmail())) {
+            return Result.e(ResultCodeEnum.EMAIL_ERROR);
+        }
+        UserVo u = new UserVo();
+        u.setId(id);
+        u.setEmail(String.valueOf(id));
+        u.setUseEmailLogin(0);
+        u.setUpdateId(id);
+        return userService.changeInfo(u);
+    }
+
+    /**
+     * 修改用户信息(只能修改account,name,gender,year,profile,comment)
+     */
+    @Auth
+    @PostMapping("/changeInfo")
+    public Result changeInfo(@RequestBody UserVo user) {
+        Long id = AuthUtils.getUserId(request);
+        UserVo u = new UserVo();
+        u.setId(id);
+        u.setUpdateId(id);
+        u.setAccount(user.getAccount());
+        u.setName(user.getName());
+        u.setGender(user.getGender());
+        u.setYear(user.getYear());
+        u.setProfile(user.getProfile());
+        u.setComment(user.getComment());
+        return userService.changeInfo(u);
+    }
+
+    /**
+     * 修改密码(需pwd,newPwd)
      */
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (user.getPwd() == null || user.getNewPwd() == null || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
-        user.setId(AuthUtils.getUserId(request));
+        Long id = AuthUtils.getUserId(request);
+        user.setId(id);
+        user.setUpdateId(id);
         return userService.changePwd(user);
     }
 
@@ -213,20 +224,24 @@ public class UserController {
      * 删除
      */
     @Auth
-    @PostMapping("/deleteById")
-    public Result deleteById() {
-        return userService.deleteById(AuthUtils.getUserId(request));
+    @PostMapping("/delete")
+    public Result delete() {
+        Long id = AuthUtils.getUserId(request);
+        UserVo user = new UserVo();
+        user.setId(id);
+        user.setUpdateId(id);
+        return userService.deleteById(user);
     }
 
     /**
      * 批量插入(明文密码)
      */
     @PostMapping("/batchRegister")
-    public Result batchRegister(@RequestBody List<User> user) {
+    public Result batchRegister(@RequestBody List<UserVo> user) {
         // 数据完整性检查
-        ResultBatch<User> result = new ResultBatch<>();
-        for (User u : user) {
-            if (StringUtils.existEmpty(u.getAccount())) {
+        ResultBatch<UserVo> result = new ResultBatch<>();
+        for (UserVo u : user) {
+            if (isEmpty(u.getAccount())) {
                 result.add(false, u, "账号不能为空");
             } else {
                 result.add(u);
@@ -237,12 +252,12 @@ public class UserController {
             return Result.e(ResultCodeEnum.BATCH_OPERATION_ERROR, result);
         }
         // 补充缺失信息
-        for (User u : user) {
-            if (StringUtils.existEmpty(u.getPwd())) {
+        for (UserVo u : user) {
+            if (isEmpty(u.getPwd())) {
                 u.setPwd(u.getAccount());
             }
             u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
-            if (StringUtils.existEmpty(u.getName())) {
+            if (isEmpty(u.getName())) {
                 u.setName(u.getAccount());
             }
             u.setId(Id.next());
@@ -254,7 +269,7 @@ public class UserController {
      * 精确查询
      */
     @PostMapping("/findExact")
-    public Result findExact(@RequestBody @Nullable User user) {
+    public Result findExact(@RequestBody @Nullable UserVo user) {
         return userService.findExact(user);
     }
 

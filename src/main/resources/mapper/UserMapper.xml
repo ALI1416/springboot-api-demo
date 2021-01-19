@@ -5,7 +5,7 @@
 	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,use_email_login,qq_openid,qq_name,use_qq_login,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
-	<insert id="register" parameterType="User">
+	<insert id="register" parameterType="UserVo">
 		INSERT
 		user(
 		id,account,pwd,name,qq_openid,email
@@ -14,7 +14,7 @@
 		)
 	</insert>
 
-	<insert id="registerByEmail" parameterType="User">
+	<insert id="registerByEmail" parameterType="UserVo">
 		INSERT
 		user(
 		id,account,pwd,name,qq_openid,email,use_email_login
@@ -23,153 +23,45 @@
 		)
 	</insert>
 
-	<select id="existId" parameterType="Long" resultType="Boolean">
+	<select id="existUniqueKey" parameterType="UserVo" resultType="Boolean">
 		SELECT
-		IFNULL((SELECT true FROM user WHERE id=#{id}),false)
+		IFNULL((SELECT true FROM user WHERE
+		<if test="id != null">
+			id=#{id}
+		</if>
+		<if test="account != null">
+			account=#{account}
+		</if>
+		<if test="email != null">
+			email=#{email}
+		</if>
+		<if test="qqOpenid != null">
+			qq_openid=#{qqOpenid}
+		</if>
+		),false)
 	</select>
 
-	<select id="existAccount" parameterType="String"
-		resultType="Boolean">
+	<select id="findByUniqueKey" parameterType="UserVo" resultType="UserVo">
 		SELECT
-		IFNULL((SELECT true FROM user WHERE account=#{account}),false)
-	</select>
-
-	<select id="existEmail" parameterType="String"
-		resultType="Boolean">
-		SELECT
-		IFNULL((SELECT true FROM user WHERE email=#{email}),false)
-	</select>
-
-	<select id="existQqOpenid" parameterType="String"
-		resultType="Boolean">
-		SELECT
-		IFNULL((SELECT true FROM user WHERE qq_openid=#{qqOpenid}),false)
-	</select>
-
-	<select id="findById" parameterType="Long" resultType="User">
-		SELECT
-		<include refid="col" />
+		<include refid="col"/>
 		FROM
 		user
 		WHERE
-		id=#{id}
+		<if test="id != null">
+			id=#{id}
+		</if>
+		<if test="account != null">
+			account=#{account}
+		</if>
+		<if test="email != null">
+			email=#{email}
+		</if>
+		<if test="qqOpenid != null">
+			qq_openid=#{qqOpenid}
+		</if>
 	</select>
 
-	<select id="findByAccount" parameterType="String"
-		resultType="User">
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		WHERE
-		account=#{account}
-	</select>
-
-	<select id="findByEmail" parameterType="String"
-		resultType="User">
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		WHERE
-		email=#{email}
-	</select>
-
-	<select id="findByQqOpenid" parameterType="String"
-		resultType="User">
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		WHERE
-		qq_openid=#{qqOpenid}
-	</select>
-
-	<select id="findExact" parameterType="User" resultType="User">
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		<where>
-			<if test="id != null">
-				and id=#{id}
-			</if>
-			<if test="account != null and account != ''">
-				and account=#{account}
-			</if>
-			<if test="name != null and name != ''">
-				and name=#{name}
-			</if>
-			<if test="gender != null">
-				and gender=#{gender}
-			</if>
-			<if test="year != null">
-				and year=#{year}
-			</if>
-			<if test="isDelete != null">
-				and is_delete=#{isDelete}
-			</if>
-		</where>
-	</select>
-
-	<select id="find" parameterType="UserVo" resultType="User">
-		SELECT
-		<include refid="col" />
-		FROM
-		user
-		<where>
-			<if test="id != null">
-				and id=#{id}
-			</if>
-			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'" />
-				and account like #{account1}
-			</if>
-			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'" />
-				and name like #{name1}
-			</if>
-			<if test="gender != null">
-				and gender=#{gender}
-			</if>
-			<choose>
-				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null" />
-				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
-				<!-- 等于 -->
-				<when test="year == yearEnd and yearNot == null">
-					and year = #{year}
-				</when>
-				<!-- 不等 -->
-				<when test="year == yearEnd and yearNot != null">
-					and year != #{year}
-				</when>
-				<!-- 首尾不会同时为null，也不会同时相等。根据首尾为null的情况决定<和>。 -->
-				<!-- 小于 -->
-				<when test="year == null">
-					and year &lt;= #{yearEnd}
-				</when>
-				<!-- 大于 -->
-				<when test="yearEnd == null">
-					and year &gt;= #{year}
-				</when>
-				<!-- 首尾都不会为null，也不会相等。根据Not是否为null决定between和not between。 -->
-				<!-- 在...与...之间 -->
-				<when test="yearNot == null">
-					and year between #{year} and #{yearEnd}
-				</when>
-				<!-- 不在...与...之间 -->
-				<when test="yearNot != null">
-					and year not between #{year} and #{yearEnd}
-				</when>
-			</choose>
-			<if test="isDelete != null">
-				and is_delete=#{isDelete}
-			</if>
-		</where>
-	</select>
-
-	<update id="updateById" parameterType="User">
+	<update id="updateById" parameterType="UserVo">
 		UPDATE user
 		<set>
 			<if test="account != null">
@@ -208,7 +100,7 @@
 			<if test="useQqLogin != null">
 				use_qq_login=#{useQqLogin},
 			</if>
-			update_id=#{id},
+			update_id=#{updateId},
 			update_time=CURRENT_TIMESTAMP,
 			version=version+1,
 		</set>
@@ -216,17 +108,101 @@
 		id=#{id}
 	</update>
 
-	<update id="deleteById" parameterType="Long">
+	<update id="deleteById" parameterType="UserVo">
 		UPDATE user
 		SET
 		is_delete=1,
 		qq_openid=#{id},
 		email=#{id},
-		update_id=#{id},
+		update_id=#{updateId},
 		update_time=CURRENT_TIMESTAMP,
-		version=version+1,
+		version=version+1
 		WHERE
 		id=#{id}
 	</update>
+
+	<select id="findExact" parameterType="UserVo" resultType="UserVo">
+		SELECT
+		<include refid="col"/>
+		FROM
+		user
+		<where>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="account != null">
+				and account=#{account}
+			</if>
+			<if test="name != null">
+				and name=#{name}
+			</if>
+			<if test="gender != null">
+				and gender=#{gender}
+			</if>
+			<if test="year != null">
+				and year=#{year}
+			</if>
+			<if test="isDelete != null">
+				and is_delete=#{isDelete}
+			</if>
+		</where>
+	</select>
+
+	<select id="find" parameterType="UserVo" resultType="UserVo">
+		SELECT
+		<include refid="col"/>
+		FROM
+		user
+		<where>
+			<if test="id != null">
+				and id=#{id}
+			</if>
+			<if test="account != null and account != ''">
+				<bind name="account1" value="'%'+ account +'%'"/>
+				and account like #{account1}
+			</if>
+			<if test="name != null and name != ''">
+				<bind name="name1" value="'%'+ name +'%'"/>
+				and name like #{name1}
+			</if>
+			<if test="gender != null">
+				and gender=#{gender}
+			</if>
+			<choose>
+				<!-- 忽略 -->
+				<when test="year == null and yearEnd == null"/>
+				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
+				<!-- 等于 -->
+				<when test="year == yearEnd and yearNot == null">
+					and year = #{year}
+				</when>
+				<!-- 不等 -->
+				<when test="year == yearEnd and yearNot != null">
+					and year != #{year}
+				</when>
+				<!-- 首尾不会同时为null，也不会同时相等。根据首尾为null的情况决定<和>。 -->
+				<!-- 小于 -->
+				<when test="year == null">
+					and year &lt;= #{yearEnd}
+				</when>
+				<!-- 大于 -->
+				<when test="yearEnd == null">
+					and year &gt;= #{year}
+				</when>
+				<!-- 首尾都不会为null，也不会相等。根据Not是否为null决定between和not between。 -->
+				<!-- 在...与...之间 -->
+				<when test="yearNot == null">
+					and year between #{year} and #{yearEnd}
+				</when>
+				<!-- 不在...与...之间 -->
+				<when test="yearNot != null">
+					and year not between #{year} and #{yearEnd}
+				</when>
+			</choose>
+			<if test="isDelete != null">
+				and is_delete=#{isDelete}
+			</if>
+		</where>
+	</select>
 
 </mapper>

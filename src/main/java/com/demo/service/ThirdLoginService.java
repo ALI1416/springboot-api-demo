@@ -3,6 +3,7 @@ package com.demo.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.demo.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,18 +32,20 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ThirdLoginService {
 
+    private final UserService userService;
+
     /**
      * qq回调
-     * 
-     * @param redisSign redisSign
-     * @param code      code
-     * @param qqState   qqState
+     *
+     * @param sign    sign
+     * @param code    code
+     * @param qqState qqState
      */
-    public Result qqCallback(String redisSign, String code, String qqState) {
+    public Result qqCallback(String sign, String code, String qqState) {
         // 从redis中获取qqState
-        String redisQqState = (String) RedisUtils.hashGet(redisSign, RedisConstant.QQ_STATE_NAME);
+        String redisQqState = (String) RedisUtils.hashGet(sign, RedisConstant.QQ_STATE_NAME);
         // qqState错误
-        if (!redisQqState.equals(qqState)) {
+        if (!qqState.equalsIgnoreCase(redisQqState)) {
             Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
         }
         // 获取token
@@ -50,7 +53,7 @@ public class ThirdLoginService {
         Map<String, Object> tokenMap = JSON.parseObject(tokenObj);
         // 得到access_token
         String accessToken = (String) tokenMap.get("access_token");
-        if (StringUtils.existEmpty(accessToken)) {
+        if (StringUtils.isEmpty(accessToken)) {
             Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
         }
         // 获取openid和unionid
@@ -58,12 +61,12 @@ public class ThirdLoginService {
         Map<String, Object> openidAndUnionidMap = JSON.parseObject(openidAndUnionidObj);
         // 得到openid
         String openid = (String) openidAndUnionidMap.get("openid");
-        // 得到unionid
-        String unionid = (String) openidAndUnionidMap.get("unionid");
-        if (StringUtils.existEmpty(openid, unionid)) {
-            Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
+        // openid已存在，去登录账号
+        if (userService.existQqOpenid(openid)) {
+            return Result.o("去登录账号：openid：" + openid);
         }
-        return Result.o();
+        // openid不存在，去注册账号
+        return Result.o("去注册账号：openid：" + openid + "，accessToken：" + accessToken);
     }
 
     /**
@@ -74,7 +77,7 @@ public class ThirdLoginService {
      * "expires_in":"7776000",<br>
      * "refresh_token":"7D470F114079F49E222B31590408707F"<br>
      * }<br>
-     * 
+     *
      * @param code code
      */
     public String getToken(String code) {
@@ -102,7 +105,7 @@ public class ThirdLoginService {
      * "openid":"91449D4BB19893F674C07B111C1BB4FB",<br>
      * "unionid":"UID_3C6246E641847F77CF90BA17D543F497"<br>
      * }<br>
-     * 
+     *
      * @param accessToken accessToken
      */
     public String getOpenidAndUnionid(String accessToken) {
@@ -149,7 +152,7 @@ public class ThirdLoginService {
      * "level": "0",<br>
      * "is_yellow_year_vip": "0"<br>
      * }<br>
-     * 
+     *
      * @param accessToken accessToken
      * @param openid      openid
      */

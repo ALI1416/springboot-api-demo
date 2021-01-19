@@ -35,20 +35,20 @@ public class ThirdLoginController {
     private final HttpServletRequest request;
     private final ThirdLoginService thirdLoginService;
 
-    @Auth
+    @Auth(skipLogin = true)
     @PostMapping("/qq")
     public Result qq() {
-        String uri = "https://graph.qq.com/oauth2.0/authorize" + //
+        String url = "https://graph.qq.com/oauth2.0/authorize" + //
                 "?response_type=code" + //
                 "&client_id=%s" + //
                 "&redirect_uri=%s" + //
                 "&state=%s" + //
                 "&scope=get_user_info";
-        String redisSign = AuthUtils.getSign(request);
+        String sign = AuthUtils.getSign(request);
         String qqState = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 32);
-        String state = redisSign + "_" + qqState;
-        RedisUtils.hashSet(redisSign, RedisConstant.QQ_STATE_NAME, qqState);
-        return Result.o(String.format(uri, Constant.QQ_APP_ID, Constant.QQ_CALLBACK_URL, state));
+        String state = sign + "_" + qqState;
+        RedisUtils.hashSet(sign, RedisConstant.QQ_STATE_NAME, qqState, RedisConstant.QQ_STATE_EXPIRE_TIME);
+        return Result.o(String.format(url, Constant.QQ_APP_ID, Constant.QQ_CALLBACK_URL, state));
     }
 
     /**
@@ -64,12 +64,12 @@ public class ThirdLoginController {
         if (stateSpilt.length != 2) {
             return Result.e1();
         }
-        String redisSign = stateSpilt[0];
+        String sign = stateSpilt[0];
         String qqState = stateSpilt[1];
-        if (StringUtils.existEmpty(redisSign, qqState)) {
+        if (StringUtils.existEmpty(sign, qqState)) {
             return Result.e1();
         }
-        return thirdLoginService.qqCallback(redisSign, code, qqState);
+        return thirdLoginService.qqCallback(sign, code, qqState);
     }
 
 }

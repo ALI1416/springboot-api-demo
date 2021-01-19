@@ -1,9 +1,8 @@
 package com.demo.dao;
 
-import java.util.List;
-
-import com.demo.entity.po.User;
 import com.demo.entity.vo.UserVo;
+
+import java.util.List;
 
 /**
  * <h1>用户业务逻辑接口</h1>
@@ -18,73 +17,43 @@ import com.demo.entity.vo.UserVo;
 public interface UserDao {
 
     /**
-     * 注册
+     * 注册，通过account(需id,account,pwd)
      */
-    int register(User user);
+    int register(UserVo user);
 
     /**
-     * 注册，通过email
+     * 注册，通过email(需id,email,pwd)
      */
-    int registerByEmail(User user);
+    int registerByEmail(UserVo user);
 
     /**
-     * 存在id
+     * 存在一个唯一键(需其一id,account,email,qqOpenid)
      */
-    boolean existId(long id);
+    boolean existUniqueKey(UserVo user);
 
     /**
-     * 存在account
+     * 查询一个唯一键(需其一id,account,email,qqOpenid)
      */
-    boolean existAccount(String account);
+    UserVo findByUniqueKey(UserVo user);
 
     /**
-     * 存在email
+     * 更新(需id,updateId;改不了id,isDelete,createId,createTime,updateTime,version)
      */
-    boolean existEmail(String email);
+    int updateById(UserVo user);
 
     /**
-     * 存在qqOpenid
+     * 删除(需id,updateId)
      */
-    boolean existQqOpenid(String qqOpenid);
-
-    /**
-     * 查询，通过id
-     */
-    User findById(long id);
-
-    /**
-     * 查询，通过account
-     */
-    User findByAccount(String account);
-
-    /**
-     * 查询，通过email
-     */
-    User findByEmail(String email);
-
-    /**
-     * 查询，通过qqOpenid
-     */
-    User findByQqOpenid(String qqOpenid);
+    int deleteById(UserVo user);
 
     /**
      * 精确查询
      */
-    List<User> findExact(User user);
+    List<UserVo> findExact(UserVo user);
 
     /**
      * 查询
      */
-    List<User> find(UserVo user);
-
-    /**
-     * 更新
-     */
-    int updateById(User user);
-
-    /**
-     * 删除，通过id
-     */
-    int deleteById(long id);
+    List<UserVo> find(UserVo user);
 
 }

@@ -28,7 +28,7 @@ public class Constant {
     /**
      * QQ_CALLBACK_URL{@value}
      */
-    public static final String QQ_CALLBACK_URL = URL + "callback/qq/login";
+    public static final String QQ_CALLBACK_URL = URL + "thirdLogin/qq/callback";
 
     /**
      * 分页-默认页码{@value}

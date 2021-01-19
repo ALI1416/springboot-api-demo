@@ -61,6 +61,10 @@ public class RedisConstant {
      * key中QQ第三方登录时的state的字段名{@value}
      */
     public static final String QQ_STATE_NAME = "qqState";
+    /**
+     * key中QQ第三方登录时的state的过期时间(秒){@value}(2小时)
+     */
+    public static final long QQ_STATE_EXPIRE_TIME = 5 * 60;
 
 
 }

@@ -127,8 +127,8 @@ public class UserService extends BaseService {
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao
-                .insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.ACCOUNT, true)));
+        recordLog(() -> userLoginLogDao.insert(//
+                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.ACCOUNT, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
         return Result.o();
@@ -146,8 +146,8 @@ public class UserService extends BaseService {
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao
-                .insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.EMAIL, true)));
+        recordLog(() -> userLoginLogDao.insert(//
+                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.EMAIL, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
         return Result.o();
@@ -165,10 +165,10 @@ public class UserService extends BaseService {
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(
-                () -> userLoginLogDao.insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.QQ, true)));
-        // redis放入userId
-        RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId());
+        recordLog(() -> userLoginLogDao.insert(//
+                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.QQ, true)));
+        // redis放入userId，并重置过期时间
+        RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId(), RedisConstant.EXPIRE);
         return Result.o();
     }
 
@@ -193,14 +193,17 @@ public class UserService extends BaseService {
         if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             // 日志(登录失败)
             if (u == null) {
-                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, null, loginType, false)));
+                recordLog(() -> userLoginLogDao.insert(//
+                        new UserLoginLog(request, null, loginType, false)));
             } else {
-                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), loginType, false)));
+                recordLog(() -> userLoginLogDao.insert(//
+                        new UserLoginLog(request, u.getId(), loginType, false)));
             }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), loginType, true)));
+        recordLog(() -> userLoginLogDao.insert(//
+                new UserLoginLog(request, u.getId(), loginType, true)));
         // redis放入userId
         AuthUtils.setUserId(request, u.getId());
         return Result.o();

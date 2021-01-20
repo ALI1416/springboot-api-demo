@@ -26,15 +26,15 @@ public class AuthUtils {
     public static String getSign(HttpServletRequest request) {
         return request.getHeader(RedisConstant.SIGN);
     }
-    
+
     /**
-     * 设置userId
+     * 设置userId，并重置过期时间
      *
      * @param request HttpServletRequest
      */
     public static void setUserId(HttpServletRequest request, Long userId) {
         String sign = request.getHeader(RedisConstant.SIGN);
-        RedisUtils.hashSet(sign, RedisConstant._USER_ID, userId);
+        RedisUtils.hashSet(sign, RedisConstant._USER_ID, userId, RedisConstant.EXPIRE);
     }
 
     /**
@@ -110,8 +110,7 @@ public class AuthUtils {
     public static void setEmailCaptcha(HttpServletRequest request, String email, String captcha) {
         String sign = request.getHeader(RedisConstant.SIGN);
         String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX;
-        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA__EMAIL, email,
-                RedisConstant.EMAIL_CAPTCHA_EXPIRE);
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA__EMAIL, email, RedisConstant.EMAIL_CAPTCHA_EXPIRE);
         RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA__CAPTCHA, captcha);
     }
 

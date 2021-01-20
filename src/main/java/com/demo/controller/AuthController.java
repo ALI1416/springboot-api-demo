@@ -41,7 +41,7 @@ public class AuthController {
         long redisSign = Id.next();
         String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 128);
         RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant._TOKEN, token, RedisConstant.EXPIRE);
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(2);
         map.put(RedisConstant.SIGN, redisSign);
         map.put(RedisConstant._TOKEN, token);
         return Result.o(map);

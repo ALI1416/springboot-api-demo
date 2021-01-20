@@ -105,6 +105,7 @@ class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         this.clazz = clazz;
     }
 
+    @Override
     public byte[] serialize(T t) throws SerializationException {
         if (t == null) {
             return new byte[0];
@@ -118,6 +119,7 @@ class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
         ).getBytes(DEFAULT_CHARSET);
     }
 
+    @Override
     public T deserialize(byte[] bytes) throws SerializationException {
         if (bytes == null || bytes.length <= 0) {
             return null;

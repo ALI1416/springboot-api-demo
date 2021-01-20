@@ -44,7 +44,7 @@ public class ThirdLoginService extends BaseService {
 
     /**
      * qq回调
-     * 
+     *
      * @param request HttpServletRequest
      * @param sign    sign
      * @param code    code
@@ -77,10 +77,10 @@ public class ThirdLoginService extends BaseService {
         // openid已存在，去登录账号
         if (u != null) {
             // 日志(登录成功)
-            recordLog(
-                    () -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), UserLoginTypeConstant.QQ, true)));
-            // redis放入userId
-            RedisUtils.hashSet(sign, RedisConstant._USER_ID, u.getId());
+            recordLog(() -> userLoginLogDao.insert(//
+                    new UserLoginLog(request, u.getId(), UserLoginTypeConstant.QQ, true)));
+            // redis放入userId，并重置过期时间
+            RedisUtils.hashSet(sign, RedisConstant._USER_ID, u.getId(), RedisConstant.EXPIRE);
             return Result.o();
         }
         // openid不存在，去注册账号
@@ -120,7 +120,7 @@ public class ThirdLoginService extends BaseService {
                 "&code={code}" + //
                 "&redirect_uri={callbackUrl}" + //
                 "&fmt=json";
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(4);
         params.put("appId", Constant.QQ_APP_ID);
         params.put("appKey", Constant.QQ_APP_KEY);
         params.put("code", code);
@@ -145,7 +145,7 @@ public class ThirdLoginService extends BaseService {
                 "?access_token={accessToken}" + //
                 "&unionid=1" + //
                 "&fmt=json";
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(1);
         params.put("accessToken", accessToken);
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(uri, String.class, params);
@@ -194,7 +194,7 @@ public class ThirdLoginService extends BaseService {
                 "&access_token={accessToken}" + //
                 "&openid={openid}" + //
                 "&fmt=json";
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(3);
         params.put("appId", Constant.QQ_APP_ID);
         params.put("accessToken", accessToken);
         params.put("openid", openid);

@@ -1,6 +1,8 @@
 package com.demo.service;
 
+import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
+import com.demo.constant.UserLoginTypeConstant;
 import com.demo.dao.UserBakDao;
 import com.demo.dao.UserDao;
 import com.demo.dao.UserLoginLogDao;
@@ -12,6 +14,7 @@ import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
+import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
@@ -124,7 +127,8 @@ public class UserService extends BaseService {
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, user.getId(), true)));
+        recordLog(() -> userLoginLogDao
+                .insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.ACCOUNT, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
         return Result.o();
@@ -142,9 +146,29 @@ public class UserService extends BaseService {
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, user.getId(), true)));
+        recordLog(() -> userLoginLogDao
+                .insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.EMAIL, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
+        return Result.o();
+    }
+
+    /**
+     * 注册，通过qq(需id,name,gender,year,qqName,qqOpenid)
+     */
+    @Transactional
+    public Result registerByQq(HttpServletRequest request, String sign, UserVo user) {
+        // 插入失败
+        if (!tryif(() -> userDao.registerByQq(user))) {
+            return Result.e();
+        }
+        // 备份
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        // 日志(登录成功)
+        recordLog(
+                () -> userLoginLogDao.insert(new UserLoginLog(request, user.getId(), UserLoginTypeConstant.QQ, true)));
+        // redis放入userId
+        RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId());
         return Result.o();
     }
 
@@ -153,12 +177,15 @@ public class UserService extends BaseService {
      */
     public Result login(HttpServletRequest request, User user) {
         User u;
+        int loginType;
         if (RegexUtils.isAccount(user.getAccount())) {
             // 查找用户，通过account
             u = findByAccount(user.getAccount());
+            loginType = UserLoginTypeConstant.ACCOUNT;
         } else if (RegexUtils.isEmail(user.getAccount())) {
             // 查找用户，通过email
             u = findByEmail(user.getAccount());
+            loginType = UserLoginTypeConstant.EMAIL;
         } else {
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
@@ -166,18 +193,17 @@ public class UserService extends BaseService {
         if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             // 日志(登录失败)
             if (u == null) {
-                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, null, false)));
+                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, null, loginType, false)));
             } else {
-                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), false)));
+                recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), loginType, false)));
             }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), true)));
-        u.setPwd(null);
+        recordLog(() -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), loginType, true)));
         // redis放入userId
         AuthUtils.setUserId(request, u.getId());
-        return Result.o(u);
+        return Result.o();
     }
 
     /**

@@ -12,59 +12,60 @@ package com.demo.constant;
  **/
 public class RedisConstant {
 
-    /* ==================== 权限认证有关 ==================== */
+    /* ==================== 默认 ==================== */
     /**
-     * key在header中的名字{@value}
+     * key在header中的名字{@value}<br>
+     * 在redis中使用hash保存
      */
-    public static final String SIGN_NAME = "sign";
+    public static final String SIGN = "sign";
     /**
      * key的过期时间(秒){@value}(7天)
      */
-    public static final long EXPIRE_TIME = 7 * 24 * 60 * 60;
+    public static final long EXPIRE = 7 * 24 * 60 * 60;
     /**
-     * key中token字段的名字{@value}
+     * key中token字段名{@value}
      */
-    public static final String TOKEN_NAME = "token";
-    /**
-     * key中token字段的长度{@value}
-     */
-    public static final int TOKEN_LENGTH = 128;
-
-    /* ==================== 验证码有关 ==================== */
-    /**
-     * 普通验证码key的中缀{@value}
-     */
-    public static final String CAPTCHA_INFIX = "_captcha_";
-    /**
-     * 电子邮件验证码key的后缀{@value}
-     */
-    public static final String EMAIL_CAPTCHA_SUFFIX_NAME = "_captcha_email";
-    /**
-     * 电子邮件验证码key的过期时间(秒){@value}(2小时)
-     */
-    public static final long EMAIL_CAPTCHA_EXPIRE_TIME = 2 * 60 * 60;
-    /**
-     * 电子邮件验证码key的邮件地址字段名{@value}
-     */
-    public static final String EMAIL_CAPTCHA_EMAIL_NAME = "email";
-    /**
-     * 电子邮件验证码key的验证码字段名{@value}
-     */
-    public static final String EMAIL_CAPTCHA_CAPTCHA_NAME = "captcha";
-
-    /* ==================== 用户有关 ==================== */
+    public static final String _TOKEN = "token";
     /**
      * key中用户id字段名{@value}
      */
-    public static final String USER_ID_NAME = "userId";
-    /**
-     * key中QQ第三方登录时的state的字段名{@value}
-     */
-    public static final String QQ_STATE_NAME = "qqState";
-    /**
-     * key中QQ第三方登录时的state的过期时间(秒){@value}(2小时)
-     */
-    public static final long QQ_STATE_EXPIRE_TIME = 5 * 60;
+    public static final String _USER_ID = "userId";
 
+    /* ==================== 普通验证码 ==================== */
+    /**
+     * 普通验证码key的中缀{@value}<br>
+     * 在redis中使用string保存
+     */
+    public static final String CAPTCHA_INFIX = "_captcha_";
+
+    /* ==================== 电子邮件验证码 ==================== */
+    /**
+     * 电子邮件验证码key的后缀{@value}<br>
+     * 在redis中使用hash保存
+     */
+    public static final String EMAIL_CAPTCHA_SUFFIX = "_email_captcha";
+    /**
+     * 电子邮件验证码key的过期时间(秒){@value}(2小时)
+     */
+    public static final long EMAIL_CAPTCHA_EXPIRE = 2 * 60 * 60;
+    /**
+     * 电子邮件验证码key的邮件地址字段名{@value}
+     */
+    public static final String EMAIL_CAPTCHA__EMAIL = "email";
+    /**
+     * 电子邮件验证码key的验证码字段名{@value}
+     */
+    public static final String EMAIL_CAPTCHA__CAPTCHA = "captcha";
+
+    /* ==================== QQ登录state验证 ==================== */
+    /**
+     * QQ登录state验证key的后缀{@value}<br>
+     * 在redis中使用string保存
+     */
+    public static final String QQ_STATE_SUFFIX = "_qq_state";
+    /**
+     * QQ登录state验证key的过期时间(秒){@value}(10分钟)
+     */
+    public static final long QQ_STATE_EXPIRE = 10 * 60;
 
 }

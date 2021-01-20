@@ -23,6 +23,15 @@
 		)
 	</insert>
 
+	<insert id="registerByQq" parameterType="UserVo">
+		INSERT
+		user(
+		id,account,pwd,name,gender,year,qq_openid,qq_name,email,use_qq_login
+		)VALUES(
+		#{id},#{id},"",#{name},#{gender},#{year},#{qqOpenid},#{qqName},#{id},1
+		)
+	</insert>
+
 	<select id="existUniqueKey" parameterType="UserVo" resultType="Boolean">
 		SELECT
 		IFNULL((SELECT true FROM user WHERE

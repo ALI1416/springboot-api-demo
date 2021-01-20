@@ -27,6 +27,11 @@ public interface UserDao {
     int registerByEmail(UserVo user);
 
     /**
+     * 注册，通过qq(需id,qqOpenid)
+     */
+    int registerByQq(UserVo user);
+
+    /**
      * 存在一个唯一键(需其一id,account,email,qqOpenid)
      */
     boolean existUniqueKey(UserVo user);

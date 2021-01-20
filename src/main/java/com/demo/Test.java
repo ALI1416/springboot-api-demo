@@ -82,8 +82,17 @@ public class Test {
         System.out.println(CaptchaTypeEnum.findByType(1));
 
         String a1 = "Ab";
-        String a2 = "aB";
+        String a2 = null;
         System.out.println(a1.equalsIgnoreCase(a2));
+
+        Object o = "男";
+        System.out.println(o);
+        System.out.println(o.toString());
+        System.out.println((String) o);
+//        System.out.println((Integer) o);
+//        System.out.println(Integer.valueOf((String) o));
+//        System.out.println(Integer.valueOf(o.toString()));
+        System.out.println("男".equals(o));
     }
 
 }

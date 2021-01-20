@@ -28,6 +28,12 @@ import lombok.Setter;
 public class UserLoginLog extends BaseEntity {
 
     /**
+     * 登录类型：0、账号，1、邮箱，2、QQ
+     * 
+     * @see com.demo.constant.UserLoginTypeConstant
+     */
+    private Integer loginType;
+    /**
      * 登录成功
      */
     private Integer loginSuccess;
@@ -48,13 +54,15 @@ public class UserLoginLog extends BaseEntity {
      * 
      * @param request      HttpServletRequest
      * @param refId        refId
+     * @param loginType    登录类型
      * @param loginSuccess 登录成功
      */
-    public UserLoginLog(HttpServletRequest request, Long refId, boolean loginSuccess) {
+    public UserLoginLog(HttpServletRequest request, Long refId, Integer loginType, boolean loginSuccess) {
         setId(Id.next());
         setIpInfo(ClientInfoUtils.getIp(request));
         setUserAgentInfo(ClientInfoUtils.getUserAgent(request));
         setRefId(refId == null ? 0L : refId);
+        setLoginType(loginType);
         setLoginSuccess(loginSuccess ? 1 : 0);
     }
 

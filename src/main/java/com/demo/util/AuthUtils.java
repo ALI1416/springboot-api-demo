@@ -24,17 +24,17 @@ public class AuthUtils {
      * @param request HttpServletRequest
      */
     public static String getSign(HttpServletRequest request) {
-        return request.getHeader(RedisConstant.SIGN_NAME);
+        return request.getHeader(RedisConstant.SIGN);
     }
-
+    
     /**
      * 设置userId
      *
      * @param request HttpServletRequest
      */
     public static void setUserId(HttpServletRequest request, Long userId) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
-        RedisUtils.hashSet(sign, RedisConstant.USER_ID_NAME, userId);
+        String sign = request.getHeader(RedisConstant.SIGN);
+        RedisUtils.hashSet(sign, RedisConstant._USER_ID, userId);
     }
 
     /**
@@ -43,8 +43,8 @@ public class AuthUtils {
      * @param request HttpServletRequest
      */
     public static Long getUserId(HttpServletRequest request) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
-        return (Long) RedisUtils.hashGet(sign, RedisConstant.USER_ID_NAME);
+        String sign = request.getHeader(RedisConstant.SIGN);
+        return (Long) RedisUtils.hashGet(sign, RedisConstant._USER_ID);
     }
 
     /**
@@ -76,7 +76,7 @@ public class AuthUtils {
      * @param captcha         图片验证码
      */
     public static void setCaptcha(HttpServletRequest request, CaptchaTypeEnum captchaTypeEnum, String captcha) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
+        String sign = request.getHeader(RedisConstant.SIGN);
         String name = sign + RedisConstant.CAPTCHA_INFIX + captchaTypeEnum.getType();
         RedisUtils.set(name, captcha, captchaTypeEnum.getExpire());
     }
@@ -89,7 +89,7 @@ public class AuthUtils {
      * @param captcha         图片验证码
      */
     public static boolean correctCaptcha(HttpServletRequest request, CaptchaTypeEnum captchaTypeEnum, String captcha) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
+        String sign = request.getHeader(RedisConstant.SIGN);
         String name = sign + RedisConstant.CAPTCHA_INFIX + captchaTypeEnum.getType();
         String redisCaptcha = (String) RedisUtils.get(name);
         if (redisCaptcha == null) {
@@ -108,11 +108,11 @@ public class AuthUtils {
      * @param captcha 验证码
      */
     public static void setEmailCaptcha(HttpServletRequest request, String email, String captcha) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
-        String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
-        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME, email,
-                RedisConstant.EMAIL_CAPTCHA_EXPIRE_TIME);
-        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME, captcha);
+        String sign = request.getHeader(RedisConstant.SIGN);
+        String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX;
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA__EMAIL, email,
+                RedisConstant.EMAIL_CAPTCHA_EXPIRE);
+        RedisUtils.hashSet(name, RedisConstant.EMAIL_CAPTCHA__CAPTCHA, captcha);
     }
 
     /**
@@ -123,11 +123,11 @@ public class AuthUtils {
      * @param captcha 验证码
      */
     public static boolean correctEmailCaptcha(HttpServletRequest request, String email, String captcha) {
-        String sign = request.getHeader(RedisConstant.SIGN_NAME);
-        String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX_NAME;
+        String sign = request.getHeader(RedisConstant.SIGN);
+        String name = sign + RedisConstant.EMAIL_CAPTCHA_SUFFIX;
         Map<Object, Object> map = RedisUtils.hashGet(name);
-        String redisEmail = (String) map.get(RedisConstant.EMAIL_CAPTCHA_EMAIL_NAME);
-        String redisCaptcha = (String) map.get(RedisConstant.EMAIL_CAPTCHA_CAPTCHA_NAME);
+        String redisEmail = (String) map.get(RedisConstant.EMAIL_CAPTCHA__EMAIL);
+        String redisCaptcha = (String) map.get(RedisConstant.EMAIL_CAPTCHA__CAPTCHA);
         if (redisEmail == null || redisCaptcha == null) {
             return false;
         }

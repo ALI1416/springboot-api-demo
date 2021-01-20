@@ -39,18 +39,18 @@ public class AuthController {
     @PostMapping("getToken")
     public Result getToken() {
         long redisSign = Id.next();
-        String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, RedisConstant.TOKEN_LENGTH);
-        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.TOKEN_NAME, token, RedisConstant.EXPIRE_TIME);
+        String token = StringUtils.getRandom(StringUtils.NUMBER_LOWER_LETTER, 128);
+        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant._TOKEN, token, RedisConstant.EXPIRE);
         Map<String, Object> map = new HashMap<>();
-        map.put(RedisConstant.SIGN_NAME, redisSign);
-        map.put(RedisConstant.TOKEN_NAME, token);
+        map.put(RedisConstant.SIGN, redisSign);
+        map.put(RedisConstant._TOKEN, token);
         return Result.o(map);
     }
 
     @PostMapping("login")
     public Long login() {
         String redisSign = AuthUtils.getSign(request);
-        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant.USER_ID_NAME, 1L, RedisConstant.EXPIRE_TIME);
+        RedisUtils.hashSet(String.valueOf(redisSign), RedisConstant._USER_ID, 1L, RedisConstant.EXPIRE);
         return AuthUtils.getUserId(request);
     }
 

@@ -3,7 +3,8 @@ package com.demo.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.demo.dao.UserDao;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,7 +13,13 @@ import com.alibaba.fastjson.JSON;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
+import com.demo.constant.UserLoginTypeConstant;
+import com.demo.dao.UserLoginLogDao;
+import com.demo.entity.po.User;
+import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
+import com.demo.entity.vo.UserVo;
+import com.demo.tool.Id;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 
@@ -30,23 +37,28 @@ import lombok.AllArgsConstructor;
  **/
 @Service
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class ThirdLoginService {
+public class ThirdLoginService extends BaseService {
 
+    private final UserLoginLogDao userLoginLogDao;
     private final UserService userService;
 
     /**
      * qq回调
-     *
+     * 
+     * @param request HttpServletRequest
      * @param sign    sign
      * @param code    code
      * @param qqState qqState
      */
-    public Result qqCallback(String sign, String code, String qqState) {
+    public Result qqCallback(HttpServletRequest request, String sign, String code, String qqState) {
+        String name = sign + RedisConstant.QQ_STATE_SUFFIX;
         // 从redis中获取qqState
-        String redisQqState = (String) RedisUtils.hashGet(sign, RedisConstant.QQ_STATE_NAME);
+        String redisQqState = (String) RedisUtils.get(name);
+        // 获取后要删除
+        RedisUtils.delete(name);
         // qqState错误
         if (!qqState.equalsIgnoreCase(redisQqState)) {
-            Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
+            return Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
         }
         // 获取token
         String tokenObj = this.getToken(code);
@@ -54,19 +66,39 @@ public class ThirdLoginService {
         // 得到access_token
         String accessToken = (String) tokenMap.get("access_token");
         if (StringUtils.isEmpty(accessToken)) {
-            Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
+            return Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
         }
         // 获取openid和unionid
         String openidAndUnionidObj = this.getOpenidAndUnionid(accessToken);
         Map<String, Object> openidAndUnionidMap = JSON.parseObject(openidAndUnionidObj);
         // 得到openid
         String openid = (String) openidAndUnionidMap.get("openid");
+        User u = userService.findByQqOpenid(openid);
         // openid已存在，去登录账号
-        if (userService.existQqOpenid(openid)) {
-            return Result.o("去登录账号：openid：" + openid);
+        if (u != null) {
+            // 日志(登录成功)
+            recordLog(
+                    () -> userLoginLogDao.insert(new UserLoginLog(request, u.getId(), UserLoginTypeConstant.QQ, true)));
+            // redis放入userId
+            RedisUtils.hashSet(sign, RedisConstant._USER_ID, u.getId());
+            return Result.o();
         }
         // openid不存在，去注册账号
-        return Result.o("去注册账号：openid：" + openid + "，accessToken：" + accessToken);
+        // 先获取用户的qq信息
+        String userInfoObj = this.getUserInfo(accessToken, openid);
+        Map<String, Object> userInfoMap = JSON.parseObject(userInfoObj);
+        String userName = (String) userInfoMap.get("nickname");
+        Integer userGender = "男".equals(userInfoMap.get("gender")) ? 1 : 0;
+        Integer userYear = Integer.valueOf((String) userInfoMap.get("year"));
+        UserVo user = new UserVo();
+        user.setId(Id.next());
+        user.setName(userName);
+        user.setGender(userGender);
+        user.setYear(userYear);
+        user.setQqName(userName);
+        user.setQqOpenid(openid);
+        // 去注册账号
+        return userService.registerByQq(request, sign, user);
     }
 
     /**

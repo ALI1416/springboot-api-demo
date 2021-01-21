@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>用户表持久化对象</h1>
+ * <h1>管理员表持久化对象</h1>
  *
  * <p>
- * createDate 2020/11/11 11:11:11
+ * createDate 2021/01/21 21:05:51
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
@@ -16,7 +16,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class Admin extends BaseEntity {
 
     /**
      * 账号
@@ -31,32 +31,16 @@ public class User extends BaseEntity {
      */
     private String name;
     /**
-     * 性别
-     */
-    private Integer gender;
-    /**
-     * 出生年
-     */
-    private Integer year;
-    /**
-     * 个人简介
-     */
-    private String profile;
-    /**
      * 备注
      */
     private String comment;
     /**
-     * 电子邮箱
+     * api角色id
      */
-    private String email;
+    private Integer roleApiId;
     /**
-     * qqOpenid
+     * web角色id
      */
-    private String qqOpenid;
-    /**
-     * qq昵称
-     */
-    private String qqName;
+    private Integer roleWebId;
 
 }

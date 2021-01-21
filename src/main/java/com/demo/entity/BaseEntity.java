@@ -1,12 +1,17 @@
 package com.demo.entity;
 
-import java.sql.Timestamp;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-
+import com.demo.util.ClientInfoUtils;
+import com.demo.util.IpUtils;
+import com.demo.util.UserAgentUtils;
+import com.demo.util.pojo.IpInfo;
+import com.demo.util.pojo.UserAgentInfo;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 
 /**
  * <h1>基实体</h1>
@@ -22,6 +27,7 @@ import lombok.Setter;
 @Setter
 public class BaseEntity {
 
+    /* ++++++++++++++++++++ 属性 ++++++++++++++++++++ */
     /* ==================== po ==================== */
     /* -------------------- 所有表 -------------------- */
     /**
@@ -55,7 +61,7 @@ public class BaseEntity {
     private Integer version;
     /* -------------------- 备份、日志表 -------------------- */
     /**
-     * 参考id
+     * 被备份的id/被登录的id
      */
     private Long refId;
     /* -------------------- 日志表 -------------------- */
@@ -107,7 +113,40 @@ public class BaseEntity {
      */
     private String orderBy;
 
-    /* ==================== all ==================== */
+    /* ++++++++++++++++++++ 方法 ++++++++++++++++++++ */
+    /* ==================== 日志类 ==================== */
+
+    /**
+     * 设置ip信息<br>
+     * 包括ip,ipCountry,ipProvince,ipCity
+     *
+     * @param request HttpServletRequest
+     */
+    public void setIpInfo(HttpServletRequest request) {
+        String ipString = ClientInfoUtils.getIp(request);
+        IpInfo ipInfo = IpUtils.getIpInfo(ipString);
+        setIp(ipString);
+        setIpCountry(ipInfo.getCountry());
+        setIpProvince(ipInfo.getProvince());
+        setIpCity(ipInfo.getCity());
+    }
+
+    /**
+     * 设置userAgent信息<br>
+     * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
+     *
+     * @param request HttpServletRequest
+     */
+    public void setUserAgentInfo(HttpServletRequest request) {
+        String userAgentString = ClientInfoUtils.getUserAgent(request);
+        UserAgentInfo userAgentInfo = UserAgentUtils.getUserAgentInfo(userAgentString);
+        setUserAgent(userAgentString);
+        setUaOsName(userAgentInfo.getOperatingSystemName());
+        setUaBrowserName(userAgentInfo.getBrowserName());
+        setUaDeviceTypeName(userAgentInfo.getDeviceTypeName());
+    }
+
+    /* ==================== 所有类 ==================== */
 
     /**
      * 重写toString成JSON格式

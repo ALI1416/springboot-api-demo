@@ -1,6 +1,5 @@
 package com.demo.entity.po;
 
-import com.demo.constant.UserLoginTypeEnum;
 import com.demo.entity.BaseEntity;
 import com.demo.tool.Id;
 import lombok.Getter;
@@ -9,10 +8,10 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <h1>用户登录日志表持久化对象</h1>
+ * <h1>管理员登录日志表持久化对象</h1>
  *
  * <p>
- * createDate 2021/01/13 16:14:40
+ * createDate 2021/01/21 21:06:33
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
@@ -20,14 +19,8 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Getter
 @Setter
-public class UserLoginLog extends BaseEntity {
+public class AdminLoginLog extends BaseEntity {
 
-    /**
-     * 登录类型：0、账号，1、邮箱，2、QQ
-     *
-     * @see com.demo.constant.UserLoginTypeEnum
-     */
-    private Integer loginType;
     /**
      * 登录成功
      */
@@ -36,7 +29,7 @@ public class UserLoginLog extends BaseEntity {
     /**
      * 构造函数(自动生成id)
      */
-    public UserLoginLog() {
+    public AdminLoginLog() {
         setId(Id.next());
     }
 
@@ -47,18 +40,15 @@ public class UserLoginLog extends BaseEntity {
      * 设置userAgent信息<br>
      * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
      *
-     * @param request           HttpServletRequest
-     * @param refId             refId
-     * @param userLoginTypeEnum 用户登录类型枚举
-     * @param loginSuccess      登录成功
+     * @param request      HttpServletRequest
+     * @param refId        refId
+     * @param loginSuccess 登录成功
      */
-    public UserLoginLog(HttpServletRequest request, Long refId, UserLoginTypeEnum userLoginTypeEnum,
-                        boolean loginSuccess) {
+    public AdminLoginLog(HttpServletRequest request, Long refId, boolean loginSuccess) {
         setId(Id.next());
         setIpInfo(request);
         setUserAgentInfo(request);
         setRefId(refId == null ? 0L : refId);
-        setLoginType(userLoginTypeEnum.getType());
         setLoginSuccess(loginSuccess ? 1 : 0);
     }
 

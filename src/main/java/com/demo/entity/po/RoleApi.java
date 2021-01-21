@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * <h1>选项表持久化对象</h1>
+ * <h1>api角色表持久化对象</h1>
  *
  * <p>
- * createDate 2021/01/18 20:26:46
+ * createDate 2021/01/21 21:06:42
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
@@ -16,6 +16,11 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class Option extends BaseEntity {
+public class RoleApi extends BaseEntity {
+
+    /**
+     * 角色名
+     */
+    private String name;
 
 }

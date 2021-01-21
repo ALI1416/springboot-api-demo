@@ -93,6 +93,10 @@ public class Test {
 //        System.out.println(Integer.valueOf((String) o));
 //        System.out.println(Integer.valueOf(o.toString()));
         System.out.println("男".equals(o));
+
+        String s = "1234";
+        Long l = 1234L;
+        System.out.println(s.equals(l.toString()));
     }
 
 }

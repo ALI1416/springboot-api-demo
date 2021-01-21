@@ -42,14 +42,9 @@ public interface UserDao {
     UserVo findByUniqueKey(UserVo user);
 
     /**
-     * 更新(需id,updateId;改不了id,isDelete,createId,createTime,updateTime,version)
+     * 更新(需id,updateId;改不了id,createId,createTime,updateTime,version)
      */
     int updateById(UserVo user);
-
-    /**
-     * 删除(需id,updateId)
-     */
-    int deleteById(UserVo user);
 
     /**
      * 精确查询

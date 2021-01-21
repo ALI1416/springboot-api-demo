@@ -1,10 +1,7 @@
-package com.demo.constant;
-
-import com.demo.property.Ip2RegionAppYml;
-import com.demo.property.Yml;
+package com.demo.property;
 
 /**
- * <h1>ip2region常量</h1>
+ * <h1>ip2region属性</h1>
  *
  * <p>
  * createDate 2020/11/21 10:27:45
@@ -13,7 +10,7 @@ import com.demo.property.Yml;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class Ip2RegionConstant {
+public class Ip2RegionProperty {
 
     private static final Ip2RegionAppYml IP_2_REGION = Yml.ip2RegionAppYml;
 

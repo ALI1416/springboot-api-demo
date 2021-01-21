@@ -1,6 +1,6 @@
 package com.demo.util;
 
-import com.demo.constant.Ip2RegionConstant;
+import com.demo.property.Ip2RegionProperty;
 import com.demo.util.pojo.IpInfo;
 
 import org.lionsoul.ip2region.DataBlock;
@@ -66,7 +66,7 @@ public class IpUtils {
             synchronized (IpUtils.class) {
                 if (ip2regionSearcher == null) {
                     try {
-                        ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionConstant.REFERENCE_PATH);
+                        ip2regionSearcher = new DbSearcher(new DbConfig(), Ip2RegionProperty.REFERENCE_PATH);
                         // ip2regionSearcher = new DbSearcher(new DbConfig(), "/file/ip2region/data.db");
                     } catch (Exception e) {
                         e.printStackTrace();

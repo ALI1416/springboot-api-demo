@@ -1,4 +1,4 @@
-package com.demo.constant;
+package com.demo.property;
 
 import java.time.Duration;
 import java.util.List;
@@ -6,11 +6,9 @@ import java.util.List;
 import org.springframework.util.unit.DataSize;
 
 import com.demo.entity.po.User;
-import com.demo.property.MyYml;
-import com.demo.property.Yml;
 
 /**
- * <h1>My常量</h1>
+ * <h1>My属性</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -19,7 +17,7 @@ import com.demo.property.Yml;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class MyConstant {
+public class MyProperty {
 
     private static final MyYml MY_YML = Yml.myYml;
 

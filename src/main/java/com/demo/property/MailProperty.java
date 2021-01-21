@@ -1,10 +1,7 @@
-package com.demo.constant;
-
-import com.demo.property.MailAppYml;
-import com.demo.property.Yml;
+package com.demo.property;
 
 /**
- * <h1>邮件常量</h1>
+ * <h1>邮件属性</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -13,7 +10,7 @@ import com.demo.property.Yml;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class MailConstant {
+public class MailProperty {
 
     private static final MailAppYml MAIL = Yml.mailAppYml;
 

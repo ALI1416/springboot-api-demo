@@ -13,10 +13,7 @@ import com.alibaba.fastjson.JSON;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.constant.UserLoginTypeConstant;
-import com.demo.dao.UserLoginLogDao;
-import com.demo.entity.po.User;
-import com.demo.entity.po.UserLoginLog;
+import com.demo.constant.ThirdLoginTypeEnum;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.UserVo;
 import com.demo.tool.Id;
@@ -39,7 +36,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class ThirdLoginService extends BaseService {
 
-    private final UserLoginLogDao userLoginLogDao;
     private final UserService userService;
 
     /**
@@ -48,16 +44,19 @@ public class ThirdLoginService extends BaseService {
      * @param request HttpServletRequest
      * @param sign    sign
      * @param code    code
-     * @param qqState qqState
+     * @param qqState state
+     * @param type    登录类型
      */
-    public Result qqCallback(HttpServletRequest request, String sign, String code, String qqState) {
+    public Result qqCallback(HttpServletRequest request, String sign, String code, String qqState, int type) {
         String name = sign + RedisConstant.QQ_STATE_SUFFIX;
-        // 从redis中获取qqState
-        String redisQqState = (String) RedisUtils.get(name);
+        // 从redis中获取thirdQq
+        Map<Object, Object> thirdQq = RedisUtils.hashGet(name);
         // 获取后要删除
         RedisUtils.delete(name);
-        // qqState错误
-        if (!qqState.equalsIgnoreCase(redisQqState)) {
+        String redisState = (String) thirdQq.get(RedisConstant.QQ_STATE__STATE);
+        Integer redisType = (Integer) thirdQq.get(RedisConstant.QQ_STATE__TYPE);
+        // qqState或type错误
+        if (!qqState.equalsIgnoreCase(redisState) || type != redisType) {
             return Result.e(ResultCodeEnum.THIRD_PARTY_LOGIN_FAILED);
         }
         // 获取token
@@ -73,15 +72,31 @@ public class ThirdLoginService extends BaseService {
         Map<String, Object> openidAndUnionidMap = JSON.parseObject(openidAndUnionidObj);
         // 得到openid
         String openid = (String) openidAndUnionidMap.get("openid");
-        User u = userService.findByQqOpenid(openid);
+        UserVo u = userService.findByQqOpenid(openid);
+        /* type为绑定账号 */
+        if (type == ThirdLoginTypeEnum.BIND.getType()) {
+            // 该qq已绑定过账号
+            if (u != null) {
+                return Result.e();
+            }
+            // 该qq没有绑定过账号
+            Long id = (Long) RedisUtils.hashGet(sign, RedisConstant._USER_ID);
+            UserVo u2 = userService.findById(id);
+            // 该账号没有解绑qq
+            if (!u2.getQqOpenid().equals(id.toString())) {
+                return Result.e();
+            }
+            // 该账号还未绑定qq
+            UserVo u1 = new UserVo();
+            u1.setId(id);
+            u1.setQqOpenid(openid);
+            u1.setUpdateId(id);
+            return userService.changeInfo(u1);
+        }
+        /* type为注册/登录账号 */
         // openid已存在，去登录账号
         if (u != null) {
-            // 日志(登录成功)
-            recordLog(() -> userLoginLogDao.insert(//
-                    new UserLoginLog(request, u.getId(), UserLoginTypeConstant.QQ, true)));
-            // redis放入userId，并重置过期时间
-            RedisUtils.hashSet(sign, RedisConstant._USER_ID, u.getId(), RedisConstant.EXPIRE);
-            return Result.o();
+            return userService.loginByQq(request, sign, u);
         }
         // openid不存在，去注册账号
         // 先获取用户的qq信息

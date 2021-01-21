@@ -2,6 +2,7 @@ package com.demo.entity.po;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.demo.constant.UserLoginTypeEnum;
 import com.demo.entity.BaseEntity;
 import com.demo.tool.Id;
 import com.demo.util.ClientInfoUtils;
@@ -30,7 +31,7 @@ public class UserLoginLog extends BaseEntity {
     /**
      * 登录类型：0、账号，1、邮箱，2、QQ
      * 
-     * @see com.demo.constant.UserLoginTypeConstant
+     * @see com.demo.constant.UserLoginTypeEnum
      */
     private Integer loginType;
     /**
@@ -52,17 +53,18 @@ public class UserLoginLog extends BaseEntity {
      * 设置userAgent信息<br>
      * 包括userAgent,uaOsName,uaBrowserName,uaDeviceTypeName
      * 
-     * @param request      HttpServletRequest
-     * @param refId        refId
-     * @param loginType    登录类型
-     * @param loginSuccess 登录成功
+     * @param request           HttpServletRequest
+     * @param refId             refId
+     * @param userLoginTypeEnum 用户登录类型枚举
+     * @param loginSuccess      登录成功
      */
-    public UserLoginLog(HttpServletRequest request, Long refId, Integer loginType, boolean loginSuccess) {
+    public UserLoginLog(HttpServletRequest request, Long refId, UserLoginTypeEnum userLoginTypeEnum,
+            boolean loginSuccess) {
         setId(Id.next());
         setIpInfo(ClientInfoUtils.getIp(request));
         setUserAgentInfo(ClientInfoUtils.getUserAgent(request));
         setRefId(refId == null ? 0L : refId);
-        setLoginType(loginType);
+        setLoginType(userLoginTypeEnum.getType());
         setLoginSuccess(loginSuccess ? 1 : 0);
     }
 

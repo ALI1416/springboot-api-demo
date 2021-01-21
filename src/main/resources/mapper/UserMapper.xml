@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.dao.UserDao">
 
-	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,use_email_login,qq_openid,qq_name,use_qq_login,is_delete,create_id,create_time,update_id,update_time,version
+	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,qq_openid,qq_name,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
 	<insert id="register" parameterType="UserVo">
@@ -17,18 +17,18 @@
 	<insert id="registerByEmail" parameterType="UserVo">
 		INSERT
 		user(
-		id,account,pwd,name,qq_openid,email,use_email_login
+		id,account,pwd,name,qq_openid,email
 		)VALUES(
-		#{id},#{id},#{pwd},#{id},#{id},#{email},1
+		#{id},#{id},#{pwd},#{id},#{id},#{email}
 		)
 	</insert>
 
 	<insert id="registerByQq" parameterType="UserVo">
 		INSERT
 		user(
-		id,account,pwd,name,gender,year,qq_openid,qq_name,email,use_qq_login
+		id,account,pwd,name,gender,year,qq_openid,qq_name,email
 		)VALUES(
-		#{id},#{id},"",#{name},#{gender},#{year},#{qqOpenid},#{qqName},#{id},1
+		#{id},#{id},"",#{name},#{gender},#{year},#{qqOpenid},#{qqName},#{id}
 		)
 	</insert>
 
@@ -97,35 +97,19 @@
 			<if test="email != null">
 				email=#{email},
 			</if>
-			<if test="useEmailLogin != null">
-				use_email_login=#{useEmailLogin},
-			</if>
 			<if test="qqOpenid != null">
 				qq_openid=#{qqOpenid},
 			</if>
 			<if test="qqName != null">
 				qq_name=#{qqName},
 			</if>
-			<if test="useQqLogin != null">
-				use_qq_login=#{useQqLogin},
+			<if test="isDelete != null">
+				is_delete=#{isDelete},
 			</if>
 			update_id=#{updateId},
 			update_time=CURRENT_TIMESTAMP,
 			version=version+1,
 		</set>
-		WHERE
-		id=#{id}
-	</update>
-
-	<update id="deleteById" parameterType="UserVo">
-		UPDATE user
-		SET
-		is_delete=1,
-		qq_openid=#{id},
-		email=#{id},
-		update_id=#{updateId},
-		update_time=CURRENT_TIMESTAMP,
-		version=version+1
 		WHERE
 		id=#{id}
 	</update>

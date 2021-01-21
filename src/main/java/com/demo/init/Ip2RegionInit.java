@@ -1,7 +1,7 @@
 package com.demo.init;
 
 import com.demo.App;
-import com.demo.constant.Ip2RegionConstant;
+import com.demo.property.Ip2RegionProperty;
 import com.demo.util.FileUtils;
 import com.demo.util.IpUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +36,8 @@ public class Ip2RegionInit {
         try {
             log.info("Ip2Region检查并创建文件...");
             /*文件夹*/
-            File libraryPath = new File(Ip2RegionConstant.REFERENCE_PATH.substring(0,
-                    Ip2RegionConstant.REFERENCE_PATH.lastIndexOf("/") + 1));
+            File libraryPath = new File(Ip2RegionProperty.REFERENCE_PATH.substring(0,
+                    Ip2RegionProperty.REFERENCE_PATH.lastIndexOf("/") + 1));
             if (!libraryPath.exists()) {
                 if (libraryPath.mkdirs()) {
                     log.info("Ip2Region文件夹缺失，创建在{}", libraryPath.getPath());
@@ -48,9 +48,9 @@ public class Ip2RegionInit {
                 log.info("Ip2Region文件夹已存在，在{}", libraryPath.getPath());
             }
             /*数据文件*/
-            File libraryDefaultFile = new File(Ip2RegionConstant.REFERENCE_PATH);
+            File libraryDefaultFile = new File(Ip2RegionProperty.REFERENCE_PATH);
             if (!libraryDefaultFile.exists()) {
-                ClassPathResource resource = new ClassPathResource(Ip2RegionConstant.RESOURCE_PATH);
+                ClassPathResource resource = new ClassPathResource(Ip2RegionProperty.RESOURCE_PATH);
                 InputStream inputStream = resource.getInputStream();
                 FileUtils.inputStream2File(inputStream, libraryDefaultFile.getPath());
                 log.info("Ip2Region数据文件缺失，创建在{}", libraryDefaultFile.getPath());

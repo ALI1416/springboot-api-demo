@@ -25,11 +25,7 @@ public enum CaptchaTypeEnum {
     /**
      * 电子邮件：5分钟
      */
-    EMAIL(1, 5 * 60),
-    /**
-     * 瞬间：1秒
-     */
-    INSTANT(-1, 1);
+    EMAIL(1, 5 * 60);
 
     /**
      * 类型

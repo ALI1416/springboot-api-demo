@@ -5,12 +5,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.constant.Constant;
-import com.demo.constant.MailConstant;
-import com.demo.constant.MyConstant;
+import com.demo.property.MailProperty;
+import com.demo.property.MyProperty;
 import com.demo.tool.Log;
 
 /**
- * <h1>常数api</h1>
+ * <h1>常量api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -27,16 +27,16 @@ public class ConstantController {
         Log.i(Constant.A + "");
         Log.i(Constant.B + "");
         Log.i(Constant.C + "");
-        Log.i(MailConstant.USERNAME + "");
-        Log.i(MailConstant.PASSWORD + "");
-        Log.i(MailConstant.HOST + "");
-        Log.i(MailConstant.PROTOCOL + "");
-        Log.i(MailConstant.DEFAULT_ENCODING + "");
-        Log.i(MyConstant.A + "");
-        Log.i(MyConstant.B + "");
-        Log.i(MyConstant.C + "");
-        Log.i(MyConstant.D + "");
-        Log.i(MyConstant.E + "");
+        Log.i(MailProperty.USERNAME + "");
+        Log.i(MailProperty.PASSWORD + "");
+        Log.i(MailProperty.HOST + "");
+        Log.i(MailProperty.PROTOCOL + "");
+        Log.i(MailProperty.DEFAULT_ENCODING + "");
+        Log.i(MyProperty.A + "");
+        Log.i(MyProperty.B + "");
+        Log.i(MyProperty.C + "");
+        Log.i(MyProperty.D + "");
+        Log.i(MyProperty.E + "");
         return "ok";
     }
 }

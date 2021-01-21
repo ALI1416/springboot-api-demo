@@ -1,12 +1,7 @@
-package com.demo.constant;
-
-import com.demo.property.AnsjAppYml;
-import com.demo.property.LibraryProperties;
-import com.demo.property.Properties;
-import com.demo.property.Yml;
+package com.demo.property;
 
 /**
- * <h1>Ansj常量</h1>
+ * <h1>Ansj属性</h1>
  *
  * <p>
  * createDate 2020/11/21 09:29:16
@@ -15,7 +10,7 @@ import com.demo.property.Yml;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class AnsjConstant {
+public class AnsjProperty {
 
     private static final LibraryProperties LIBRARY = Properties.libraryProperties;
     private static final AnsjAppYml ANSJ = Yml.ansjAppYml;

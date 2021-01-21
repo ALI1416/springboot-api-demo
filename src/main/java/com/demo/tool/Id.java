@@ -1,7 +1,8 @@
 package com.demo.tool;
 
 import com.demo.App;
-import com.demo.constant.IdConstant;
+import com.demo.property.IdProperty;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -39,17 +40,17 @@ public final class Id {
     /**
      * 机器码
      */
-    private final static long MACHINE_ID = IdConstant.MACHINE_ID;
+    private final static long MACHINE_ID = IdProperty.MACHINE_ID;
     // private final static long MACHINE_ID = 0L;
     /**
      * 机器码位数
      **/
-    private final static long MACHINE_BITS = IdConstant.MACHINE_BITS;
+    private final static long MACHINE_BITS = IdProperty.MACHINE_BITS;
     // private final static long MACHINE_BITS = 8L;
     /**
      * 序列号位数
      **/
-    private final static long SEQUENCE_BITS = IdConstant.SEQUENCE_BITS;
+    private final static long SEQUENCE_BITS = IdProperty.SEQUENCE_BITS;
     // private final static long SEQUENCE_BITS = 14L;
     /**
      * 最大机器码

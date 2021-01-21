@@ -1,6 +1,6 @@
 package com.demo.init;
 
-import com.demo.constant.AnsjConstant;
+import com.demo.property.AnsjProperty;
 import com.demo.util.FileUtils;
 import com.demo.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -36,8 +36,8 @@ public class AnsjInit {
             log.info("Ansj检查并创建文件...");
             /*文件夹*/
             boolean hasFolder = true;
-            File libraryPath = new File(AnsjConstant.DEFAULT_REFERENCE_PATH.substring(0,
-                    AnsjConstant.DEFAULT_REFERENCE_PATH.lastIndexOf("/") + 1));
+            File libraryPath = new File(AnsjProperty.DEFAULT_REFERENCE_PATH.substring(0,
+                    AnsjProperty.DEFAULT_REFERENCE_PATH.lastIndexOf("/") + 1));
             if (!libraryPath.exists()) {
                 if (libraryPath.mkdirs()) {
                     log.info("Ansj词典文件夹缺失，创建在{}", libraryPath.getPath());
@@ -50,9 +50,9 @@ public class AnsjInit {
             }
             if (hasFolder) {
                 /*自定义词典*/
-                File libraryDefaultFile = new File(AnsjConstant.DEFAULT_REFERENCE_PATH);
+                File libraryDefaultFile = new File(AnsjProperty.DEFAULT_REFERENCE_PATH);
                 if (!libraryDefaultFile.exists()) {
-                    ClassPathResource resource = new ClassPathResource(AnsjConstant.DEFAULT_RESOURCE_PATH);
+                    ClassPathResource resource = new ClassPathResource(AnsjProperty.DEFAULT_RESOURCE_PATH);
                     InputStream inputStream = resource.getInputStream();
                     FileUtils.inputStream2File(inputStream, libraryDefaultFile.getPath());
                     log.info("Ansj自定义词典文件缺失，创建在{}", libraryDefaultFile.getPath());
@@ -60,9 +60,9 @@ public class AnsjInit {
                     log.info("Ansj自定义词典文件已存在，在{}", libraryDefaultFile.getPath());
                 }
                 /*歧义词典*/
-                File libraryAmbiguityFile = new File(AnsjConstant.AMBIGUITY_REFERENCE_PATH);
+                File libraryAmbiguityFile = new File(AnsjProperty.AMBIGUITY_REFERENCE_PATH);
                 if (!libraryAmbiguityFile.exists()) {
-                    ClassPathResource resource = new ClassPathResource(AnsjConstant.AMBIGUITY_RESOURCE_PATH);
+                    ClassPathResource resource = new ClassPathResource(AnsjProperty.AMBIGUITY_RESOURCE_PATH);
                     InputStream inputStream = resource.getInputStream();
                     FileUtils.inputStream2File(inputStream, libraryAmbiguityFile.getPath());
                     log.info("Ansj歧义词典文件缺失，创建在{}", libraryAmbiguityFile.getPath());

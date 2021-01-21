@@ -51,10 +51,6 @@ public class User extends BaseEntity {
      */
     private String email;
     /**
-     * 使用邮箱登录
-     */
-    private Integer useEmailLogin;
-    /**
      * qqOpenid
      */
     private String qqOpenid;
@@ -62,9 +58,5 @@ public class User extends BaseEntity {
      * qq昵称
      */
     private String qqName;
-    /**
-     * 使用qq登录
-     */
-    private Integer useQqLogin;
 
 }

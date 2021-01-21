@@ -1,10 +1,7 @@
-package com.demo.constant;
-
-import com.demo.property.IdAppYml;
-import com.demo.property.Yml;
+package com.demo.property;
 
 /**
- * <h1>高性能Id生成器常量</h1>
+ * <h1>高性能Id生成器属性</h1>
  *
  * <p>
  * createDate 2020/12/23 15:51:32
@@ -13,7 +10,7 @@ import com.demo.property.Yml;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class IdConstant {
+public class IdProperty {
 
     private static final IdAppYml ID = Yml.idAppYml;
 

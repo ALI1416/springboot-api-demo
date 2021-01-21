@@ -1,6 +1,6 @@
 package com.demo.util;
 
-import com.demo.constant.MailConstant;
+import com.demo.property.MailProperty;
 import com.demo.tool.ThreadPool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -47,7 +47,7 @@ public class MailUtils {
      */
     public static void sendMail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(MailConstant.USERNAME);
+        message.setFrom(MailProperty.USERNAME);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
@@ -69,7 +69,7 @@ public class MailUtils {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
         try {
-            messageHelper.setFrom(MailConstant.USERNAME);
+            messageHelper.setFrom(MailProperty.USERNAME);
             messageHelper.setTo(to);
             messageHelper.setSubject(subject);
             messageHelper.setText(text, true);

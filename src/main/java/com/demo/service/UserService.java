@@ -1,8 +1,16 @@
 package com.demo.service;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.constant.UserLoginTypeConstant;
+import com.demo.constant.UserLoginTypeEnum;
 import com.demo.dao.UserBakDao;
 import com.demo.dao.UserDao;
 import com.demo.dao.UserLoginLogDao;
@@ -17,13 +25,8 @@ import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
 import com.github.pagehelper.PageInfo;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>用户服务</h1>
@@ -82,7 +85,7 @@ public class UserService extends BaseService {
     /**
      * 查找用户，通过id
      */
-    public User findById(long id) {
+    public UserVo findById(long id) {
         UserVo user = new UserVo();
         user.setId(id);
         return userDao.findByUniqueKey(user);
@@ -91,7 +94,7 @@ public class UserService extends BaseService {
     /**
      * 查找用户，通过account
      */
-    public User findByAccount(String account) {
+    public UserVo findByAccount(String account) {
         UserVo user = new UserVo();
         user.setAccount(account);
         return userDao.findByUniqueKey(user);
@@ -100,7 +103,7 @@ public class UserService extends BaseService {
     /**
      * 查找用户，通过email
      */
-    public User findByEmail(String email) {
+    public UserVo findByEmail(String email) {
         UserVo user = new UserVo();
         user.setEmail(email);
         return userDao.findByUniqueKey(user);
@@ -109,7 +112,7 @@ public class UserService extends BaseService {
     /**
      * 查找用户，通过qqOpenid
      */
-    public User findByQqOpenid(String qqOpenid) {
+    public UserVo findByQqOpenid(String qqOpenid) {
         UserVo user = new UserVo();
         user.setQqOpenid(qqOpenid);
         return userDao.findByUniqueKey(user);
@@ -128,7 +131,7 @@ public class UserService extends BaseService {
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(//
-                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.ACCOUNT, true)));
+                new UserLoginLog(request, user.getId(), UserLoginTypeEnum.ACCOUNT, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
         return Result.o();
@@ -147,7 +150,7 @@ public class UserService extends BaseService {
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(//
-                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.EMAIL, true)));
+                new UserLoginLog(request, user.getId(), UserLoginTypeEnum.EMAIL, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
         return Result.o();
@@ -166,7 +169,7 @@ public class UserService extends BaseService {
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(//
-                new UserLoginLog(request, user.getId(), UserLoginTypeConstant.QQ, true)));
+                new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, true)));
         // redis放入userId，并重置过期时间
         RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId(), RedisConstant.EXPIRE);
         return Result.o();
@@ -175,38 +178,58 @@ public class UserService extends BaseService {
     /**
      * 登录(需account,pwd)
      */
-    public Result login(HttpServletRequest request, User user) {
+    public Result login(HttpServletRequest request, UserVo user) {
         User u;
-        int loginType;
+        UserLoginTypeEnum userLoginTypeEnum;
         if (RegexUtils.isAccount(user.getAccount())) {
             // 查找用户，通过account
             u = findByAccount(user.getAccount());
-            loginType = UserLoginTypeConstant.ACCOUNT;
+            userLoginTypeEnum = UserLoginTypeEnum.ACCOUNT;
         } else if (RegexUtils.isEmail(user.getAccount())) {
             // 查找用户，通过email
             u = findByEmail(user.getAccount());
-            loginType = UserLoginTypeConstant.EMAIL;
+            userLoginTypeEnum = UserLoginTypeEnum.EMAIL;
         } else {
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
-        // 用户不存在或密码错误
-        if (u == null || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
+        // 用户不存在或账号禁用或密码错误
+        if (u == null || u.getIsDelete() == 1 || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             // 日志(登录失败)
             if (u == null) {
                 recordLog(() -> userLoginLogDao.insert(//
-                        new UserLoginLog(request, null, loginType, false)));
+                        new UserLoginLog(request, null, userLoginTypeEnum, false)));
             } else {
                 recordLog(() -> userLoginLogDao.insert(//
-                        new UserLoginLog(request, u.getId(), loginType, false)));
+                        new UserLoginLog(request, u.getId(), userLoginTypeEnum, false)));
             }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         // 日志(登录成功)
         recordLog(() -> userLoginLogDao.insert(//
-                new UserLoginLog(request, u.getId(), loginType, true)));
+                new UserLoginLog(request, u.getId(), userLoginTypeEnum, true)));
         // redis放入userId
         AuthUtils.setUserId(request, u.getId());
         return Result.o();
+    }
+
+    /**
+     * 登录，通过qq(需sign,id,isDelete)
+     */
+    public Result loginByQq(HttpServletRequest request, String sign, UserVo user) {
+        // 账号禁用
+        if (user.getIsDelete() == 1) {
+            // 日志(登录失败)
+            recordLog(() -> userLoginLogDao.insert(//
+                    new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, false)));
+            return Result.e();
+        }
+        // 日志(登录成功)
+        recordLog(() -> userLoginLogDao.insert(//
+                new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, true)));
+        // redis放入userId，并重置过期时间
+        RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId(), RedisConstant.EXPIRE);
+        return Result.o();
+
     }
 
     /**
@@ -216,6 +239,8 @@ public class UserService extends BaseService {
     public Result changeInfo(UserVo user) {
         // 不能修改密码
         user.setPwd(null);
+        // 不能删除用户
+        user.setIsDelete(null);
         // 更新失败
         if (!tryif(() -> userDao.updateById(user))) {
             return Result.e();
@@ -226,7 +251,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 修改密码(需id,updateId,pwd)
+     * 修改密码(需id,updateId,pwd,newPwd)
      */
     @Transactional
     public Result changePwd(UserVo user) {
@@ -245,21 +270,50 @@ public class UserService extends BaseService {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakDao.insert(new UserBak(u2.getId())));
         return Result.o();
     }
 
     /**
-     * 删除(需id,updateId)
+     * 设置密码(需id,updateId,pwd)
      */
     @Transactional
-    public Result deleteById(UserVo user) {
-        // 删除失败
-        if (!tryif(() -> userDao.deleteById(user))) {
+    public Result setPwd(UserVo user) {
+        // 查找用户
+        User u = findById(user.getId());
+        // 已设置密码
+        if (!"".equals(u.getPwd())) {
+            return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
+        }
+        UserVo u2 = new UserVo();
+        u2.setId(user.getId());
+        u2.setPwd(EncoderUtils.bCrypt(user.getPwd()));
+        u2.setUpdateId(user.getUpdateId());
+        // 更新失败
+        if (!tryif(() -> userDao.updateById(u2))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakDao.insert(new UserBak(u2.getId())));
+        return Result.o();
+    }
+
+    /**
+     * 注销账号(需id,updateId)
+     */
+    @Transactional
+    public Result deleteById(UserVo user) {
+        UserVo u = new UserVo();
+        u.setAccount(String.valueOf(user.getId()));
+        u.setEmail(String.valueOf(user.getId()));
+        u.setQqOpenid(String.valueOf(user.getId()));
+        u.setIsDelete(1);
+        // 注销失败
+        if (!tryif(() -> userDao.updateById(u))) {
+            return Result.e();
+        }
+        // 备份
+        recordBak(() -> userBakDao.insert(new UserBak(u.getId())));
         return Result.o();
     }
 

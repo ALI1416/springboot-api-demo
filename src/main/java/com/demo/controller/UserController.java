@@ -10,6 +10,7 @@ import com.demo.service.UserService;
 import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
+import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -119,7 +120,7 @@ public class UserController extends BaseController {
      */
     @Auth(skipLogin = true)
     @PostMapping("/login")
-    public Result login(@RequestBody User user) {
+    public Result login(@RequestBody UserVo user) {
         if ((existEmpty(user.getAccount(), user.getPwd())) || user.getPwd().length() != 32) {
             return Result.e1();
         }
@@ -139,7 +140,7 @@ public class UserController extends BaseController {
         Long id = AuthUtils.getUserId(request);
         User u1 = userService.findById(id);
         // 已绑定邮箱，需要先解绑
-        if (u1.getUseEmailLogin() == 1) {
+        if (!u1.getEmail().equals(id.toString())) {
             return Result.e();
         }
         // 邮箱验证码错误
@@ -153,35 +154,52 @@ public class UserController extends BaseController {
         UserVo u = new UserVo();
         u.setId(id);
         u.setEmail(user.getEmail());
-        u.setUseEmailLogin(1);
         u.setUpdateId(id);
         return userService.changeInfo(u);
     }
 
     /**
-     * 解绑email(需要email)
+     * 解绑email
      */
     @Auth
     @PostMapping("/unbindEmail")
-    public Result unbindEmail(@RequestBody UserVo user) {
-        if (isEmpty(user.getEmail()) || !RegexUtils.isEmail(user.getEmail())) {
-            return Result.e1();
-        }
+    public Result unbindEmail() {
         Long id = AuthUtils.getUserId(request);
-        User u2 = userService.findById(id);
-        // 未绑定邮箱，不能解绑
-        if (u2.getUseEmailLogin() == 0) {
-            return Result.e();
+        UserVo user = userService.findById(id);
+        // 没有设置密码，不能解绑
+        if ("".equals(user.getPwd())) {
+            Result.e();
         }
-        User u1 = userService.findByEmail(user.getEmail());
-        // 邮箱不匹配
-        if (!user.getEmail().equals(u1.getEmail())) {
-            return Result.e(ResultCodeEnum.EMAIL_ERROR);
+        // 没有设置账号或qq，不能解绑
+        if (user.getAccount().equals(user.getId().toString()) || user.getQqOpenid().equals(user.getId().toString())) {
+            Result.e();
         }
         UserVo u = new UserVo();
         u.setId(id);
         u.setEmail(String.valueOf(id));
-        u.setUseEmailLogin(0);
+        u.setUpdateId(id);
+        return userService.changeInfo(u);
+    }
+
+    /**
+     * 解绑qq
+     */
+    @Auth
+    @PostMapping("/unbindQq")
+    public Result unbindQq() {
+        Long id = AuthUtils.getUserId(request);
+        UserVo user = userService.findById(id);
+        // 没有设置密码，不能解绑
+        if ("".equals(user.getPwd())) {
+            Result.e();
+        }
+        // 没有设置账号或邮箱，不能解绑
+        if (user.getAccount().equals(user.getId().toString()) || user.getEmail().equals(user.getId().toString())) {
+            Result.e();
+        }
+        UserVo u = new UserVo();
+        u.setId(id);
+        u.setQqOpenid(String.valueOf(id));
         u.setUpdateId(id);
         return userService.changeInfo(u);
     }
@@ -211,7 +229,8 @@ public class UserController extends BaseController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         Long id = AuthUtils.getUserId(request);
@@ -221,7 +240,33 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 删除
+     * 当使用第三方注册时，由于没有设置密码，需要手动设置密码(需pwd)
+     */
+    @Auth
+    @PostMapping("/setPwd")
+    public Result setPwd(@RequestBody UserVo user) {
+        if (user.getPwd() == null || user.getPwd().length() != 32) {
+            return Result.e1();
+        }
+        Long id = AuthUtils.getUserId(request);
+        user.setId(id);
+        user.setUpdateId(id);
+        return userService.setPwd(user);
+    }
+
+    /**
+     * 退出账号
+     */
+    @Auth
+    @PostMapping("/logout")
+    public Result logout() {
+        String sign = AuthUtils.getSign(request);
+        RedisUtils.delete(sign);
+        return Result.o();
+    }
+
+    /**
+     * 注销账号
      */
     @Auth
     @PostMapping("/delete")
@@ -230,7 +275,30 @@ public class UserController extends BaseController {
         UserVo user = new UserVo();
         user.setId(id);
         user.setUpdateId(id);
-        return userService.deleteById(user);
+        Result result = userService.deleteById(user);
+        // 注销失败
+        if (!result.isOk()) {
+            return result;
+        }
+        // 注销成功，退出账号
+        return logout();
+    }
+
+    /**
+     * 查看用户信息
+     */
+    @Auth
+    @PostMapping("/showInfo")
+    public Result showInfo() {
+        Long id = AuthUtils.getUserId(request);
+        UserVo user = userService.findById(id);
+        if (isEmpty(user.getPwd())) {
+            user.setPwd("empty password");
+        } else {
+            user.setPwd(null);
+        }
+        user.setQqOpenid(null);
+        return Result.o(user);
     }
 
     /**

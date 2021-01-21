@@ -57,15 +57,23 @@ public class RedisConstant {
      */
     public static final String EMAIL_CAPTCHA__CAPTCHA = "captcha";
 
-    /* ==================== QQ登录state验证 ==================== */
+    /* ==================== 第三方QQ登录验证 ==================== */
     /**
-     * QQ登录state验证key的后缀{@value}<br>
-     * 在redis中使用string保存
+     * 第三方QQ登录验证key的后缀{@value}<br>
+     * 在redis中使用hash保存
      */
-    public static final String QQ_STATE_SUFFIX = "_qq_state";
+    public static final String QQ_STATE_SUFFIX = "_third_qq";
     /**
-     * QQ登录state验证key的过期时间(秒){@value}(10分钟)
+     * 第三方QQ登录验证key的过期时间(秒){@value}(10分钟)
      */
     public static final long QQ_STATE_EXPIRE = 10 * 60;
+    /**
+     * 第三方QQ登录验证key的state字段名{@value}
+     */
+    public static final String QQ_STATE__STATE = "state";
+    /**
+     * 第三方QQ登录验证key的类型字段名{@value}
+     */
+    public static final String QQ_STATE__TYPE = "type";
 
 }

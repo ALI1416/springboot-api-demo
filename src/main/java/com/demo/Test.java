@@ -104,58 +104,82 @@ public class Test {
         Long l = 1234L;
         System.out.println(s.equals(l.toString()));
 
-        List<RoleApiTreeVo> lr = new ArrayList<>();
-        lr.add(new RoleApiTreeVo(0L, 0L, ""));
-        lr.add(new RoleApiTreeVo(1L, 0L, "1"));
-        lr.add(new RoleApiTreeVo(2L, 0L, "2"));
-        lr.add(new RoleApiTreeVo(3L, 0L, "3"));
-        lr.add(new RoleApiTreeVo(11L, 1L, "11"));
-        lr.add(new RoleApiTreeVo(12L, 1L, "12"));
-        lr.add(new RoleApiTreeVo(21L, 2L, "21"));
-        lr.add(new RoleApiTreeVo(22L, 2L, "22"));
-        lr.add(new RoleApiTreeVo(23L, 2L, "23"));
-        lr.add(new RoleApiTreeVo(111L, 11L, "111"));
-        lr.add(new RoleApiTreeVo(231L, 23L, "232"));
-        lr.add(new RoleApiTreeVo(232L, 23L, "232"));
-        lr.add(new RoleApiTreeVo(2321L, 232L, "2321"));
-        System.out.println(list2Tree(lr));
+        List<RoleApiTreeVo> list = new ArrayList<>();
+        list.add(new RoleApiTreeVo(0L, 0L, ""));
+        list.add(new RoleApiTreeVo(1L, 0L, "1"));
+        list.add(new RoleApiTreeVo(2L, 0L, "2"));
+        list.add(new RoleApiTreeVo(3L, 0L, "3"));
+        list.add(new RoleApiTreeVo(11L, 1L, "11"));
+        list.add(new RoleApiTreeVo(12L, 1L, "12"));
+        list.add(new RoleApiTreeVo(21L, 2L, "21"));
+        list.add(new RoleApiTreeVo(22L, 2L, "22"));
+        list.add(new RoleApiTreeVo(23L, 2L, "23"));
+        list.add(new RoleApiTreeVo(111L, 11L, "111"));
+        list.add(new RoleApiTreeVo(231L, 23L, "232"));
+        list.add(new RoleApiTreeVo(232L, 23L, "232"));
+        list.add(new RoleApiTreeVo(2321L, 232L, "2321"));
+        System.out.println(list);
+        RoleApiTreeVo tree = list2Tree(list);
+        System.out.println(tree);
+        List<RoleApiTreeVo> aa = new ArrayList<>();
+        tree2ExpandedList(aa, tree, "/", "");
+        System.out.println(aa);
     }
 
-    static Map<Long, List<RoleApiTreeVo>> map;
-
     /**
-     * list转树
+     * 列表转树
      * 
-     * @param list list
+     * @param list 列表
      */
     public static RoleApiTreeVo list2Tree(List<RoleApiTreeVo> list) {
         // 按parentId分组
-        map = list.stream().collect(Collectors.groupingBy(RoleApiTreeVo::getParentId));
+        Map<Long, List<RoleApiTreeVo>> map = list.stream().collect(Collectors.groupingBy(RoleApiTreeVo::getParentId));
         // 找到根节点，id和parentId都为0
         RoleApiTreeVo root = map.get(0L).stream().filter(s -> s.getId() == 0L).findFirst().get();
-        // 把根节点从map中移除，防止循环嵌套
+        // 把根节点从map中去除，防止循环嵌套
         map.get(0L).remove(root);
         // 生成树
-        return makeTree(root);
+        makeTree(root, map);
+        return root;
     }
 
     /**
      * 生成树
      * 
-     * @param root 根节点
+     * @param root 树的根节点
+     * @param map  按parentId分组并且去除根节点的列表
      */
-    public static RoleApiTreeVo makeTree(RoleApiTreeVo root) {
+    public static void makeTree(RoleApiTreeVo root, Map<Long, List<RoleApiTreeVo>> map) {
         // 找到子节点
         List<RoleApiTreeVo> childs = map.get(root.getId());
         if (childs != null) {
             // 子节点生成树
             for (RoleApiTreeVo chile : childs) {
-                makeTree(chile);
+                makeTree(chile, map);
             }
             // 插入子节点
             root.setChilds(childs);
         }
-        return root;
+    }
+
+    /**
+     * 树转展开的列表
+     * 
+     * @param tree 树
+     */
+    public static void tree2ExpandedList(List<RoleApiTreeVo> list, RoleApiTreeVo tree, String prefix,
+            String newPrefix) {
+        RoleApiTreeVo root = tree;
+        newPrefix = newPrefix + prefix + root.getPath();
+        root.setPath(newPrefix);
+        List<RoleApiTreeVo> childs = root.getChilds();
+        if (childs != null) {
+            for (RoleApiTreeVo child : childs) {
+                tree2ExpandedList(list, child, prefix, newPrefix);
+            }
+        }
+        root.setChilds(null);
+        list.add(root);
     }
 
     /**
@@ -163,7 +187,8 @@ public class Test {
      * 
      * @param tree 树
      */
-    public static List<RoleApiTreeVo> buildFlattenedTree(RoleApiTreeVo tree) {
+    public static List<RoleApiTreeVo> buildFlattenedTree(RoleApiTreeVo tree, String prefix) {
+
         return null;
     }
 

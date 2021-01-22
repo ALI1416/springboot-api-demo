@@ -1,14 +1,20 @@
 package com.demo;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.RoleApiTreeVo;
 import com.demo.entity.vo.UserVo;
-import eu.bitwalker.useragentutils.UserAgent;
 
-import java.sql.Timestamp;
+import eu.bitwalker.useragentutils.UserAgent;
 
 /**
  * <h1>测试类</h1>
@@ -97,6 +103,68 @@ public class Test {
         String s = "1234";
         Long l = 1234L;
         System.out.println(s.equals(l.toString()));
+
+        List<RoleApiTreeVo> lr = new ArrayList<>();
+        lr.add(new RoleApiTreeVo(0L, 0L, ""));
+        lr.add(new RoleApiTreeVo(1L, 0L, "1"));
+        lr.add(new RoleApiTreeVo(2L, 0L, "2"));
+        lr.add(new RoleApiTreeVo(3L, 0L, "3"));
+        lr.add(new RoleApiTreeVo(11L, 1L, "11"));
+        lr.add(new RoleApiTreeVo(12L, 1L, "12"));
+        lr.add(new RoleApiTreeVo(21L, 2L, "21"));
+        lr.add(new RoleApiTreeVo(22L, 2L, "22"));
+        lr.add(new RoleApiTreeVo(23L, 2L, "23"));
+        lr.add(new RoleApiTreeVo(111L, 11L, "111"));
+        lr.add(new RoleApiTreeVo(231L, 23L, "232"));
+        lr.add(new RoleApiTreeVo(232L, 23L, "232"));
+        lr.add(new RoleApiTreeVo(2321L, 232L, "2321"));
+        System.out.println(list2Tree(lr));
+    }
+
+    static Map<Long, List<RoleApiTreeVo>> map;
+
+    /**
+     * list转树
+     * 
+     * @param list list
+     */
+    public static RoleApiTreeVo list2Tree(List<RoleApiTreeVo> list) {
+        // 按parentId分组
+        map = list.stream().collect(Collectors.groupingBy(RoleApiTreeVo::getParentId));
+        // 找到根节点，id和parentId都为0
+        RoleApiTreeVo root = map.get(0L).stream().filter(s -> s.getId() == 0L).findFirst().get();
+        // 把根节点从map中移除，防止循环嵌套
+        map.get(0L).remove(root);
+        // 生成树
+        return makeTree(root);
+    }
+
+    /**
+     * 生成树
+     * 
+     * @param root 根节点
+     */
+    public static RoleApiTreeVo makeTree(RoleApiTreeVo root) {
+        // 找到子节点
+        List<RoleApiTreeVo> childs = map.get(root.getId());
+        if (childs != null) {
+            // 子节点生成树
+            for (RoleApiTreeVo chile : childs) {
+                makeTree(chile);
+            }
+            // 插入子节点
+            root.setChilds(childs);
+        }
+        return root;
+    }
+
+    /**
+     * 建造扁平的树
+     * 
+     * @param tree 树
+     */
+    public static List<RoleApiTreeVo> buildFlattenedTree(RoleApiTreeVo tree) {
+        return null;
     }
 
 }

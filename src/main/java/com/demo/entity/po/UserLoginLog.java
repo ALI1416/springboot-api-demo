@@ -34,13 +34,6 @@ public class UserLoginLog extends BaseEntity {
     private Integer loginSuccess;
 
     /**
-     * 构造函数(自动生成id)
-     */
-    public UserLoginLog() {
-        setId(Id.next());
-    }
-
-    /**
      * 构造函数(自动生成id)<br>
      * 设置ip信息<br>
      * 包括ip,ipCountry,ipProvince,ipCity<br>

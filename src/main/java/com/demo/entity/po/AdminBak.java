@@ -16,13 +16,6 @@ public class AdminBak extends Admin {
 
     /**
      * 构造函数(自动生成id)
-     */
-    public AdminBak() {
-        setId(Id.next());
-    }
-
-    /**
-     * 构造函数(自动生成id)
      *
      * @param refId refId
      */

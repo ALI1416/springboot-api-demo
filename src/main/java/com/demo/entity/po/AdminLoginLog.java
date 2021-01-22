@@ -1,11 +1,12 @@
 package com.demo.entity.po;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.demo.entity.BaseEntity;
 import com.demo.tool.Id;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>管理员登录日志表持久化对象</h1>
@@ -25,13 +26,6 @@ public class AdminLoginLog extends BaseEntity {
      * 登录成功
      */
     private Integer loginSuccess;
-
-    /**
-     * 构造函数(自动生成id)
-     */
-    public AdminLoginLog() {
-        setId(Id.next());
-    }
 
     /**
      * 构造函数(自动生成id)<br>

@@ -16,13 +16,6 @@ public class UserBak extends User {
 
     /**
      * 构造函数(自动生成id)
-     */
-    public UserBak() {
-        setId(Id.next());
-    }
-
-    /**
-     * 构造函数(自动生成id)
      * 
      * @param refId refId
      */

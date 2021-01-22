@@ -16,13 +16,6 @@ public class RoleApiTreeBak extends RoleApiTree {
 
     /**
      * 构造函数(自动生成id)
-     */
-    public RoleApiTreeBak() {
-        setId(Id.next());
-    }
-
-    /**
-     * 构造函数(自动生成id)
      *
      * @param refId refId
      */

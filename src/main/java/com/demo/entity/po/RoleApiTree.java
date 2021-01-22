@@ -1,6 +1,7 @@
 package com.demo.entity.po;
 
 import com.demo.entity.BaseEntity;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,4 +31,5 @@ public class RoleApiTree extends BaseEntity {
      * 描述
      */
     private String describe;
+
 }

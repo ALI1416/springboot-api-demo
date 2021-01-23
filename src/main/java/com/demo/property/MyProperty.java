@@ -1,11 +1,10 @@
 package com.demo.property;
 
-import java.time.Duration;
-import java.util.List;
-
+import com.demo.entity.po.User;
 import org.springframework.util.unit.DataSize;
 
-import com.demo.entity.po.User;
+import java.time.Duration;
+import java.util.List;
 
 /**
  * <h1>My属性</h1>

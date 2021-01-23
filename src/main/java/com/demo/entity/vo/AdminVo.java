@@ -1,6 +1,8 @@
 package com.demo.entity.vo;
 
 import com.demo.entity.po.Admin;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <h1>管理员值对象</h1>
@@ -12,6 +14,13 @@ import com.demo.entity.po.Admin;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
+@Getter
+@Setter
 public class AdminVo extends Admin {
+
+    /**
+     * 新密码
+     */
+    private String newPwd;
 
 }

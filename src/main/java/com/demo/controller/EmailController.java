@@ -1,13 +1,5 @@
 package com.demo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.ResultCodeEnum;
@@ -16,6 +8,9 @@ import com.demo.entity.vo.UserVo;
 import com.demo.util.AuthUtils;
 import com.demo.util.MailUtils;
 import com.demo.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>邮件api</h1>
@@ -35,7 +30,7 @@ public class EmailController {
      * 发送邮件
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = { "", "/" })
+    @PostMapping(value = {"", "/"})
     public Result index(HttpServletRequest request, @RequestBody UserVo user) {
         if (StringUtils.existEmpty(user.getEmail(), user.getCaptcha())) {
             return Result.e1();

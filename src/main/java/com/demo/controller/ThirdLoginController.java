@@ -1,14 +1,5 @@
 package com.demo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
@@ -18,8 +9,11 @@ import com.demo.service.ThirdLoginService;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>第三方登录api</h1>
@@ -42,7 +36,7 @@ public class ThirdLoginController {
     /**
      * 获取qq登录链接<br>
      * 包括使用qq登录/注册/绑定账号<br>
-     * 
+     *
      * @param type 登录类型：0、登录/注册，1绑定
      * @see com.demo.constant.ThirdLoginTypeEnum
      */

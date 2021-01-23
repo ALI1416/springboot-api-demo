@@ -96,19 +96,19 @@ public class Test {
         System.out.println(CaptchaTypeEnum.findByType(1));
 
         List<RoleApiTreeVo> list = new ArrayList<>();
-        list.add(new RoleApiTreeVo(0L, 0L, ""));
-        list.add(new RoleApiTreeVo(1L, 0L, "1"));
-        list.add(new RoleApiTreeVo(2L, 0L, "2"));
-        list.add(new RoleApiTreeVo(3L, 0L, "3"));
-        list.add(new RoleApiTreeVo(11L, 1L, "11"));
-        list.add(new RoleApiTreeVo(12L, 1L, "12"));
-        list.add(new RoleApiTreeVo(21L, 2L, "21"));
-        list.add(new RoleApiTreeVo(22L, 2L, "22"));
-        list.add(new RoleApiTreeVo(23L, 2L, "23"));
-        list.add(new RoleApiTreeVo(111L, 11L, "111"));
-        list.add(new RoleApiTreeVo(231L, 23L, "232"));
         list.add(new RoleApiTreeVo(232L, 23L, "232"));
         list.add(new RoleApiTreeVo(2321L, 232L, "2321"));
+        list.add(new RoleApiTreeVo(2L, 0L, "2"));
+        list.add(new RoleApiTreeVo(0L, 0L, "/api"));
+        list.add(new RoleApiTreeVo(22L, 2L, "22"));
+        list.add(new RoleApiTreeVo(1L, 0L, "1"));
+        list.add(new RoleApiTreeVo(231L, 23L, "232"));
+        list.add(new RoleApiTreeVo(21L, 2L, "21"));
+        list.add(new RoleApiTreeVo(12L, 1L, "12"));
+        list.add(new RoleApiTreeVo(23L, 2L, "23"));
+        list.add(new RoleApiTreeVo(111L, 11L, "111"));
+        list.add(new RoleApiTreeVo(3L, 0L, "3"));
+        list.add(new RoleApiTreeVo(11L, 1L, "11"));
         System.out.println(list);
         RoleApiTreeVo tree = list2Tree(list);
         System.out.println(tree);
@@ -144,6 +144,13 @@ public class Test {
         // 找到子节点
         List<RoleApiTreeVo> childs = map.get(tree.getId());
         if (childs != null) {
+            // 对子节点进行排序
+            if (childs.size() != 1) {
+                List<RoleApiTreeVo> childsOrder =
+                        childs.stream().sorted(Comparator.comparing(RoleApiTree::getPath)).collect(Collectors.toList());
+                childs.clear();
+                childs.addAll(childsOrder);
+            }
             // 子节点生成树
             for (RoleApiTreeVo child : childs) {
                 makeTree(child, map);
@@ -160,16 +167,16 @@ public class Test {
      */
     public static List<RoleApiTreeVo> tree2ExpandedList(RoleApiTreeVo tree) {
         List<RoleApiTreeVo> list = new ArrayList<>();
-        // 设置根节点的path
-        tree.setPath("/");
         // 找到子节点
         List<RoleApiTreeVo> childs = tree.getChilds();
         // 子节点去展开
         if (childs != null) {
             for (RoleApiTreeVo child : childs) {
-                makeExpandedList(list, child, "/", "");
+                makeExpandedList(list, child, tree.getPath());
             }
         }
+        // 设置根节点的path
+        tree.setPath(tree.getPath() + "/");
         // 子节点清空
         tree.setChilds(null);
         // 插入根节点
@@ -181,21 +188,20 @@ public class Test {
     /**
      * 生成展开列表
      *
-     * @param list      接收的列表
-     * @param tree      树
-     * @param prefix    前缀
-     * @param newPrefix 新的前缀
+     * @param list   接收的列表
+     * @param tree   树
+     * @param prefix 前缀
      */
-    public static void makeExpandedList(List<RoleApiTreeVo> list, RoleApiTreeVo tree, String prefix, String newPrefix) {
+    public static void makeExpandedList(List<RoleApiTreeVo> list, RoleApiTreeVo tree, String prefix) {
         // 节点设置新的前缀
-        newPrefix = newPrefix + prefix + tree.getPath();
-        tree.setPath(newPrefix);
+        prefix = prefix + "/" + tree.getPath();
+        tree.setPath(prefix);
         // 找到子节点
         List<RoleApiTreeVo> childs = tree.getChilds();
         // 子节点去展开
         if (childs != null) {
             for (RoleApiTreeVo child : childs) {
-                makeExpandedList(list, child, prefix, newPrefix);
+                makeExpandedList(list, child, prefix);
             }
         }
         // 子节点清空

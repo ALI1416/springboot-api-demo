@@ -1,35 +1,30 @@
 package com.demo.util;
 
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Properties;
-
 import org.springframework.util.StringUtils;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.InputStream;
+import java.util.*;
+
 /**
  * 读取properties文件和yml文件工具类
- * 
- * @author ALI
  *
+ * @author ALI
  */
 public class ReadConfigUtils {
 
     public static void main(String[] s) {
         Properties p = ReadConfigUtils.getProperties("library.properties");
         Map<String, Object> y0 = ReadConfigUtils.getYaml("application.yml");
-        Map<String, Object> y = (y0.get("spring.profiles.active") == null) ? y0
-                : ReadConfigUtils.getYaml("application-" + y0.get("spring.profiles.active") + ".yml");
+        Map<String, Object> y = (y0.get("spring.profiles.active") == null) ? y0 : ReadConfigUtils.getYaml(
+                "application-" + y0.get("spring.profiles.active") + ".yml");
         System.out.println(p);
         System.out.println(y);
     }
 
     /**
      * 获取properties文件
-     * 
+     *
      * @param fileName
      * @return
      */
@@ -48,7 +43,7 @@ public class ReadConfigUtils {
 
     /**
      * 获取yml文件
-     * 
+     *
      * @param fileName
      * @return
      */
@@ -70,7 +65,7 @@ public class ReadConfigUtils {
 
     /**
      * yml样式转properties样式
-     * 
+     *
      * @param result
      * @param source
      * @param path

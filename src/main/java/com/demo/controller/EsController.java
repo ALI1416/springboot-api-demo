@@ -1,8 +1,8 @@
 package com.demo.controller;
 
-import java.util.List;
-import java.util.Map;
-
+import com.demo.entity.po.User;
+import com.demo.entity.pojo.Result;
+import com.demo.util.EsUtils;
 import org.elasticsearch.action.delete.DeleteResponse;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.index.IndexResponse;
@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.entity.po.User;
-import com.demo.entity.pojo.Result;
-import com.demo.util.EsUtils;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <h1>ElasticSearch api</h1>
@@ -151,10 +150,10 @@ public class EsController {
         String field = "account";
         QueryBuilder queryBuilder = QueryBuilders.matchQuery(field, value);
         HighlightBuilder highlightBuilder = new HighlightBuilder().field(field)// 匹配字段
-        // .requireFieldMatch(false)// 匹配所有字段
-        // .preTags("<span style='color:red'>")// 内容前缀
-        // .postTags("</span>")// 内容后缀
-        ;
+                // .requireFieldMatch(false)// 匹配所有字段
+                // .preTags("<span style='color:red'>")// 内容前缀
+                // .postTags("</span>")// 内容后缀
+                ;
         SearchResponse searchResponse = EsUtils.search(index, queryBuilder, highlightBuilder, 1, 10, null);
         return Result.o(EsUtils.extractHighlightResult(searchResponse));
     }

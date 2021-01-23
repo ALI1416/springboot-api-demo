@@ -2,7 +2,6 @@ package com.demo.util;
 
 import com.demo.property.Ip2RegionProperty;
 import com.demo.util.pojo.IpInfo;
-
 import org.lionsoul.ip2region.DataBlock;
 import org.lionsoul.ip2region.DbConfig;
 import org.lionsoul.ip2region.DbSearcher;
@@ -22,6 +21,16 @@ import java.util.regex.Pattern;
  **/
 @Component
 public class IpUtils {
+
+    /**
+     * IP地址正则表达式
+     */
+    private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]" +
+            "|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
+    /**
+     * ip2region搜索实例
+     */
+    private static DbSearcher ip2regionSearcher = null;
 
     public static void main(String[] args) {
         String ip = "202.108.22.5";
@@ -44,16 +53,6 @@ public class IpUtils {
         ip2RegionInitial();
         System.out.println(getIpInfo("157.122.178.42"));
     }
-
-    /**
-     * IP地址正则表达式
-     */
-    private final static String IP_PATTERN = "^((?:(?:25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(?:25[0-5]" +
-            "|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))))$";
-    /**
-     * ip2region搜索实例
-     */
-    private static DbSearcher ip2regionSearcher = null;
 
     /**
      * 初始化DbSearcher实例

@@ -1,7 +1,6 @@
 package com.demo.util;
 
 import com.demo.util.pojo.UserAgentInfo;
-
 import eu.bitwalker.useragentutils.UserAgent;
 
 /**
@@ -18,7 +17,7 @@ public class UserAgentUtils {
 
     /**
      * 获取UserAgent信息
-     * 
+     *
      * @param userAgentString userAgentString
      */
     public static UserAgentInfo getUserAgentInfo(String userAgentString) {

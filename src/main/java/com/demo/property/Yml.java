@@ -24,7 +24,7 @@ public class Yml {
 
     @Autowired
     private Yml(MyYml myYml, MailAppYml mailAppYml, AnsjAppYml ansjAppYml, Ip2RegionAppYml ip2RegionAppYml,
-            IdAppYml idAppYml) {
+                IdAppYml idAppYml) {
         Yml.myYml = myYml;
         Yml.mailAppYml = mailAppYml;
         Yml.ansjAppYml = ansjAppYml;

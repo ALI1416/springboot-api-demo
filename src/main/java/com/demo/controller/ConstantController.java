@@ -1,13 +1,12 @@
 package com.demo.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.constant.Constant;
 import com.demo.property.MailProperty;
 import com.demo.property.MyProperty;
 import com.demo.tool.Log;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <h1>常量api</h1>

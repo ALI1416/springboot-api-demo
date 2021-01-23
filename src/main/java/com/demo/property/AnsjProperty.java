@@ -13,16 +13,6 @@ package com.demo.property;
 public class AnsjProperty {
 
     private static final LibraryProperties LIBRARY = Properties.libraryProperties;
-    private static final AnsjAppYml ANSJ = Yml.ansjAppYml;
-
-    /**
-     * 自定义词典文件在本项目中resources文件夹下的路径
-     */
-    public static final String DEFAULT_RESOURCE_PATH = ANSJ.getDefaultResourcePath();
-    /**
-     * 歧义词典文件在本项目中resources文件夹下的路径
-     */
-    public static final String AMBIGUITY_RESOURCE_PATH = ANSJ.getAmbiguityResourcePath();
     /**
      * 自定义词典文件引用路径(本机绝对地址)
      */
@@ -31,5 +21,14 @@ public class AnsjProperty {
      * 歧义词典文件引用路径(本机绝对地址)
      */
     public static final String AMBIGUITY_REFERENCE_PATH = LIBRARY.getAmbiguity();
+    private static final AnsjAppYml ANSJ = Yml.ansjAppYml;
+    /**
+     * 自定义词典文件在本项目中resources文件夹下的路径
+     */
+    public static final String DEFAULT_RESOURCE_PATH = ANSJ.getDefaultResourcePath();
+    /**
+     * 歧义词典文件在本项目中resources文件夹下的路径
+     */
+    public static final String AMBIGUITY_RESOURCE_PATH = ANSJ.getAmbiguityResourcePath();
 
 }

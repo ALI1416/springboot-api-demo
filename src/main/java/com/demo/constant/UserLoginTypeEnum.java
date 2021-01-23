@@ -35,7 +35,7 @@ public enum UserLoginTypeEnum {
 
     /**
      * 构造函数
-     * 
+     *
      * @param type 类型码
      */
     UserLoginTypeEnum(int type) {

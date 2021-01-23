@@ -20,6 +20,15 @@ import java.util.zip.CRC32;
  **/
 public class EncoderUtils {
 
+    /**
+     * UTF8字符集编码
+     */
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
+    /**
+     * base62字母表，不要手动修改
+     */
+    private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
     public static void main(String[] args) {
         String rawPassword = "admin";
         System.out.println(rawPassword);
@@ -55,16 +64,6 @@ public class EncoderUtils {
         System.out.println(base62DecoderPassword);
 
     }
-
-    /**
-     * UTF8字符集编码
-     */
-    private final static Charset UTF8 = StandardCharsets.UTF_8;
-
-    /**
-     * base62字母表，不要手动修改
-     */
-    private final static String BASE62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
     /**
      * MD5加密

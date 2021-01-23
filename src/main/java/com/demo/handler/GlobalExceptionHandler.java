@@ -1,7 +1,8 @@
 package com.demo.handler;
 
-import java.io.IOException;
-
+import com.demo.constant.ResultCodeEnum;
+import com.demo.entity.pojo.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
@@ -10,10 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.pojo.Result;
-
-import lombok.extern.slf4j.Slf4j;
+import java.io.IOException;
 
 /**
  * <h1>全局异常处理</h1>
@@ -60,8 +58,8 @@ public class GlobalExceptionHandler {
      * @see org.springframework.http.converter.HttpMessageNotReadableException
      */
     @Order(1)
-    @ExceptionHandler({ IllegalStateException.class, IllegalArgumentException.class,
-            MethodArgumentTypeMismatchException.class, BindException.class, HttpMessageNotReadableException.class })
+    @ExceptionHandler({IllegalStateException.class, IllegalArgumentException.class,
+            MethodArgumentTypeMismatchException.class, BindException.class, HttpMessageNotReadableException.class})
     public Result paramErrorHandler(Exception e) {
         System.out.println("paramErrorHandler");
         log.error("参数错误", e);
@@ -75,7 +73,7 @@ public class GlobalExceptionHandler {
      * @see org.springframework.web.HttpRequestMethodNotSupportedException
      */
     @Order(1)
-    @ExceptionHandler({ HttpRequestMethodNotSupportedException.class })
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public Result notSupportedHandler(Exception e) {
         System.out.println("notSupportedHandler");
         log.error("方法Method不支持", e);

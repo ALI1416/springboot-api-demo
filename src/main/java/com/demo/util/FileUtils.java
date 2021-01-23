@@ -19,6 +19,11 @@ import java.nio.charset.StandardCharsets;
  **/
 public class FileUtils {
 
+    /**
+     * UTF8字符集编码
+     */
+    private static final Charset UTF8 = StandardCharsets.UTF_8;
+
     public static void main(String[] args) {
         // resource2String
         System.out.println("resource2String");
@@ -103,11 +108,6 @@ public class FileUtils {
         System.out.println("file2String");
         System.out.println(file2String(filePath4));
     }
-
-    /**
-     * UTF8字符集编码
-     */
-    private static final Charset UTF8 = StandardCharsets.UTF_8;
 
     /**
      * 加载资源文件到InputStream

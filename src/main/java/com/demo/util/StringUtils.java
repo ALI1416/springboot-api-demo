@@ -21,12 +21,6 @@ import java.util.UUID;
 @Component
 public class StringUtils {
 
-    public static void main(String[] args) {
-        System.out.println(getRandom(BASE64_ALPHABET, 100));
-        System.out.println(getAnsj("`1234567890-=[]\\;',./~!@#$%^&*()_+{}|:\"<>?广西壮族自治区桂林市七星区桂林航天工业学院南校区"));
-        System.out.println(getMask("123456"));
-    }
-
     /**
      * 数字:{@value}
      */
@@ -59,11 +53,16 @@ public class StringUtils {
      * 64进制:{@value}
      */
     public final static String BASE64_ALPHABET = NUMBER + ALL_LETTER + "+/";
-
     /**
      * 随机数实例
      */
     private final static Random RANDOM = new Random();
+
+    public static void main(String[] args) {
+        System.out.println(getRandom(BASE64_ALPHABET, 100));
+        System.out.println(getAnsj("`1234567890-=[]\\;',./~!@#$%^&*()_+{}|:\"<>?广西壮族自治区桂林市七星区桂林航天工业学院南校区"));
+        System.out.println(getMask("123456"));
+    }
 
     /**
      * 获取随机字符串

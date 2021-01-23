@@ -1,16 +1,15 @@
 package com.demo.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.CaptchaTypeEnum;
 import com.demo.util.AuthUtils;
 import com.wf.captcha.SpecCaptcha;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <h1>验证码api</h1>
@@ -34,7 +33,7 @@ public class CaptchaController {
      * @param type     验证码类型
      */
     @Auth(skipLogin = true)
-    @PostMapping(value = { "", "/" })
+    @PostMapping(value = {"", "/"})
     public void index(HttpServletRequest request, HttpServletResponse response, Integer type) throws Exception {
         if (type == null) {
             return;

@@ -31,7 +31,7 @@ public enum ThirdLoginTypeEnum {
 
     /**
      * 构造函数
-     * 
+     *
      * @param type 类型码
      */
     ThirdLoginTypeEnum(int type) {

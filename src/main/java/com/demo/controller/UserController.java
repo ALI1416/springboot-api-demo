@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
- * <h1>User api</h1>
+ * <h1>用户api</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -205,7 +205,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 修改用户信息(只能修改account,name,gender,year,profile,comment)
+     * 修改个人信息(只能修改account,name,gender,year,profile,comment)
      */
     @Auth
     @PostMapping("/changeInfo")
@@ -229,8 +229,7 @@ public class UserController extends BaseController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         Long id = AuthUtils.getUserId(request);

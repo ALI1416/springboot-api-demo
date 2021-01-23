@@ -14,6 +14,32 @@
 		)
 	</insert>
 
+	<select id="existUniqueKey" parameterType="AdminVo" resultType="Boolean">
+		SELECT
+		IFNULL((SELECT true FROM admin WHERE
+		<if test="id != null">
+			id=#{id}
+		</if>
+		<if test="account != null">
+			account=#{account}
+		</if>
+		),false)
+	</select>
+
+	<select id="findByUniqueKey" parameterType="AdminVo" resultType="AdminVo">
+		SELECT
+		<include refid="col"/>
+		FROM
+		admin
+		WHERE
+		<if test="id != null">
+			id=#{id}
+		</if>
+		<if test="account != null">
+			account=#{account}
+		</if>
+	</select>
+
 	<update id="updateById" parameterType="AdminVo">
 		UPDATE admin
 		<set>

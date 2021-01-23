@@ -1,9 +1,9 @@
 package com.demo.tool;
 
-import java.util.Locale;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 /**
  * <h1>日志</h1>

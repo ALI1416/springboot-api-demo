@@ -17,9 +17,19 @@ import java.util.List;
 public interface AdminDao {
 
     /**
-     * 插入(需id,account,pwd,name)
+     * 新增(需id,account,pwd,name)
      */
     int insert(AdminVo admin);
+
+    /**
+     * 存在一个唯一键(需其一id,account)
+     */
+    boolean existUniqueKey(AdminVo admin);
+
+    /**
+     * 查询一个唯一键(需其一id,account)
+     */
+    AdminVo findByUniqueKey(AdminVo admin);
 
     /**
      * 更新(需id,updateId;改不了id,createId,createTime,updateTime,version)

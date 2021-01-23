@@ -158,6 +158,77 @@ import java.util.Date;
  */
 public class DateUtils {
 
+    /**
+     * 1秒={@value}毫秒
+     */
+    public final static int MILLS_OF_SECOND = 1000;
+    /**
+     * 1分钟={@value}秒
+     */
+    public final static int SECOND_OF_MINUTE = 60;
+    /**
+     * 1小时={@value}分钟
+     */
+    public final static int MINUTE_OF_HOUR = 60;
+    /**
+     * 1天={@value}小时
+     */
+    public final static int HOUR_OF_DAY = 24;
+    /**
+     * 1月={@value}天(近似)
+     */
+    public final static int DAY_OF_MONTH = 30;
+    /**
+     * 1年={@value}天(近似)
+     */
+    public final static int DAY_OF_YEAR = 365;
+    /**
+     * 1年={@value}月
+     */
+    public final static int MONTH_OF_YEAR = 12;
+    /**
+     * 1分钟={@value}毫秒
+     */
+    public final static int MILLS_OF_MINUTE = MILLS_OF_SECOND * SECOND_OF_MINUTE;
+    /**
+     * 1小时={@value}毫秒
+     */
+    public final static int MILLS_OF_HOUR = MILLS_OF_MINUTE * MINUTE_OF_HOUR;
+    /**
+     * 1天={@value}毫秒
+     */
+    public final static int MILLS_OF_DAY = MILLS_OF_HOUR * HOUR_OF_DAY;
+    /**
+     * 1月={@value}毫秒(近似)
+     *
+     * @see #DAY_OF_MONTH
+     */
+    public final static long MILLS_OF_MONTH = (long) MILLS_OF_DAY * DAY_OF_MONTH;
+    /**
+     * 1年={@value}毫秒(近似)
+     *
+     * @see #DAY_OF_YEAR
+     */
+    public final static long MILLS_OF_YEAR = (long) MILLS_OF_DAY * DAY_OF_YEAR;
+    /**
+     * 1天的间隔={@value}毫秒
+     *
+     * @see #MILLS_OF_DAY
+     */
+    public final static long INTERVAL_DAY = MILLS_OF_DAY - 1;
+    /**
+     * 格式化：日期+时间{@value}
+     */
+    public final static String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
+    /**
+     * 格式化：日期{@value}
+     */
+    public final static String FORMAT_DATE = "yyyy-MM-dd";
+    /**
+     * 格式化：时间{@value}
+     */
+    public final static String FORMAT_TIME = "HH:mm:ss";
+
     public static void main(String[] args) {
         long timestamp = getTimestamp() + MILLS_OF_DAY + MILLS_OF_HOUR;
         System.out.println("timestamp");
@@ -241,80 +312,6 @@ public class DateUtils {
         // ThreadPool.execute(test1);
         // ThreadPool.execute(test2);
     }
-
-    /**
-     * 1秒={@value}毫秒
-     */
-    public final static int MILLS_OF_SECOND = 1000;
-    /**
-     * 1分钟={@value}秒
-     */
-    public final static int SECOND_OF_MINUTE = 60;
-    /**
-     * 1小时={@value}分钟
-     */
-    public final static int MINUTE_OF_HOUR = 60;
-    /**
-     * 1天={@value}小时
-     */
-    public final static int HOUR_OF_DAY = 24;
-    /**
-     * 1月={@value}天(近似)
-     */
-    public final static int DAY_OF_MONTH = 30;
-    /**
-     * 1年={@value}天(近似)
-     */
-    public final static int DAY_OF_YEAR = 365;
-    /**
-     * 1年={@value}月
-     */
-    public final static int MONTH_OF_YEAR = 12;
-
-    /**
-     * 1分钟={@value}毫秒
-     */
-    public final static int MILLS_OF_MINUTE = MILLS_OF_SECOND * SECOND_OF_MINUTE;
-    /**
-     * 1小时={@value}毫秒
-     */
-    public final static int MILLS_OF_HOUR = MILLS_OF_MINUTE * MINUTE_OF_HOUR;
-    /**
-     * 1天={@value}毫秒
-     */
-    public final static int MILLS_OF_DAY = MILLS_OF_HOUR * HOUR_OF_DAY;
-    /**
-     * 1月={@value}毫秒(近似)
-     *
-     * @see #DAY_OF_MONTH
-     */
-    public final static long MILLS_OF_MONTH = (long) MILLS_OF_DAY * DAY_OF_MONTH;
-    /**
-     * 1年={@value}毫秒(近似)
-     *
-     * @see #DAY_OF_YEAR
-     */
-    public final static long MILLS_OF_YEAR = (long) MILLS_OF_DAY * DAY_OF_YEAR;
-
-    /**
-     * 1天的间隔={@value}毫秒
-     *
-     * @see #MILLS_OF_DAY
-     */
-    public final static long INTERVAL_DAY = MILLS_OF_DAY - 1;
-
-    /**
-     * 格式化：日期+时间{@value}
-     */
-    public final static String FORMAT_DATETIME = "yyyy-MM-dd HH:mm:ss";
-    /**
-     * 格式化：日期{@value}
-     */
-    public final static String FORMAT_DATE = "yyyy-MM-dd";
-    /**
-     * 格式化：时间{@value}
-     */
-    public final static String FORMAT_TIME = "HH:mm:ss";
 
     /**
      * 获取当前时间戳

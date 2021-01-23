@@ -1,11 +1,10 @@
 package com.demo.controller;
 
+import com.demo.tool.Log;
+import com.demo.tool.ThreadPool;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.demo.tool.Log;
-import com.demo.tool.ThreadPool;
 
 /**
  * <h1>日志api</h1>

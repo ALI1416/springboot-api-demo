@@ -16,6 +16,25 @@ import java.util.concurrent.atomic.AtomicLong;
  **/
 public class Clock {
 
+    /**
+     * 系统时钟实例
+     */
+    private static final Clock INSTANCE = new Clock();
+    /**
+     * 现在时间戳(原子长整形，防止多线程异常)
+     */
+    private final AtomicLong now = new AtomicLong(System.currentTimeMillis());
+    /**
+     * 每1毫秒更新一次时间戳
+     */
+    private Clock() {
+        Executors.newSingleThreadScheduledExecutor(runnable -> {
+            Thread thread = new Thread(runnable, "SystemClock");
+            thread.setDaemon(true);
+            return thread;
+        }).scheduleAtFixedRate(() -> now.set(System.currentTimeMillis()), 1, 1, TimeUnit.MILLISECONDS);
+    }
+
     public static void main(String[] args) {
         int count = 100000000;
 
@@ -47,29 +66,9 @@ public class Clock {
     }
 
     /**
-     * 现在时间戳(原子长整形，防止多线程异常)
-     */
-    private final AtomicLong now = new AtomicLong(System.currentTimeMillis());
-    /**
-     * 系统时钟实例
-     */
-    private static final Clock INSTANCE = new Clock();
-
-    /**
      * 获取当前时间戳
      */
     public static long now() {
         return INSTANCE.now.get();
-    }
-
-    /**
-     * 每1毫秒更新一次时间戳
-     */
-    private Clock() {
-        Executors.newSingleThreadScheduledExecutor(runnable -> {
-            Thread thread = new Thread(runnable, "SystemClock");
-            thread.setDaemon(true);
-            return thread;
-        }).scheduleAtFixedRate(() -> now.set(System.currentTimeMillis()), 1, 1, TimeUnit.MILLISECONDS);
     }
 }

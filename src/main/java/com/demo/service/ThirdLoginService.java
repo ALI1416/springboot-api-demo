@@ -1,14 +1,5 @@
 package com.demo.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
 import com.alibaba.fastjson.JSON;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
@@ -19,8 +10,14 @@ import com.demo.entity.vo.UserVo;
 import com.demo.tool.Id;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <h1>第三方登录服务</h1>

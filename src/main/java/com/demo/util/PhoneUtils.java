@@ -15,14 +15,14 @@ import me.ihxq.projects.pna.PhoneNumberLookup;
  **/
 public class PhoneUtils {
 
-    public static void main(String[] args) {
-        System.out.println(getPhoneInfo("18754710000"));
-    }
-
     /**
      * PhoneNumberLookup实例
      */
     private final static PhoneNumberLookup PHONE_NUMBER_LOOKUP = new PhoneNumberLookup();
+
+    public static void main(String[] args) {
+        System.out.println(getPhoneInfo("18754710000"));
+    }
 
     /**
      * 获取手机号码信息

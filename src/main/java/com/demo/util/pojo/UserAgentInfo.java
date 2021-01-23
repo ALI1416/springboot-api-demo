@@ -40,19 +40,16 @@ public class UserAgentInfo {
 
     /**
      * 构造函数
-     * 
+     *
      * @param userAgent userAgent
      */
     public UserAgentInfo(UserAgent userAgent) {
         this.operatingSystemName = "Unknown".equals(userAgent.getOperatingSystem().getName()) //
-                ? ""
-                : userAgent.getOperatingSystem().getName();
+                ? "" : userAgent.getOperatingSystem().getName();
         this.browserName = "Unknown".equals(userAgent.getBrowser().getName()) //
-                ? ""
-                : userAgent.getBrowser().getName();
+                ? "" : userAgent.getBrowser().getName();
         this.deviceTypeName = "Unknown".equals(userAgent.getOperatingSystem().getDeviceType().getName()) //
-                ? ""
-                : userAgent.getOperatingSystem().getDeviceType().getName();
+                ? "" : userAgent.getOperatingSystem().getDeviceType().getName();
     }
 
 }

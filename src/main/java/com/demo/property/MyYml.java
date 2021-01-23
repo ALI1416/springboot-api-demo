@@ -1,13 +1,12 @@
 package com.demo.property;
 
+import com.demo.entity.po.User;
+import com.demo.tool.PropertySourceLoadYamlFactory;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.unit.DataSize;
-
-import com.demo.entity.po.User;
-import com.demo.tool.PropertySourceLoadYamlFactory;
 
 import java.time.Duration;
 import java.util.List;

@@ -1,8 +1,7 @@
 package com.demo.util;
 
-import java.net.InetAddress;
-
 import javax.servlet.http.HttpServletRequest;
+import java.net.InetAddress;
 
 /**
  * <h1>客户端信息工具</h1>
@@ -51,7 +50,7 @@ public class ClientInfoUtils {
 
     /**
      * 获取UserAgent
-     * 
+     *
      * @param request HttpServletRequest
      */
     public static String getUserAgent(HttpServletRequest request) {

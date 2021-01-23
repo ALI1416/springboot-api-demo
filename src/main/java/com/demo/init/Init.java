@@ -19,9 +19,9 @@ public class Init {
 
     public static void init() {
         log.info("初始化开始...");
-//        AnsjInit.init();
+        //        AnsjInit.init();
         Ip2RegionInit.init();
-//        phoneNumberLookupInit();
+        //        phoneNumberLookupInit();
         idInit();
         log.info("初始化结束。");
     }

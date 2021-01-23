@@ -57,6 +57,7 @@ public class EncodingDetect {
     public static String[] nicename;
     // Names of charsets as used in charset parameter of HTML Meta tag
     public static String[] htmlname;
+    public boolean debug;
     // Frequency tables to hold the GB, Big5, and EUC-TW character
     // frequencies
     int[][] GBFreq;
@@ -66,7 +67,6 @@ public class EncodingDetect {
     int[][] EUC_TWFreq;
     int[][] KRFreq;
     int[][] JPFreq;
-    public boolean debug;
 
     public EncodingDetect() {
         javaname = new String[TOTALTYPES];

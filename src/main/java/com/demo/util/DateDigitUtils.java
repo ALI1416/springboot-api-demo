@@ -18,6 +18,11 @@ import java.util.Calendar;
  */
 public class DateDigitUtils {
 
+    /**
+     * 1天的间隔={@value}单位
+     */
+    public final static long INTERVAL_DAY = 235959999;
+
     public static void main(String[] args) {
         long timestamp = getTimestamp() + 10000000000000L;
         System.out.println("timestamp");
@@ -103,11 +108,6 @@ public class DateDigitUtils {
         System.out.println(complement("20190102030405006"));
         System.out.println(complement("201901020304050067"));
     }
-
-    /**
-     * 1天的间隔={@value}单位
-     */
-    public final static long INTERVAL_DAY = 235959999;
 
     /**
      * 获取yyyyMMddHHmmssSSS形式时间戳的原始时间戳

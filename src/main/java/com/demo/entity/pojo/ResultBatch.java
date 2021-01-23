@@ -1,11 +1,10 @@
 package com.demo.entity.pojo;
 
+import com.demo.entity.BaseEntity;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.demo.entity.BaseEntity;
-
-import lombok.Getter;
 
 /**
  * <h1>批量返回结果实体</h1>
@@ -20,22 +19,6 @@ import lombok.Getter;
 @Getter
 public class ResultBatch<T> extends BaseEntity {
 
-    /**
-     * 成功(全部都为true)
-     */
-    private boolean ok = true;
-    /**
-     * 全部的个数
-     */
-    private int total = 0;
-    /**
-     * 为true的个数
-     */
-    private int totalTrue = 0;
-    /**
-     * 为false的个数
-     */
-    private int totalFalse = 0;
     /**
      * 为true的列表
      */
@@ -52,6 +35,22 @@ public class ResultBatch<T> extends BaseEntity {
      * 为false的列表的状态信息
      */
     private final List<String> listFalseMsg = new ArrayList<>();
+    /**
+     * 成功(全部都为true)
+     */
+    private boolean ok = true;
+    /**
+     * 全部的个数
+     */
+    private int total = 0;
+    /**
+     * 为true的个数
+     */
+    private int totalTrue = 0;
+    /**
+     * 为false的个数
+     */
+    private int totalFalse = 0;
 
     /**
      * 新增一个为true的对象

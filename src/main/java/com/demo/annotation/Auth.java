@@ -3,12 +3,12 @@ package com.demo.annotation;
 import java.lang.annotation.*;
 
 /**
- * <h1>权限认证注解</h1>
+ * <h1>权限验证注解</h1>
  *
  * <p>
  * 此注解@Auth可以放到类上或方法上<br>
  * 默认需要login权限，可以使用skipLogin = true来跳过<br>
- * 使用skip = true来跳过普通权限<br>
+ * 使用skip = true来跳过所有的权限验证<br>
  * 注解到方法上，会覆类上的值<br>
  * </p>
  * <p>
@@ -55,7 +55,7 @@ import java.lang.annotation.*;
 public @interface Auth {
 
     /**
-     * 不进行普通权限验证
+     * 不进行权限验证
      */
     boolean skip() default false;
 

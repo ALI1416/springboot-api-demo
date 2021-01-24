@@ -13,21 +13,20 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 
 /**
- * <h1>权限验证注解拦截器</h1>
+ * <h1>api角色验证注解拦截器</h1>
  *
  * <p>
- * createDate 2020/12/05 20:05:23
+ * createDate 2021/01/24 15:06:56
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class AuthInterceptor implements HandlerInterceptor {
+public class RoleInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
-                             @NonNull Object handler) throws IOException {
-        System.out.println("AuthInterceptor"+request.getRequestURI());
+            @NonNull Object handler) throws IOException {
         if (handler instanceof HandlerMethod) {
             // 获取方法
             Method method = ((HandlerMethod) handler).getMethod();
@@ -92,14 +91,13 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(@NonNull HttpServletRequest httpServletRequest,
-                           @NonNull HttpServletResponse httpServletResponse, @NonNull Object object,
-                           ModelAndView modelAndView) {
+            @NonNull HttpServletResponse httpServletResponse, @NonNull Object object, ModelAndView modelAndView) {
 
     }
 
     @Override
     public void afterCompletion(@NonNull HttpServletRequest httpServletRequest,
-                                @NonNull HttpServletResponse httpServletResponse, @NonNull Object object, Exception e) {
+            @NonNull HttpServletResponse httpServletResponse, @NonNull Object object, Exception e) {
 
     }
 }

@@ -73,7 +73,7 @@ public class AdminService extends BaseService {
     }
 
     /**
-     * 新增用户(需id,account,pwd,name)
+     * 新增用户(需id,account,pwd,createId)
      */
     @Transactional
     public Result insert(HttpServletRequest request, AdminVo admin) {

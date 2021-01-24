@@ -76,11 +76,8 @@ public class UserController extends BaseController {
         if (userService.existAccount(user.getAccount())) {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
-        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        if (isEmpty(user.getName())) {
-            user.setName(user.getAccount());
-        }
         user.setId(Id.next());
+        user.setPwd(EncoderUtils.bCrypt(user.getPwd()));
         return userService.register(request, user);
     }
 
@@ -205,7 +202,25 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 修改个人信息(只能修改account,name,gender,year,profile,comment)
+     * 修改账号(需account)
+     */
+    @Auth
+    @PostMapping("/changeAccount")
+    public Result changeAccount(@RequestBody UserVo user) {
+        // 用户已存在
+        if (userService.existAccount(user.getAccount())) {
+            return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
+        }
+        Long id = AuthUtils.getUserId(request);
+        UserVo u = new UserVo();
+        u.setId(id);
+        u.setUpdateId(id);
+        u.setAccount(user.getAccount());
+        return userService.changeInfo(u);
+    }
+
+    /**
+     * 修改个人信息(只能修改name,gender,year,profile,comment)
      */
     @Auth
     @PostMapping("/changeInfo")
@@ -214,7 +229,6 @@ public class UserController extends BaseController {
         UserVo u = new UserVo();
         u.setId(id);
         u.setUpdateId(id);
-        u.setAccount(user.getAccount());
         u.setName(user.getName());
         u.setGender(user.getGender());
         u.setYear(user.getYear());
@@ -229,7 +243,8 @@ public class UserController extends BaseController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
+        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32
+                || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         Long id = AuthUtils.getUserId(request);
@@ -284,7 +299,7 @@ public class UserController extends BaseController {
     }
 
     /**
-     * 查看用户信息
+     * 查看个人信息
      */
     @Auth
     @PostMapping("/showInfo")

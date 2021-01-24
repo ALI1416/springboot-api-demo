@@ -1,6 +1,8 @@
 package com.demo.config;
 
 import com.demo.annotation.AuthInterceptor;
+import com.demo.annotation.RoleInterceptor;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -19,10 +21,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     /**
-     * 拦截所有路径，去权限认证
+     * 添加拦截器
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(new RoleInterceptor()).addPathPatterns("/**");
     }
 }

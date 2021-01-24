@@ -9,16 +9,16 @@ import com.demo.util.StringUtils;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * <h1>权限验证注解实现</h1>
+ * <h1>api角色验证注解实现</h1>
  *
  * <p>
- * createDate 2020/12/06 11:45:48
+ * createDate 2021/01/24 15:06:45
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class AuthImpl {
+public class RoleImpl {
 
     /**
      * 普通权限

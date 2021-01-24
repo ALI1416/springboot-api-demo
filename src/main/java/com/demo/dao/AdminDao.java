@@ -17,7 +17,7 @@ import java.util.List;
 public interface AdminDao {
 
     /**
-     * 新增(需id,account,pwd,name)
+     * 新增(需id,account,pwd,createId)
      */
     int insert(AdminVo admin);
 

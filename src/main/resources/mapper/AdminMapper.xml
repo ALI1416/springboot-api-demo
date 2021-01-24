@@ -8,9 +8,9 @@
 	<insert id="insert" parameterType="AdminVo">
 		INSERT
 		admin(
-		id,account,pwd,name
+		id,account,pwd,name,create_id,update_id
 		)VALUES(
-		#{id},#{account},#{pwd},#{name}
+		#{id},#{account},#{pwd},#{account},#{createId},#{createId}
 		)
 	</insert>
 

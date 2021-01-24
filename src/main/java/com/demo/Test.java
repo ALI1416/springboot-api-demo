@@ -126,9 +126,6 @@ public class Test {
         System.out.println(tree);
         List<RoleApiTreeVo> bb = tree2ExpandedList(tree);
         System.out.println(bb);
-
-        System.out.println(EncoderUtils.bCrypt("63a9f0ea7bb98050796b649e85481845"));
-
     }
 
     /**

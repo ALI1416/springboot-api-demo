@@ -68,10 +68,10 @@ public class AdminController extends BaseController {
 
     /**
      * 登录(需account,pwd)<br>
-     * 默认账号：root<br>
-     * 默认密码：root<br>
-     * 默认密码MD5后：63a9f0ea7bb98050796b649e85481845<br>
-     * 默认密码hash加盐后：$2a$10$oaxOObZpObwG08QFfKYzou1RBPmlHxhgc6iNdLqmbqi8TfdC8ApRS
+     * 默认账号：admin<br>
+     * 默认密码：admin<br>
+     * 默认密码MD5后：21232f297a57a5a743894a0e4a801fc3<br>
+     * 默认密码hash加盐后：$2a$10$Jna0eHkLJ6X8XFDoOZq4QufchuF442kUzHVFTPS3gWvwWNTdSPrUu
      */
     @Auth(skipLogin = true)
     @PostMapping("/login")

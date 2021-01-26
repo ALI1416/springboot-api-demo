@@ -32,7 +32,8 @@
 		)
 	</insert>
 
-	<select id="existUniqueKey" parameterType="UserVo" resultType="Boolean">
+	<select id="existUniqueKey" parameterType="UserVo"
+		resultType="Boolean">
 		SELECT
 		IFNULL((SELECT true FROM user WHERE
 		<if test="id != null">
@@ -50,9 +51,10 @@
 		),false)
 	</select>
 
-	<select id="findByUniqueKey" parameterType="UserVo" resultType="UserVo">
+	<select id="findByUniqueKey" parameterType="UserVo"
+		resultType="UserVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		WHERE
@@ -103,10 +105,7 @@
 			<if test="qqName != null">
 				qq_name=#{qqName},
 			</if>
-			<if test="isDelete != null">
-				is_delete=#{isDelete},
-			</if>
-			update_id=#{updateId},
+			update_id=0,
 			update_time=CURRENT_TIMESTAMP,
 			version=version+1,
 		</set>
@@ -114,9 +113,24 @@
 		id=#{id}
 	</update>
 
-	<select id="findExact" parameterType="UserVo" resultType="UserVo">
+	<update id="deleteById" parameterType="UserVo">
+		UPDATE user
+		SET
+		account=#{id},
+		email=#{id},
+		qq_openid=#{id},
+		is_delete=1,
+		update_id=0,
+		update_time=CURRENT_TIMESTAMP,
+		version=version+1,
+		WHERE
+		id=#{id}
+	</update>
+
+	<select id="findExact" parameterType="UserVo"
+		resultType="UserVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -143,7 +157,7 @@
 
 	<select id="find" parameterType="UserVo" resultType="UserVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>
@@ -151,11 +165,11 @@
 				and id=#{id}
 			</if>
 			<if test="account != null and account != ''">
-				<bind name="account1" value="'%'+ account +'%'"/>
+				<bind name="account1" value="'%'+ account +'%'" />
 				and account like #{account1}
 			</if>
 			<if test="name != null and name != ''">
-				<bind name="name1" value="'%'+ name +'%'"/>
+				<bind name="name1" value="'%'+ name +'%'" />
 				and name like #{name1}
 			</if>
 			<if test="gender != null">
@@ -163,7 +177,7 @@
 			</if>
 			<choose>
 				<!-- 忽略 -->
-				<when test="year == null and yearEnd == null"/>
+				<when test="year == null and yearEnd == null" />
 				<!-- 首尾不会同时为null。首尾相等时，根据Not是否为null决定==和!=。 -->
 				<!-- 等于 -->
 				<when test="year == yearEnd and yearNot == null">

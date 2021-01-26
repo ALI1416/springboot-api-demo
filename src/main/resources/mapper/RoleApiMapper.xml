@@ -14,7 +14,8 @@
 		)
 	</insert>
 
-	<select id="existUniqueKey" parameterType="RoleApiVo" resultType="Boolean">
+	<select id="existUniqueKey" parameterType="RoleApiVo"
+		resultType="Boolean">
 		SELECT
 		IFNULL((SELECT true FROM role_api WHERE
 		<if test="id != null">
@@ -26,9 +27,10 @@
 		),false)
 	</select>
 
-	<select id="findByUniqueKey" parameterType="RoleApiVo" resultType="RoleApiVo">
+	<select id="findByUniqueKey" parameterType="RoleApiVo"
+		resultType="RoleApiVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		role_api
 		WHERE
@@ -42,24 +44,31 @@
 
 	<update id="updateById" parameterType="RoleApiVo">
 		UPDATE role_api
-		<set>
-			<if test="name != null">
-				name=#{name},
-			</if>
-			<if test="isDelete != null">
-				is_delete=#{isDelete},
-			</if>
-			update_id=#{updateId},
-			update_time=CURRENT_TIMESTAMP,
-			version=version+1,
-		</set>
+		SET
+		name=#{name},
+		update_id=#{updateId},
+		update_time=CURRENT_TIMESTAMP,
+		version=version+1,
 		WHERE
 		id=#{id}
 	</update>
 
-	<select id="findExact" parameterType="RoleApiVo" resultType="RoleApiVo">
+	<update id="deleteById" parameterType="RoleApiVo">
+		UPDATE role_api
+		SET
+		name=#{id},
+		is_delete=1,
+		update_id=#{updateId},
+		update_time=CURRENT_TIMESTAMP,
+		version=version+1,
+		WHERE
+		id=#{id}
+	</update>
+
+	<select id="findExact" parameterType="RoleApiVo"
+		resultType="RoleApiVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>

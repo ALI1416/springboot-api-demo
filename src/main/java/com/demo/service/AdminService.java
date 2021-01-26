@@ -113,14 +113,12 @@ public class AdminService extends BaseService {
     }
 
     /**
-     * 修改信息(需id,updateId;改不了id,pwd,isDelete,createId,createTime,updateTime,version)
+     * 修改信息(需id;至少一个account,pwd,name,comment)
      */
     @Transactional
     public Result changeInfo(AdminVo admin) {
         // 不能修改密码
         admin.setPwd(null);
-        // 不能删除用户
-        admin.setIsDelete(null);
         // 更新失败
         if (!tryif(() -> adminDao.updateById(admin))) {
             return Result.e();
@@ -131,7 +129,7 @@ public class AdminService extends BaseService {
     }
 
     /**
-     * 修改密码(需id,updateId,pwd,newPwd)
+     * 修改密码(需id,pwd,newPwd)
      */
     @Transactional
     public Result changePwd(AdminVo admin) {
@@ -144,7 +142,6 @@ public class AdminService extends BaseService {
         AdminVo u2 = new AdminVo();
         u2.setId(admin.getId());
         u2.setPwd(EncoderUtils.bCrypt(admin.getNewPwd()));
-        u2.setUpdateId(admin.getUpdateId());
         // 更新失败
         if (!tryif(() -> adminDao.updateById(u2))) {
             return Result.e();
@@ -153,5 +150,20 @@ public class AdminService extends BaseService {
         recordBak(() -> adminBakDao.insert(new AdminBak(u2.getId())));
         return Result.o();
     }
+    
+    /**
+     * 删除(需id)
+     */
+    @Transactional
+    public Result deleteById(AdminVo admin) {
+        // 删除失败
+        if (!tryif(() -> adminDao.deleteById(admin))) {
+            return Result.e();
+        }
+        // 备份
+        recordBak(() -> adminBakDao.insert(new AdminBak(admin.getId())));
+        return Result.o(admin);
+    }
+
 
 }

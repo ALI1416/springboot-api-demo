@@ -48,7 +48,7 @@ public class RoleApiService extends BaseService {
     }
 
     /**
-     * 查找用户，通过id
+     * 查找，通过id
      */
     public RoleApiVo findById(long id) {
         RoleApiVo roleApi = new RoleApiVo();
@@ -57,7 +57,7 @@ public class RoleApiService extends BaseService {
     }
 
     /**
-     * 查找用户，通过name
+     * 查找，通过name
      */
     public RoleApiVo findByName(String name) {
         RoleApiVo roleApi = new RoleApiVo();
@@ -66,7 +66,7 @@ public class RoleApiService extends BaseService {
     }
 
     /**
-     * 新增用户(需id,name,createId)
+     * 新增(需id,name,createId)
      */
     @Transactional
     public Result insert(HttpServletRequest request, RoleApiVo roleApi) {
@@ -80,14 +80,26 @@ public class RoleApiService extends BaseService {
     }
 
     /**
-     * 修改信息(需id,updateId;改不了id,pwd,isDelete,createId,createTime,updateTime,version)
+     * 修改信息(需id,updateId,name)
      */
     @Transactional
-    public Result change(RoleApiVo roleApi) {
-        // 不能删除用户
-        roleApi.setIsDelete(null);
+    public Result changeInfo(RoleApiVo roleApi) {
         // 更新失败
         if (!tryif(() -> roleApiDao.updateById(roleApi))) {
+            return Result.e();
+        }
+        // 备份
+        recordBak(() -> roleApiBakDao.insert(new RoleApiBak(roleApi.getId())));
+        return Result.o(roleApi);
+    }
+    
+    /**
+     * 删除(需id,updateId)
+     */
+    @Transactional
+    public Result deleteById(RoleApiVo roleApi) {
+        // 删除失败
+        if (!tryif(() -> roleApiDao.deleteById(roleApi))) {
             return Result.e();
         }
         // 备份

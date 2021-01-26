@@ -14,7 +14,8 @@
 		)
 	</insert>
 
-	<select id="existUniqueKey" parameterType="AdminVo" resultType="Boolean">
+	<select id="existUniqueKey" parameterType="AdminVo"
+		resultType="Boolean">
 		SELECT
 		IFNULL((SELECT true FROM admin WHERE
 		<if test="id != null">
@@ -26,9 +27,10 @@
 		),false)
 	</select>
 
-	<select id="findByUniqueKey" parameterType="AdminVo" resultType="AdminVo">
+	<select id="findByUniqueKey" parameterType="AdminVo"
+		resultType="AdminVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		admin
 		WHERE
@@ -55,15 +57,19 @@
 			<if test="comment != null">
 				comment=#{comment},
 			</if>
-			<if test="roleApiId != null">
-				role_api_id=#{roleApiId},
-			</if>
-			<if test="roleWebId != null">
-				role_web_id=#{roleWebId},
-			</if>
-			<if test="isDelete != null">
-				is_delete=#{isDelete},
-			</if>
+			update_id=0,
+			update_time=CURRENT_TIMESTAMP,
+			version=version+1,
+		</set>
+		WHERE
+		id=#{id}
+	</update>
+
+	<update id="deleteById" parameterType="AdminVo">
+		UPDATE admin
+		<set>
+			account=#{id},
+			is_delete=1,
 			update_id=#{updateId},
 			update_time=CURRENT_TIMESTAMP,
 			version=version+1,
@@ -72,9 +78,10 @@
 		id=#{id}
 	</update>
 
-	<select id="findExact" parameterType="AdminVo" resultType="AdminVo">
+	<select id="findExact" parameterType="AdminVo"
+		resultType="AdminVo">
 		SELECT
-		<include refid="col"/>
+		<include refid="col" />
 		FROM
 		user
 		<where>

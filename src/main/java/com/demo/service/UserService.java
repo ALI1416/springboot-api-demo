@@ -80,7 +80,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 查找用户，通过id
+     * 查找，通过id
      */
     public UserVo findById(long id) {
         UserVo user = new UserVo();
@@ -89,7 +89,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 查找用户，通过account
+     * 查找，通过account
      */
     public UserVo findByAccount(String account) {
         UserVo user = new UserVo();
@@ -98,7 +98,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 查找用户，通过email
+     * 查找，通过email
      */
     public UserVo findByEmail(String email) {
         UserVo user = new UserVo();
@@ -107,7 +107,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 查找用户，通过qqOpenid
+     * 查找，通过qqOpenid
      */
     public UserVo findByQqOpenid(String qqOpenid) {
         UserVo user = new UserVo();
@@ -230,25 +230,21 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 修改信息(需id,updateId;改不了id,pwd,isDelete,createId,createTime,updateTime,version)
+     * 修改信息(需id;至少一个account,pwd,name,gender,year,profile,comment,email,qqOpenid,qqName)
      */
     @Transactional
     public Result changeInfo(UserVo user) {
-        // 不能修改密码
-        user.setPwd(null);
-        // 不能删除用户
-        user.setIsDelete(null);
         // 更新失败
         if (!tryif(() -> userDao.updateById(user))) {
             return Result.e();
         }
         // 备份
         recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
-        return Result.o(user);
+        return Result.o();
     }
 
     /**
-     * 修改密码(需id,updateId,pwd,newPwd)
+     * 修改密码(需id,pwd,newPwd)
      */
     @Transactional
     public Result changePwd(UserVo user) {
@@ -261,7 +257,6 @@ public class UserService extends BaseService {
         UserVo u2 = new UserVo();
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
-        u2.setUpdateId(user.getUpdateId());
         // 更新失败
         if (!tryif(() -> userDao.updateById(u2))) {
             return Result.e();
@@ -272,7 +267,7 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 设置密码(需id,updateId,pwd)
+     * 设置密码(需id,pwd)
      */
     @Transactional
     public Result setPwd(UserVo user) {
@@ -285,7 +280,6 @@ public class UserService extends BaseService {
         UserVo u2 = new UserVo();
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getPwd()));
-        u2.setUpdateId(user.getUpdateId());
         // 更新失败
         if (!tryif(() -> userDao.updateById(u2))) {
             return Result.e();
@@ -296,21 +290,16 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 注销账号(需id,updateId)
+     * 删除(需id)
      */
     @Transactional
     public Result deleteById(UserVo user) {
-        UserVo u = new UserVo();
-        u.setAccount(String.valueOf(user.getId()));
-        u.setEmail(String.valueOf(user.getId()));
-        u.setQqOpenid(String.valueOf(user.getId()));
-        u.setIsDelete(1);
-        // 注销失败
-        if (!tryif(() -> userDao.updateById(u))) {
+        // 删除失败
+        if (!tryif(() -> userDao.deleteById(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(u.getId())));
+        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
         return Result.o();
     }
 

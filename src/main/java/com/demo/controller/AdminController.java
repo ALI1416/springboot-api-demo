@@ -101,7 +101,7 @@ public class AdminController extends BaseController {
     }
 
     /**
-     * 修改个人信息(只能修改name,comment)
+     * 修改个人信息(只能修改account,name,comment)
      */
     @Auth
     @PostMapping("/changeInfo")
@@ -109,7 +109,7 @@ public class AdminController extends BaseController {
         Long id = AuthUtils.getUserId(request);
         AdminVo u = new AdminVo();
         u.setId(id);
-        u.setUpdateId(id);
+        u.setAccount(admin.getAccount());
         u.setName(admin.getName());
         u.setComment(admin.getComment());
         return adminService.changeInfo(u);
@@ -127,7 +127,6 @@ public class AdminController extends BaseController {
         }
         Long id = AuthUtils.getUserId(request);
         admin.setId(id);
-        admin.setUpdateId(id);
         return adminService.changePwd(admin);
     }
 
@@ -140,6 +139,15 @@ public class AdminController extends BaseController {
         String sign = AuthUtils.getSign(request);
         RedisUtils.delete(sign);
         return Result.o();
+    }
+
+    /**
+     * 删除(需id)
+     */
+    @Auth
+    @PostMapping("/delete")
+    public Result delete(@RequestBody AdminVo admin) {
+        return adminService.deleteById(admin);
     }
 
     /**

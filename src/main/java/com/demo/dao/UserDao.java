@@ -27,24 +27,29 @@ public interface UserDao {
     int registerByEmail(UserVo user);
 
     /**
-     * 注册，通过qq(需id,qqOpenid)
+     * 注册，通过qq(需id,name,gender,year,qqName,qqOpenid)
      */
     int registerByQq(UserVo user);
 
     /**
-     * 存在一个唯一键(需其一id,account,email,qqOpenid)
+     * 存在一个唯一键(仅一个id,account,email,qqOpenid)
      */
     boolean existUniqueKey(UserVo user);
 
     /**
-     * 查询一个唯一键(需其一id,account,email,qqOpenid)
+     * 查询一个唯一键(仅一个id,account,email,qqOpenid)
      */
     UserVo findByUniqueKey(UserVo user);
 
     /**
-     * 更新(需id,updateId;改不了id,createId,createTime,updateTime,version)
+     * 更新(需id;至少一个account,pwd,name,gender,year,profile,comment,email,qqOpenid,qqName)
      */
     int updateById(UserVo user);
+
+    /**
+     * 删除(需id)
+     */
+    int deleteById(UserVo user);
 
     /**
      * 精确查询

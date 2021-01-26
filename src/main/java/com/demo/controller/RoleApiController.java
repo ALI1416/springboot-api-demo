@@ -45,7 +45,7 @@ public class RoleApiController extends BaseController {
     }
 
     /**
-     * 新增用户(需name)
+     * 新增(需name)
      */
     @Auth
     @PostMapping("/insert")
@@ -53,7 +53,7 @@ public class RoleApiController extends BaseController {
         if (isEmpty(roleApi.getName())) {
             return Result.e1();
         }
-        // 用户已存在
+        // 已存在
         if (roleApiService.existName(roleApi.getName())) {
             return Result.e(ResultCodeEnum.USER_HAS_EXISTED);
         }
@@ -63,21 +63,29 @@ public class RoleApiController extends BaseController {
     }
 
     /**
-     * 修改个人信息(只能修改name,comment)
+     * 修改信息(需id,name)
      */
     @Auth
-    @PostMapping("/change")
-    public Result change(@RequestBody RoleApiVo roleApi) {
+    @PostMapping("/changeInfo")
+    public Result changeInfo(@RequestBody RoleApiVo roleApi) {
         Long id = AuthUtils.getUserId(request);
-        RoleApiVo u = new RoleApiVo();
-        u.setId(id);
-        u.setUpdateId(id);
-        u.setName(roleApi.getName());
-        return roleApiService.change(u);
+        roleApi.setUpdateId(id);
+        return roleApiService.changeInfo(roleApi);
+    }
+    
+    /**
+     * 删除(需id)
+     */
+    @Auth
+    @PostMapping("/delete")
+    public Result delete(@RequestBody RoleApiVo roleApi) {
+        Long id = AuthUtils.getUserId(request);
+        roleApi.setUpdateId(id);
+        return roleApiService.changeInfo(roleApi);
     }
 
     /**
-     * 查看个人信息
+     * 查看信息
      */
     @Auth
     @PostMapping("/showInfo")

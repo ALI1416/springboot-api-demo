@@ -41,8 +41,8 @@ CREATE TABLE `admin`  (
   INDEX `update_id`(`update_id`) USING BTREE,
   INDEX `role_api_id`(`role_api_id`) USING BTREE,
   CONSTRAINT `admin_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `admin_ibfk_role_api_id` FOREIGN KEY (`role_api_id`) REFERENCES `role_api` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `admin_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `admin_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `admin_ibfk_role_api_id` FOREIGN KEY (`role_api_id`) REFERENCES `role_api` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '管理员表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -117,9 +117,9 @@ CREATE TABLE `role_api`  (
   `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `version` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '版本',
   PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `name`(`name`) USING BTREE,
   INDEX `create_id`(`create_id`) USING BTREE,
   INDEX `update_id`(`update_id`) USING BTREE,
-  UNIQUE INDEX `name`(`name`) USING BTREE,
   CONSTRAINT `role_api_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `role_api_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'api角色表' ROW_FORMAT = Dynamic;
@@ -171,9 +171,9 @@ CREATE TABLE `role_api_ref`  (
   INDEX `role_id`(`role_id`) USING BTREE,
   INDEX `tree_id`(`tree_id`) USING BTREE,
   CONSTRAINT `role_api_ref_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `role_api_ref_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `role_api_ref_ibfk_role_id` FOREIGN KEY (`role_id`) REFERENCES `role_api` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `role_api_ref_ibfk_tree_id` FOREIGN KEY (`tree_id`) REFERENCES `role_api_tree` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `role_api_ref_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `role_api_ref_ibfk_tree_id` FOREIGN KEY (`tree_id`) REFERENCES `role_api_tree` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'api角色引用表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -220,13 +220,13 @@ CREATE TABLE `role_api_tree`  (
   `update_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间',
   `version` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '版本',
   PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `parent_id_path`(`parent_id`, `path`) USING BTREE,
   INDEX `create_id`(`create_id`) USING BTREE,
   INDEX `update_id`(`update_id`) USING BTREE,
   INDEX `parent_id`(`parent_id`) USING BTREE,
-  UNIQUE INDEX `parent_id_path`(`parent_id`, `path`) USING BTREE,
   CONSTRAINT `role_api_tree_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `role_api_tree_ibfk_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `role_api_tree` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `role_api_tree_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `role_api_tree_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `role_api_tree_ibfk_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `role_api_tree` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = 'api角色树表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -294,12 +294,12 @@ CREATE TABLE `user`  (
   `version` int(0) UNSIGNED NOT NULL DEFAULT 0 COMMENT '版本',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `account`(`account`) USING BTREE,
-  UNIQUE INDEX `qq_openid`(`qq_openid`) USING BTREE,
   UNIQUE INDEX `email`(`email`) USING BTREE,
+  UNIQUE INDEX `qq_openid`(`qq_openid`) USING BTREE,
   INDEX `create_id`(`create_id`) USING BTREE,
   INDEX `update_id`(`update_id`) USING BTREE,
-  CONSTRAINT `user_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `user_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  CONSTRAINT `user_ibfk_create_id` FOREIGN KEY (`create_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `user_ibfk_update_id` FOREIGN KEY (`update_id`) REFERENCES `admin` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------

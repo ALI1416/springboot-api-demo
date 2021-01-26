@@ -151,7 +151,6 @@ public class UserController extends BaseController {
         UserVo u = new UserVo();
         u.setId(id);
         u.setEmail(user.getEmail());
-        u.setUpdateId(id);
         return userService.changeInfo(u);
     }
 
@@ -174,7 +173,6 @@ public class UserController extends BaseController {
         UserVo u = new UserVo();
         u.setId(id);
         u.setEmail(String.valueOf(id));
-        u.setUpdateId(id);
         return userService.changeInfo(u);
     }
 
@@ -197,7 +195,6 @@ public class UserController extends BaseController {
         UserVo u = new UserVo();
         u.setId(id);
         u.setQqOpenid(String.valueOf(id));
-        u.setUpdateId(id);
         return userService.changeInfo(u);
     }
 
@@ -214,7 +211,6 @@ public class UserController extends BaseController {
         Long id = AuthUtils.getUserId(request);
         UserVo u = new UserVo();
         u.setId(id);
-        u.setUpdateId(id);
         u.setAccount(user.getAccount());
         return userService.changeInfo(u);
     }
@@ -228,7 +224,6 @@ public class UserController extends BaseController {
         Long id = AuthUtils.getUserId(request);
         UserVo u = new UserVo();
         u.setId(id);
-        u.setUpdateId(id);
         u.setName(user.getName());
         u.setGender(user.getGender());
         u.setYear(user.getYear());
@@ -249,7 +244,6 @@ public class UserController extends BaseController {
         }
         Long id = AuthUtils.getUserId(request);
         user.setId(id);
-        user.setUpdateId(id);
         return userService.changePwd(user);
     }
 
@@ -264,7 +258,6 @@ public class UserController extends BaseController {
         }
         Long id = AuthUtils.getUserId(request);
         user.setId(id);
-        user.setUpdateId(id);
         return userService.setPwd(user);
     }
 
@@ -288,7 +281,6 @@ public class UserController extends BaseController {
         Long id = AuthUtils.getUserId(request);
         UserVo user = new UserVo();
         user.setId(id);
-        user.setUpdateId(id);
         Result result = userService.deleteById(user);
         // 注销失败
         if (!result.isOk()) {
@@ -311,7 +303,6 @@ public class UserController extends BaseController {
         } else {
             user.setPwd(null);
         }
-        user.setQqOpenid(null);
         return Result.o(user);
     }
 

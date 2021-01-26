@@ -22,19 +22,24 @@ public interface AdminDao {
     int insert(AdminVo admin);
 
     /**
-     * 存在一个唯一键(需其一id,account)
+     * 存在一个唯一键(仅一个id,account)
      */
     boolean existUniqueKey(AdminVo admin);
 
     /**
-     * 查询一个唯一键(需其一id,account)
+     * 查询一个唯一键(仅一个id,account)
      */
     AdminVo findByUniqueKey(AdminVo admin);
 
     /**
-     * 更新(需id,updateId;改不了id,createId,createTime,updateTime,version)
+     * 更新(需id;至少一个account,pwd,name,comment)
      */
     int updateById(AdminVo admin);
+    
+    /**
+     * 删除(需id)
+     */
+    int deleteById(AdminVo admin);
 
     /**
      * 精确查询

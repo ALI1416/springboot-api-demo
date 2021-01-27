@@ -43,6 +43,8 @@ public class UserService extends BaseService {
     private final UserBakDao userBakDao;
     private final UserLoginLogDao userLoginLogDao;
 
+    /* ==================== 通用方法 ==================== */
+//region
     /**
      * 存在id
      */
@@ -98,6 +100,13 @@ public class UserService extends BaseService {
     }
 
     /**
+     * 查找account列表(需account)
+     */
+    public List<UserVo> findByAccountList(List<String> accounts) {
+        return userDao.findByAccountList(accounts);
+    }
+
+    /**
      * 查找，通过email
      */
     public UserVo findByEmail(String email) {
@@ -114,7 +123,10 @@ public class UserService extends BaseService {
         user.setQqOpenid(qqOpenid);
         return userDao.findByUniqueKey(user);
     }
+//endregion
 
+    /* ==================== 客户端方法 ==================== */
+//region
     /**
      * 注册，通过account(需id,account,pwd)
      */
@@ -235,7 +247,7 @@ public class UserService extends BaseService {
     @Transactional
     public Result changeInfo(UserVo user) {
         // 更新失败
-        if (!tryif(() -> userDao.updateById(user))) {
+        if (!tryif(() -> userDao.update(user))) {
             return Result.e();
         }
         // 备份
@@ -258,7 +270,7 @@ public class UserService extends BaseService {
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
         // 更新失败
-        if (!tryif(() -> userDao.updateById(u2))) {
+        if (!tryif(() -> userDao.update(u2))) {
             return Result.e();
         }
         // 备份
@@ -281,7 +293,7 @@ public class UserService extends BaseService {
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getPwd()));
         // 更新失败
-        if (!tryif(() -> userDao.updateById(u2))) {
+        if (!tryif(() -> userDao.update(u2))) {
             return Result.e();
         }
         // 备份
@@ -293,9 +305,27 @@ public class UserService extends BaseService {
      * 删除(需id)
      */
     @Transactional
-    public Result deleteById(UserVo user) {
+    public Result deleteById(long id) {
         // 删除失败
-        if (!tryif(() -> userDao.deleteById(user))) {
+        if (!tryif(() -> userDao.deleteById(id))) {
+            return Result.e();
+        }
+        // 备份
+        recordBak(() -> userBakDao.insert(new UserBak(id)));
+        return Result.o();
+    }
+//endregion
+
+    /* ==================== 管理端方法 ==================== */
+//region
+
+    /**
+     * 插入(需id,account,pwd,createId)
+     */
+    @Transactional
+    public Result insert(UserVo user) {
+        // 插入
+        if (!tryif(() -> userDao.insert(user))) {
             return Result.e();
         }
         // 备份
@@ -304,14 +334,14 @@ public class UserService extends BaseService {
     }
 
     /**
-     * 批量插入
+     * 批量插入(需id,account,pwd,createId)
      */
     @Transactional
-    public Result batchRegister(List<UserVo> list) {
+    public Result batchInsert(List<UserVo> users) {
         ResultBatch<UserVo> result = new ResultBatch<>();
-        for (UserVo user : list) {
+        for (UserVo user : users) {
             // 插入
-            boolean ok = tryif(false, () -> userDao.register(user));
+            boolean ok = tryif(false, () -> userDao.insert(user));
             user.setPwd(null);
             if (ok) {
                 result.add(true, user, "成功");
@@ -339,5 +369,5 @@ public class UserService extends BaseService {
         PageInfo<UserVo> pageInfo = pagination(user, () -> userDao.find(user));
         return Result.o(pageInfo);
     }
-
+//endregion
 }

@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.common;
 
 import com.demo.constant.UserLoginTypeEnum;
 import com.demo.dao.UserLoginLogDao;

@@ -34,12 +34,12 @@ public interface AdminDao {
     /**
      * 更新(需id;至少一个account,pwd,name,comment)
      */
-    int updateById(AdminVo admin);
-    
+    int update(AdminVo admin);
+
     /**
      * 删除(需id)
      */
-    int deleteById(AdminVo admin);
+    int deleteById(long id);
 
     /**
      * 精确查询

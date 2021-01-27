@@ -1,5 +1,12 @@
 package com.demo;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.RoleApiTree;
@@ -8,16 +15,8 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.RoleApiTreeVo;
 import com.demo.entity.vo.UserVo;
-import com.demo.util.EncoderUtils;
 
 import eu.bitwalker.useragentutils.UserAgent;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * <h1>测试类</h1>
@@ -68,6 +67,12 @@ public class Test {
         batchResult.add(false, u, "aaa");
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
+        ResultBatch<User> batchResult2 = new ResultBatch<>();
+        batchResult2.add(u, "false");
+        batchResult2.add(true, u, "qwqw");
+        batchResult2.add(false, u, "fet");
+        ResultBatch<User> batchResultMerge = ResultBatch.merge(batchResult, batchResult2);
+        System.out.println(batchResultMerge);
 
         // google chrome
         // String userAgentString = "Mozilla/5.0 (Windows NT 10.0; Win64; x64)

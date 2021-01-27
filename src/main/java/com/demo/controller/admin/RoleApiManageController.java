@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
+import com.demo.controller.BaseController;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
 import com.demo.service.RoleApiService;
@@ -29,9 +30,9 @@ import lombok.AllArgsConstructor;
  * @since 1.0.0
  **/
 @RestController
-@RequestMapping("roleApi")
+@RequestMapping("admin/roleApi")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class RoleApiController extends BaseController {
+public class RoleApiManageController extends BaseController {
 
     private final HttpServletRequest request;
     private final RoleApiService roleApiService;

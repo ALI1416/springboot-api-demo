@@ -1,10 +1,18 @@
-package com.demo.controller;
+package com.demo.controller.user;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
+import com.demo.controller.BaseController;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
-import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
 import com.demo.tool.Id;
@@ -12,16 +20,8 @@ import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+import lombok.AllArgsConstructor;
 
 /**
  * <h1>用户api</h1>
@@ -279,9 +279,7 @@ public class UserController extends BaseController {
     @PostMapping("/delete")
     public Result delete() {
         Long id = AuthUtils.getUserId(request);
-        UserVo user = new UserVo();
-        user.setId(id);
-        Result result = userService.deleteById(user);
+        Result result = userService.deleteById(id);
         // 注销失败
         if (!result.isOk()) {
             return result;
@@ -304,54 +302,6 @@ public class UserController extends BaseController {
             user.setPwd(null);
         }
         return Result.o(user);
-    }
-
-    /**
-     * 批量插入(明文密码)
-     */
-    @PostMapping("/batchRegister")
-    public Result batchRegister(@RequestBody List<UserVo> user) {
-        // 数据完整性检查
-        ResultBatch<UserVo> result = new ResultBatch<>();
-        for (UserVo u : user) {
-            if (isEmpty(u.getAccount())) {
-                result.add(false, u, "账号不能为空");
-            } else {
-                result.add(u);
-            }
-        }
-        // 数据不完整
-        if (!result.isOk()) {
-            return Result.e(ResultCodeEnum.BATCH_OPERATION_ERROR, result);
-        }
-        // 补充缺失信息
-        for (UserVo u : user) {
-            if (isEmpty(u.getPwd())) {
-                u.setPwd(u.getAccount());
-            }
-            u.setPwd(EncoderUtils.bCrypt(EncoderUtils.md5(u.getPwd())));
-            if (isEmpty(u.getName())) {
-                u.setName(u.getAccount());
-            }
-            u.setId(Id.next());
-        }
-        return userService.batchRegister(user);
-    }
-
-    /**
-     * 精确查询
-     */
-    @PostMapping("/findExact")
-    public Result findExact(@RequestBody @Nullable UserVo user) {
-        return userService.findExact(user);
-    }
-
-    /**
-     * 模糊查询
-     */
-    @PostMapping("/find")
-    public Result find(@RequestBody @Nullable UserVo user) {
-        return userService.find(user);
     }
 
 }

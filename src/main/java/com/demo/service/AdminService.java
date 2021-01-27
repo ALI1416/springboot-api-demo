@@ -36,6 +36,8 @@ public class AdminService extends BaseService {
     private final AdminBakDao adminBakDao;
     private final AdminLoginLogDao adminLoginLogDao;
 
+    /* ==================== 通用方法 ==================== */
+//region
     /**
      * 存在id
      */
@@ -71,6 +73,7 @@ public class AdminService extends BaseService {
         admin.setAccount(account);
         return adminDao.findByUniqueKey(admin);
     }
+//endregion
 
     /**
      * 新增用户(需id,account,pwd,createId)
@@ -120,7 +123,7 @@ public class AdminService extends BaseService {
         // 不能修改密码
         admin.setPwd(null);
         // 更新失败
-        if (!tryif(() -> adminDao.updateById(admin))) {
+        if (!tryif(() -> adminDao.update(admin))) {
             return Result.e();
         }
         // 备份
@@ -143,27 +146,26 @@ public class AdminService extends BaseService {
         u2.setId(admin.getId());
         u2.setPwd(EncoderUtils.bCrypt(admin.getNewPwd()));
         // 更新失败
-        if (!tryif(() -> adminDao.updateById(u2))) {
+        if (!tryif(() -> adminDao.update(u2))) {
             return Result.e();
         }
         // 备份
         recordBak(() -> adminBakDao.insert(new AdminBak(u2.getId())));
         return Result.o();
     }
-    
+
     /**
      * 删除(需id)
      */
     @Transactional
-    public Result deleteById(AdminVo admin) {
+    public Result deleteById(Long id) {
         // 删除失败
-        if (!tryif(() -> adminDao.deleteById(admin))) {
+        if (!tryif(() -> adminDao.deleteById(id))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> adminBakDao.insert(new AdminBak(admin.getId())));
-        return Result.o(admin);
+        recordBak(() -> adminBakDao.insert(new AdminBak(id)));
+        return Result.o();
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.user;
 
 import com.demo.annotation.Auth;
 import com.demo.constant.Constant;

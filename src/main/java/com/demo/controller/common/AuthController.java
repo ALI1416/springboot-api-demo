@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.common;
 
 import com.demo.annotation.Auth;
 import com.demo.constant.RedisConstant;

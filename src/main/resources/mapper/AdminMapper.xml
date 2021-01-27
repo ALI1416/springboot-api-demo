@@ -42,7 +42,7 @@
 		</if>
 	</select>
 
-	<update id="updateById" parameterType="AdminVo">
+	<update id="update" parameterType="AdminVo">
 		UPDATE admin
 		<set>
 			<if test="account != null">
@@ -65,7 +65,7 @@
 		id=#{id}
 	</update>
 
-	<update id="deleteById" parameterType="AdminVo">
+	<update id="deleteById" parameterType="Long">
 		UPDATE admin
 		<set>
 			account=#{id},

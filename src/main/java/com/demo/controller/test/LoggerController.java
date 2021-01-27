@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.test;
 
 import com.demo.tool.Log;
 import com.demo.tool.ThreadPool;

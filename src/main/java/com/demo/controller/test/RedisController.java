@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.test;
 
 import com.demo.util.RedisUtils;
 import org.springframework.web.bind.annotation.PostMapping;

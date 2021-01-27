@@ -1,10 +1,11 @@
 package com.demo.entity.pojo;
 
-import com.demo.entity.BaseEntity;
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.demo.entity.BaseEntity;
+
+import lombok.Getter;
 
 /**
  * <h1>批量返回结果实体</h1>
@@ -90,5 +91,28 @@ public class ResultBatch<T> extends BaseEntity {
             this.ok = false;
         }
         this.total += 1;
+    }
+
+    /**
+     * 合并多个ResultBatch
+     * 
+     * @param resultBatchs 多个ResultBatch(需要相同泛型)
+     */
+    @SafeVarargs
+    public static <T> ResultBatch<T> merge(ResultBatch<T>... resultBatchs) {
+        ResultBatch<T> result = new ResultBatch<>();
+        for (ResultBatch<T> resultBatch : resultBatchs) {
+            if (!resultBatch.ok) {
+                result.ok = false;
+            }
+            result.total += resultBatch.total;
+            result.totalTrue += resultBatch.totalTrue;
+            result.totalFalse += resultBatch.totalFalse;
+            result.listTrue.addAll(resultBatch.listTrue);
+            result.listTrueMsg.addAll(resultBatch.listTrueMsg);
+            result.listFalse.addAll(resultBatch.listFalse);
+            result.listFalseMsg.addAll(resultBatch.listFalseMsg);
+        }
+        return result;
     }
 }

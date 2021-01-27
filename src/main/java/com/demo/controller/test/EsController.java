@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.test;
 
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;

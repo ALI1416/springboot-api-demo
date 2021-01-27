@@ -17,6 +17,11 @@ import java.util.List;
 public interface UserDao {
 
     /**
+     * 插入(需id,account,pwd,createId)
+     */
+    int insert(UserVo user);
+
+    /**
      * 注册，通过account(需id,account,pwd)
      */
     int register(UserVo user);
@@ -44,12 +49,17 @@ public interface UserDao {
     /**
      * 更新(需id;至少一个account,pwd,name,gender,year,profile,comment,email,qqOpenid,qqName)
      */
-    int updateById(UserVo user);
+    int update(UserVo user);
 
     /**
      * 删除(需id)
      */
-    int deleteById(UserVo user);
+    int deleteById(long id);
+
+    /**
+     * 查找account列表(需account)
+     */
+    List<UserVo> findByAccountList(List<String> accounts);
 
     /**
      * 精确查询

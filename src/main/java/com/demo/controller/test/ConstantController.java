@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.demo.controller.test;
 
 import com.demo.constant.Constant;
 import com.demo.property.MailProperty;

@@ -5,6 +5,15 @@
 	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,qq_openid,qq_name,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
 
+	<insert id="insert" parameterType="UserVo">
+		INSERT
+		user(
+		id,account,pwd,name,qq_openid,email,create_id,update_id
+		)VALUES(
+		#{id},#{account},#{pwd},#{id},#{id},#{id},#{createId},#{createId}
+		)
+	</insert>
+
 	<insert id="register" parameterType="UserVo">
 		INSERT
 		user(
@@ -72,7 +81,21 @@
 		</if>
 	</select>
 
-	<update id="updateById" parameterType="UserVo">
+	<select id="findByAccountList" parameterType="String"
+		resultType="UserVo">
+		SELECT
+		<include refid="col" />
+		FROM
+		user
+		WHERE
+		account IN
+		<foreach collection="accounts" open="(" close=")"
+			separator="," item="account">
+			#{account}
+		</foreach>
+	</select>
+
+	<update id="update" parameterType="UserVo">
 		UPDATE user
 		<set>
 			<if test="account != null">
@@ -113,7 +136,7 @@
 		id=#{id}
 	</update>
 
-	<update id="deleteById" parameterType="UserVo">
+	<update id="deleteById" parameterType="Long">
 		UPDATE user
 		SET
 		account=#{id},

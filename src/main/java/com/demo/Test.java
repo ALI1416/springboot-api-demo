@@ -13,7 +13,9 @@ import com.demo.entity.po.RoleApiTree;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
+import com.demo.entity.vo.RoleApiRefVo;
 import com.demo.entity.vo.RoleApiTreeVo;
+import com.demo.entity.vo.RoleApiVo;
 import com.demo.entity.vo.UserVo;
 
 import eu.bitwalker.useragentutils.UserAgent;
@@ -61,14 +63,14 @@ public class Test {
         System.out.println(ru);
 
         ResultBatch<User> batchResult = new ResultBatch<>();
-        batchResult.add(u);
+        batchResult.add(true, u, "ok");
         batchResult.add(false, u, "fff");
-        batchResult.add(u);
+        batchResult.add(true, u, "true");
         batchResult.add(false, u, "aaa");
         System.out.println(batchResult);
         System.out.println(batchResult.isOk());
         ResultBatch<User> batchResult2 = new ResultBatch<>();
-        batchResult2.add(u, "false");
+        batchResult2.add(false, u, "false");
         batchResult2.add(true, u, "qwqw");
         batchResult2.add(false, u, "fet");
         ResultBatch<User> batchResultMerge = ResultBatch.merge(batchResult, batchResult2);
@@ -112,25 +114,41 @@ public class Test {
 
         System.out.println(CaptchaTypeEnum.findByType(1));
 
-        List<RoleApiTreeVo> list = new ArrayList<>();
-        list.add(new RoleApiTreeVo(232L, 23L, "232"));
-        list.add(new RoleApiTreeVo(2321L, 232L, "2321"));
-        list.add(new RoleApiTreeVo(2L, 0L, "2"));
-        list.add(new RoleApiTreeVo(0L, 0L, "/api"));
-        list.add(new RoleApiTreeVo(22L, 2L, "22"));
-        list.add(new RoleApiTreeVo(1L, 0L, "1"));
-        list.add(new RoleApiTreeVo(231L, 23L, "232"));
-        list.add(new RoleApiTreeVo(21L, 2L, "21"));
-        list.add(new RoleApiTreeVo(12L, 1L, "12"));
-        list.add(new RoleApiTreeVo(23L, 2L, "23"));
-        list.add(new RoleApiTreeVo(111L, 11L, "111"));
-        list.add(new RoleApiTreeVo(3L, 0L, "3"));
-        list.add(new RoleApiTreeVo(11L, 1L, "11"));
-        System.out.println(list);
-        RoleApiTreeVo tree = list2Tree(list);
+        List<RoleApiTreeVo> roleApiTreeList = new ArrayList<>();
+        roleApiTreeList.add(new RoleApiTreeVo(0L, 0L, "*"));
+        roleApiTreeList.add(new RoleApiTreeVo(1L, 0L, "/api"));
+        roleApiTreeList.add(new RoleApiTreeVo(11L, 1L, "a"));
+        roleApiTreeList.add(new RoleApiTreeVo(12L, 1L, "b"));
+        roleApiTreeList.add(new RoleApiTreeVo(13L, 1L, "c"));
+        roleApiTreeList.add(new RoleApiTreeVo(111L, 11L, "aa"));
+        roleApiTreeList.add(new RoleApiTreeVo(112L, 11L, "ab"));
+        roleApiTreeList.add(new RoleApiTreeVo(113L, 11L, "ac"));
+        roleApiTreeList.add(new RoleApiTreeVo(121L, 12L, "ba"));
+        roleApiTreeList.add(new RoleApiTreeVo(122L, 12L, "bb"));
+        roleApiTreeList.add(new RoleApiTreeVo(131L, 13L, "ca"));
+        roleApiTreeList.add(new RoleApiTreeVo(1111L, 111L, "aaa"));
+        roleApiTreeList.add(new RoleApiTreeVo(1112L, 111L, "aab"));
+        roleApiTreeList.add(new RoleApiTreeVo(1131L, 113L, "aca"));
+        roleApiTreeList.add(new RoleApiTreeVo(1311L, 131L, "caa"));
+
+        System.out.println(roleApiTreeList);
+        RoleApiTreeVo tree = list2Tree(roleApiTreeList);
         System.out.println(tree);
-        List<RoleApiTreeVo> bb = tree2ExpandedList(tree);
-        System.out.println(bb);
+        List<RoleApiTreeVo> expandedList = tree2ExpandedList(tree);
+        System.out.println(expandedList);
+
+        List<RoleApiVo> roleApiList = new ArrayList<>();
+        roleApiList.add(new RoleApiVo(0L, ""));
+        roleApiList.add(new RoleApiVo(1L, "all"));
+        roleApiList.add(new RoleApiVo(2L, "a"));
+        roleApiList.add(new RoleApiVo(3L, "b+ca"));
+        List<RoleApiRefVo> roleApiRefList = new ArrayList<>();
+        roleApiRefList.add(new RoleApiRefVo(0L, 0L, 0L));
+        roleApiRefList.add(new RoleApiRefVo(1L, 1L, 1L));
+        roleApiRefList.add(new RoleApiRefVo(2L, 2L, 11L));
+        roleApiRefList.add(new RoleApiRefVo(3L, 3L, 12L));
+        roleApiRefList.add(new RoleApiRefVo(4L, 3L, 131L));
+
     }
 
     /**
@@ -141,8 +159,8 @@ public class Test {
     public static RoleApiTreeVo list2Tree(List<RoleApiTreeVo> list) {
         // 按parentId分组
         Map<Long, List<RoleApiTreeVo>> map = list.stream().collect(Collectors.groupingBy(RoleApiTreeVo::getParentId));
-        // 找到根节点，id和parentId都为0
-        RoleApiTreeVo tree = map.get(0L).stream().filter(s -> s.getId() == 0L).findFirst().get();
+        // 找到根节点，id为1，parentId为0
+        RoleApiTreeVo tree = map.get(0L).stream().filter(s -> s.getId() == 1L).findFirst().get();
         // 把根节点从map中去除，防止循环嵌套
         map.get(0L).remove(tree);
         // 生成树

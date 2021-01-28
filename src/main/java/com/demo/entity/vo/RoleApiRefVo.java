@@ -2,9 +2,6 @@ package com.demo.entity.vo;
 
 import com.demo.entity.po.RoleApiRef;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * <h1>api角色引用对象</h1>
  *
@@ -15,8 +12,21 @@ import lombok.Setter;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Getter
-@Setter
 public class RoleApiRefVo extends RoleApiRef {
 
+    /**
+     * 构造方法
+     */
+    public RoleApiRefVo() {
+
+    }
+
+    /**
+     * 测试用构造方法
+     */
+    public RoleApiRefVo(Long id, Long roleId, Long treeId) {
+        setId(id);
+        setRoleId(roleId);
+        setTreeId(treeId);
+    }
 }

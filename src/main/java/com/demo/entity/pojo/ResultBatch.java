@@ -54,25 +54,6 @@ public class ResultBatch<T> extends BaseEntity {
     private int totalFalse = 0;
 
     /**
-     * 新增一个为true的对象
-     *
-     * @param t 对象
-     */
-    public void add(T t) {
-        add(true, t, null);
-    }
-
-    /**
-     * 新增一个为false的对象
-     *
-     * @param t   对象
-     * @param msg 状态信息
-     */
-    public void add(T t, String msg) {
-        add(false, t, msg);
-    }
-
-    /**
      * 新增一个对象
      *
      * @param ok  true/false

@@ -1,5 +1,7 @@
 package com.demo.entity.vo;
 
+import java.util.List;
+
 import com.demo.entity.po.RoleApi;
 
 import lombok.Getter;
@@ -18,5 +20,25 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoleApiVo extends RoleApi {
+
+    /**
+     * 解析后的路径
+     */
+    public List<RoleApiVo> path;
+
+    /**
+     * 构造方法
+     */
+    public RoleApiVo() {
+
+    }
+
+    /**
+     * 测试用构造方法
+     */
+    public RoleApiVo(Long id, String name) {
+        setId(id);
+        setName(name);
+    }
 
 }

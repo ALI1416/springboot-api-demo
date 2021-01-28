@@ -60,6 +60,8 @@ dependencies {
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.3.0'
     // fastjson
     implementation 'com.alibaba:fastjson:1.2.75'
+    // easyexcel
+    implementation 'com.alibaba:easyexcel:2.2.7'
     // MDx/SHAx加密算法
     implementation 'commons-codec:commons-codec:1.15'
     // 文件操作

@@ -89,7 +89,7 @@
 		user
 		WHERE
 		account IN
-		<foreach collection="accounts" open="(" close=")"
+		<foreach collection="list" open="(" close=")"
 			separator="," item="account">
 			#{account}
 		</foreach>

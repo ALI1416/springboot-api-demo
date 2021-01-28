@@ -59,7 +59,7 @@ public interface UserDao {
     /**
      * 查找account列表(需account)
      */
-    List<UserVo> findByAccountList(List<String> accounts);
+    List<UserVo> findByAccountList(List<String> accountList);
 
     /**
      * 精确查询

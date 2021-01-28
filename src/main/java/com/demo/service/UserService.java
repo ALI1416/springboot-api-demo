@@ -102,8 +102,8 @@ public class UserService extends BaseService {
     /**
      * 查找account列表(需account)
      */
-    public List<UserVo> findByAccountList(List<String> accounts) {
-        return userDao.findByAccountList(accounts);
+    public List<UserVo> findByAccountList(List<String> accountList) {
+        return userDao.findByAccountList(accountList);
     }
 
     /**
@@ -337,21 +337,19 @@ public class UserService extends BaseService {
      * 批量插入(需id,account,pwd,createId)
      */
     @Transactional
-    public Result batchInsert(List<UserVo> users) {
-        ResultBatch<UserVo> result = new ResultBatch<>();
+    public ResultBatch<String> batchInsert(List<UserVo> users) {
+        ResultBatch<String> result = new ResultBatch<>();
         for (UserVo user : users) {
             // 插入
-            boolean ok = tryif(false, () -> userDao.insert(user));
-            user.setPwd(null);
-            if (ok) {
-                result.add(true, user, "成功");
+            if (tryif(false, () -> userDao.insert(user))) {
+                result.add(true, user.getAccount(), "成功");
                 // 备份
                 recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
             } else {
-                result.add(false, user, "失败");
+                result.add(false, user.getAccount(), "失败");
             }
         }
-        return Result.o(result);
+        return result;
     }
 
     /**

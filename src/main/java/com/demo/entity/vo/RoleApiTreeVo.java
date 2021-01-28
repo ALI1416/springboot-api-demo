@@ -25,6 +25,16 @@ public class RoleApiTreeVo extends RoleApiTree {
      */
     private List<RoleApiTreeVo> childs;
 
+    /**
+     * 构造方法
+     */
+    public RoleApiTreeVo() {
+
+    }
+
+    /**
+     * 测试用构造方法
+     */
     public RoleApiTreeVo(Long id, Long parentId, String path) {
         setId(id);
         setParentId(parentId);

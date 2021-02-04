@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
@@ -12,16 +13,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
-import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.controller.BaseController;
+import com.demo.entity.excel.UserExport;
+import com.demo.entity.excel.UserImport;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
 import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
+import com.demo.util.EeUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RegexUtils;
 
@@ -37,13 +41,14 @@ import lombok.AllArgsConstructor;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@Auth
+//@Auth
 @RestController
 @RequestMapping("admin/user")
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserManageController extends BaseController {
 
     private final HttpServletRequest request;
+    private final HttpServletResponse response;
     private final UserService userService;
 
     /**
@@ -66,10 +71,36 @@ public class UserManageController extends BaseController {
     }
 
     /**
+     * 导出
+     */
+    @PostMapping("exportExcel")
+    public void exportExcel() {
+        EeUtils.download(response, "用户信息", UserExport.class, userService.export(null));
+    }
+
+    /**
+     * 导入模板
+     */
+    @PostMapping("importTemplate")
+    public void importTemplate() {
+        EeUtils.download(response, "导入用户模板", UserImport.class, null);
+    }
+
+    /**
+     * 导入
+     */
+    @PostMapping("importExcel")
+    public Result importExcel(MultipartFile file) {
+        List<UserImport> list = new ArrayList<>();
+        EeUtils.upload(file, UserImport.class, list);
+        return batchInsert(list);
+    }
+
+    /**
      * 批量插入(需account,pwd)
      */
     @PostMapping("/batchInsert")
-    public Result batchInsert(@RequestBody List<UserVo> users) {
+    public Result batchInsert(@RequestBody List<UserImport> users) {
         if (users == null || users.size() == 0) {
             return Result.e1();
         }
@@ -78,9 +109,9 @@ public class UserManageController extends BaseController {
         // 有效的account列表
         List<String> validAccountList = new ArrayList<>();
         // 有效的用户列表
-        List<UserVo> validUserList = new ArrayList<>();
+        List<UserImport> validUserList = new ArrayList<>();
         // 检查数据完整性和是否重复
-        for (UserVo u : users) {
+        for (UserImport u : users) {
             if (isEmpty(u.getAccount()) || !RegexUtils.isAccount(u.getAccount())) {
                 invalidResult.add(false, u.getAccount(), "账号不符合规范");
             } else if (isEmpty(u.getPwd())) {
@@ -99,14 +130,14 @@ public class UserManageController extends BaseController {
         // 查询account是否被注册
         List<UserVo> existUserList = userService.findByAccountList(validAccountList);
         // 未注册用户列表
-        List<UserVo> unregisteredUserList = new ArrayList<>();
+        List<UserImport> unregisteredUserList = new ArrayList<>();
         // 检查用户是否已注册
         if (existUserList.size() == 0) {
             unregisteredUserList = validUserList;
         } else {
             // 如果存在账号被注册，提取出account
             List<String> existAccountList = existUserList.stream().map(UserVo::getAccount).collect(Collectors.toList());
-            for (UserVo u : validUserList) {
+            for (UserImport u : validUserList) {
                 if (existAccountList.contains(u.getAccount())) {
                     invalidResult.add(false, u.getAccount(), "账号已被注册");
                 } else {
@@ -118,15 +149,19 @@ public class UserManageController extends BaseController {
         if (unregisteredUserList.size() == 0) {
             return Result.o(invalidResult);
         }
-        // 补充其他信息
+        // 准备批量插入的用户
+        List<UserVo> batchInsertUserList = new ArrayList<>();
         Long id = AuthUtils.getUserId(request);
-        for (UserVo u : unregisteredUserList) {
-            u.setId(Id.next());
-            u.setPwd(EncoderUtils.bCrypt(u.getPwd()));
-            u.setCreateId(id);
+        for (UserImport u : unregisteredUserList) {
+            UserVo uv = new UserVo();
+            uv.setId(Id.next());
+            uv.setAccount(u.getAccount());
+            uv.setPwd(EncoderUtils.bCrypt(u.getPwd()));
+            uv.setCreateId(id);
+            batchInsertUserList.add(uv);
         }
         // 插入后的返回结果
-        ResultBatch<String> batchInsertResult = userService.batchInsert(unregisteredUserList);
+        ResultBatch<String> batchInsertResult = userService.batchInsert(batchInsertUserList);
         /* 合并返回结果 */
         return Result.o(ResultBatch.merge(invalidResult, batchInsertResult));
     }

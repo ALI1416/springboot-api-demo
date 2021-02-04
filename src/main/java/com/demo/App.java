@@ -32,7 +32,7 @@ import org.springframework.context.ConfigurableApplicationContext;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-@MapperScan("com.demo.dao")
+@MapperScan("com.demo.mapper")
 @SpringBootApplication
 @Slf4j
 public class App {

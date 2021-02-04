@@ -1,10 +1,11 @@
 package com.demo.service;
 
-import com.demo.dao.RoleApiBakDao;
-import com.demo.dao.RoleApiDao;
 import com.demo.entity.po.RoleApiBak;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
+import com.demo.mapper.RoleApiBakMapper;
+import com.demo.mapper.RoleApiMapper;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RoleApiService extends BaseService {
 
-    private final RoleApiDao roleApiDao;
-    private final RoleApiBakDao roleApiBakDao;
+    private final RoleApiMapper roleApiMapper;
+    private final RoleApiBakMapper roleApiBakMapper;
 
     /**
      * 存在id
@@ -35,7 +36,7 @@ public class RoleApiService extends BaseService {
     public boolean existId(long id) {
         RoleApiVo roleApi = new RoleApiVo();
         roleApi.setId(id);
-        return roleApiDao.existUniqueKey(roleApi);
+        return roleApiMapper.existUniqueKey(roleApi);
     }
 
     /**
@@ -44,7 +45,7 @@ public class RoleApiService extends BaseService {
     public boolean existName(String name) {
         RoleApiVo roleApi = new RoleApiVo();
         roleApi.setName(name);
-        return roleApiDao.existUniqueKey(roleApi);
+        return roleApiMapper.existUniqueKey(roleApi);
     }
 
     /**
@@ -53,7 +54,7 @@ public class RoleApiService extends BaseService {
     public RoleApiVo findById(long id) {
         RoleApiVo roleApi = new RoleApiVo();
         roleApi.setId(id);
-        return roleApiDao.findByUniqueKey(roleApi);
+        return roleApiMapper.findByUniqueKey(roleApi);
     }
 
     /**
@@ -62,7 +63,7 @@ public class RoleApiService extends BaseService {
     public RoleApiVo findByName(String name) {
         RoleApiVo roleApi = new RoleApiVo();
         roleApi.setName(name);
-        return roleApiDao.findByUniqueKey(roleApi);
+        return roleApiMapper.findByUniqueKey(roleApi);
     }
 
     /**
@@ -71,11 +72,11 @@ public class RoleApiService extends BaseService {
     @Transactional
     public Result insert(HttpServletRequest request, RoleApiVo roleApi) {
         // 插入失败
-        if (!tryif(() -> roleApiDao.insert(roleApi))) {
+        if (!tryif(() -> roleApiMapper.insert(roleApi))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> roleApiBakDao.insert(new RoleApiBak(roleApi.getId())));
+        recordBak(() -> roleApiBakMapper.insert(new RoleApiBak(roleApi.getId())));
         return Result.o();
     }
 
@@ -85,11 +86,11 @@ public class RoleApiService extends BaseService {
     @Transactional
     public Result changeInfo(RoleApiVo roleApi) {
         // 更新失败
-        if (!tryif(() -> roleApiDao.updateById(roleApi))) {
+        if (!tryif(() -> roleApiMapper.updateById(roleApi))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> roleApiBakDao.insert(new RoleApiBak(roleApi.getId())));
+        recordBak(() -> roleApiBakMapper.insert(new RoleApiBak(roleApi.getId())));
         return Result.o(roleApi);
     }
     
@@ -99,11 +100,11 @@ public class RoleApiService extends BaseService {
     @Transactional
     public Result deleteById(RoleApiVo roleApi) {
         // 删除失败
-        if (!tryif(() -> roleApiDao.deleteById(roleApi))) {
+        if (!tryif(() -> roleApiMapper.deleteById(roleApi))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> roleApiBakDao.insert(new RoleApiBak(roleApi.getId())));
+        recordBak(() -> roleApiBakMapper.insert(new RoleApiBak(roleApi.getId())));
         return Result.o(roleApi);
     }
 

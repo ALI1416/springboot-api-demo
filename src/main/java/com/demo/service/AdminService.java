@@ -1,14 +1,14 @@
 package com.demo.service;
 
 import com.demo.constant.ResultCodeEnum;
-import com.demo.dao.AdminBakDao;
-import com.demo.dao.AdminDao;
-import com.demo.dao.AdminLoginLogDao;
 import com.demo.entity.po.Admin;
 import com.demo.entity.po.AdminBak;
 import com.demo.entity.po.AdminLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.AdminVo;
+import com.demo.mapper.AdminBakMapper;
+import com.demo.mapper.AdminMapper;
+import com.demo.mapper.AdminLoginLogMapper;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import lombok.AllArgsConstructor;
@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class AdminService extends BaseService {
 
-    private final AdminDao adminDao;
-    private final AdminBakDao adminBakDao;
-    private final AdminLoginLogDao adminLoginLogDao;
+    private final AdminMapper adminMapper;
+    private final AdminBakMapper adminBakMapper;
+    private final AdminLoginLogMapper adminLoginLogMapper;
 
     /* ==================== 通用方法 ==================== */
 //region
@@ -44,7 +44,7 @@ public class AdminService extends BaseService {
     public boolean existId(long id) {
         AdminVo admin = new AdminVo();
         admin.setId(id);
-        return adminDao.existUniqueKey(admin);
+        return adminMapper.existUniqueKey(admin);
     }
 
     /**
@@ -53,7 +53,7 @@ public class AdminService extends BaseService {
     public boolean existAccount(String account) {
         AdminVo admin = new AdminVo();
         admin.setAccount(account);
-        return adminDao.existUniqueKey(admin);
+        return adminMapper.existUniqueKey(admin);
     }
 
     /**
@@ -62,7 +62,7 @@ public class AdminService extends BaseService {
     public AdminVo findById(long id) {
         AdminVo admin = new AdminVo();
         admin.setId(id);
-        return adminDao.findByUniqueKey(admin);
+        return adminMapper.findByUniqueKey(admin);
     }
 
     /**
@@ -71,7 +71,7 @@ public class AdminService extends BaseService {
     public AdminVo findByAccount(String account) {
         AdminVo admin = new AdminVo();
         admin.setAccount(account);
-        return adminDao.findByUniqueKey(admin);
+        return adminMapper.findByUniqueKey(admin);
     }
 //endregion
 
@@ -81,11 +81,11 @@ public class AdminService extends BaseService {
     @Transactional
     public Result insert(HttpServletRequest request, AdminVo admin) {
         // 插入失败
-        if (!tryif(() -> adminDao.insert(admin))) {
+        if (!tryif(() -> adminMapper.insert(admin))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> adminBakDao.insert(new AdminBak(admin.getId())));
+        recordBak(() -> adminBakMapper.insert(new AdminBak(admin.getId())));
         return Result.o();
     }
 
@@ -99,16 +99,16 @@ public class AdminService extends BaseService {
         if (u == null || u.getIsDelete() == 1 || !EncoderUtils.bCrypt(admin.getPwd(), u.getPwd())) {
             // 日志(登录失败)
             if (u == null) {
-                recordLog(() -> adminLoginLogDao.insert(//
+                recordLog(() -> adminLoginLogMapper.insert(//
                         new AdminLoginLog(request, null, false)));
             } else {
-                recordLog(() -> adminLoginLogDao.insert(//
+                recordLog(() -> adminLoginLogMapper.insert(//
                         new AdminLoginLog(request, u.getId(), false)));
             }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         // 日志(登录成功)
-        recordLog(() -> adminLoginLogDao.insert(//
+        recordLog(() -> adminLoginLogMapper.insert(//
                 new AdminLoginLog(request, u.getId(), true)));
         // redis放入userId
         AuthUtils.setUserId(request, u.getId());
@@ -123,11 +123,11 @@ public class AdminService extends BaseService {
         // 不能修改密码
         admin.setPwd(null);
         // 更新失败
-        if (!tryif(() -> adminDao.update(admin))) {
+        if (!tryif(() -> adminMapper.update(admin))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> adminBakDao.insert(new AdminBak(admin.getId())));
+        recordBak(() -> adminBakMapper.insert(new AdminBak(admin.getId())));
         return Result.o(admin);
     }
 
@@ -146,11 +146,11 @@ public class AdminService extends BaseService {
         u2.setId(admin.getId());
         u2.setPwd(EncoderUtils.bCrypt(admin.getNewPwd()));
         // 更新失败
-        if (!tryif(() -> adminDao.update(u2))) {
+        if (!tryif(() -> adminMapper.update(u2))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> adminBakDao.insert(new AdminBak(u2.getId())));
+        recordBak(() -> adminBakMapper.insert(new AdminBak(u2.getId())));
         return Result.o();
     }
 
@@ -160,11 +160,11 @@ public class AdminService extends BaseService {
     @Transactional
     public Result deleteById(Long id) {
         // 删除失败
-        if (!tryif(() -> adminDao.deleteById(id))) {
+        if (!tryif(() -> adminMapper.deleteById(id))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> adminBakDao.insert(new AdminBak(id)));
+        recordBak(() -> adminBakMapper.insert(new AdminBak(id)));
         return Result.o();
     }
 

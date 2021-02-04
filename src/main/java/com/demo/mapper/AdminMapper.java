@@ -1,11 +1,11 @@
-package com.demo.dao;
+package com.demo.mapper;
 
 import com.demo.entity.vo.AdminVo;
 
 import java.util.List;
 
 /**
- * <h1>管理员业务逻辑接口</h1>
+ * <h1>管理员Mapper</h1>
  *
  * <p>
  * createDate 2021/01/21 21:46:56
@@ -14,7 +14,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface AdminDao {
+public interface AdminMapper {
 
     /**
      * 新增(需id,account,pwd,createId)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.demo.dao.UserDao">
+<mapper namespace="com.demo.mapper.UserMapper">
 
 	<sql id="col">id,account,pwd,name,gender,year,profile,comment,email,qq_openid,qq_name,is_delete,create_id,create_time,update_id,update_time,version
 	</sql>
@@ -89,8 +89,8 @@
 		user
 		WHERE
 		account IN
-		<foreach collection="list" open="(" close=")"
-			separator="," item="account">
+		<foreach collection="list" open="(" close=")" separator=","
+			item="account">
 			#{account}
 		</foreach>
 	</select>
@@ -235,4 +235,32 @@
 		</where>
 	</select>
 
+	<select id="export" parameterType="UserVo"
+		resultType="UserExport">
+		select
+		u.account,
+		if(u.pwd='','无密码','') as hasPwd,
+		u.name,
+		if(u.gender=0,'女','男') as gender,
+		u.year,
+		u.profile,
+		u.comment,
+		if(u.email=u.id,'',u.email) as email,
+		if(u.qq_openid=u.id,'未绑定','') as bindQq,
+		u.qq_name as qqName,
+		if(u.is_delete=1,'已删除','') as isDelete,
+		if(u.create_id=0,'',a1.name) as createName,
+		u.create_time as createTime,
+		if(u.update_id=0,'',a2.name) as updateName,
+		u.update_time as updateTime,
+		u.version
+		from
+		user as u
+		inner join admin as a1 on
+		u.create_id = a1.id
+		inner join admin as a2 on
+		u.update_id=a2.id
+		order by
+		u.id desc
+	</select>
 </mapper>

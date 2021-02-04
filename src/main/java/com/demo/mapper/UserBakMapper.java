@@ -1,9 +1,9 @@
-package com.demo.dao;
+package com.demo.mapper;
 
 import com.demo.entity.po.UserBak;
 
 /**
- * <h1>用户备份业务逻辑接口</h1>
+ * <h1>用户备份Mapper</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -12,7 +12,7 @@ import com.demo.entity.po.UserBak;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface UserBakDao {
+public interface UserBakMapper {
 
     /**
      * 插入后或更新后备份

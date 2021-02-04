@@ -3,15 +3,16 @@ package com.demo.service;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.constant.UserLoginTypeEnum;
-import com.demo.dao.UserBakDao;
-import com.demo.dao.UserDao;
-import com.demo.dao.UserLoginLogDao;
+import com.demo.entity.excel.UserExport;
 import com.demo.entity.po.User;
 import com.demo.entity.po.UserBak;
 import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
+import com.demo.mapper.UserBakMapper;
+import com.demo.mapper.UserMapper;
+import com.demo.mapper.UserLoginLogMapper;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
@@ -39,9 +40,9 @@ import java.util.List;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class UserService extends BaseService {
 
-    private final UserDao userDao;
-    private final UserBakDao userBakDao;
-    private final UserLoginLogDao userLoginLogDao;
+    private final UserMapper userMapper;
+    private final UserBakMapper userBakMapper;
+    private final UserLoginLogMapper userLoginLogMapper;
 
     /* ==================== 通用方法 ==================== */
 //region
@@ -51,7 +52,7 @@ public class UserService extends BaseService {
     public boolean existId(long id) {
         UserVo user = new UserVo();
         user.setId(id);
-        return userDao.existUniqueKey(user);
+        return userMapper.existUniqueKey(user);
     }
 
     /**
@@ -60,7 +61,7 @@ public class UserService extends BaseService {
     public boolean existAccount(String account) {
         UserVo user = new UserVo();
         user.setAccount(account);
-        return userDao.existUniqueKey(user);
+        return userMapper.existUniqueKey(user);
     }
 
     /**
@@ -69,7 +70,7 @@ public class UserService extends BaseService {
     public boolean existEmail(String email) {
         UserVo user = new UserVo();
         user.setEmail(email);
-        return userDao.existUniqueKey(user);
+        return userMapper.existUniqueKey(user);
     }
 
     /**
@@ -78,7 +79,7 @@ public class UserService extends BaseService {
     public boolean existQqOpenid(String qqOpenid) {
         UserVo user = new UserVo();
         user.setQqOpenid(qqOpenid);
-        return userDao.existUniqueKey(user);
+        return userMapper.existUniqueKey(user);
     }
 
     /**
@@ -87,7 +88,7 @@ public class UserService extends BaseService {
     public UserVo findById(long id) {
         UserVo user = new UserVo();
         user.setId(id);
-        return userDao.findByUniqueKey(user);
+        return userMapper.findByUniqueKey(user);
     }
 
     /**
@@ -96,14 +97,14 @@ public class UserService extends BaseService {
     public UserVo findByAccount(String account) {
         UserVo user = new UserVo();
         user.setAccount(account);
-        return userDao.findByUniqueKey(user);
+        return userMapper.findByUniqueKey(user);
     }
 
     /**
      * 查找account列表(需account)
      */
     public List<UserVo> findByAccountList(List<String> accountList) {
-        return userDao.findByAccountList(accountList);
+        return userMapper.findByAccountList(accountList);
     }
 
     /**
@@ -112,7 +113,7 @@ public class UserService extends BaseService {
     public UserVo findByEmail(String email) {
         UserVo user = new UserVo();
         user.setEmail(email);
-        return userDao.findByUniqueKey(user);
+        return userMapper.findByUniqueKey(user);
     }
 
     /**
@@ -121,7 +122,7 @@ public class UserService extends BaseService {
     public UserVo findByQqOpenid(String qqOpenid) {
         UserVo user = new UserVo();
         user.setQqOpenid(qqOpenid);
-        return userDao.findByUniqueKey(user);
+        return userMapper.findByUniqueKey(user);
     }
 //endregion
 
@@ -133,13 +134,13 @@ public class UserService extends BaseService {
     @Transactional
     public Result register(HttpServletRequest request, UserVo user) {
         // 插入失败
-        if (!tryif(() -> userDao.register(user))) {
+        if (!tryif(() -> userMapper.register(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, user.getId(), UserLoginTypeEnum.ACCOUNT, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
@@ -152,13 +153,13 @@ public class UserService extends BaseService {
     @Transactional
     public Result registerByEmail(HttpServletRequest request, UserVo user) {
         // 插入失败
-        if (!tryif(() -> userDao.registerByEmail(user))) {
+        if (!tryif(() -> userMapper.registerByEmail(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, user.getId(), UserLoginTypeEnum.EMAIL, true)));
         // redis放入userId
         AuthUtils.setUserId(request, user.getId());
@@ -171,13 +172,13 @@ public class UserService extends BaseService {
     @Transactional
     public Result registerByQq(HttpServletRequest request, String sign, UserVo user) {
         // 插入失败
-        if (!tryif(() -> userDao.registerByQq(user))) {
+        if (!tryif(() -> userMapper.registerByQq(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, true)));
         // redis放入userId，并重置过期时间
         RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId(), RedisConstant.EXPIRE);
@@ -205,16 +206,16 @@ public class UserService extends BaseService {
         if (u == null || u.getIsDelete() == 1 || !EncoderUtils.bCrypt(user.getPwd(), u.getPwd())) {
             // 日志(登录失败)
             if (u == null) {
-                recordLog(() -> userLoginLogDao.insert(//
+                recordLog(() -> userLoginLogMapper.insert(//
                         new UserLoginLog(request, null, userLoginTypeEnum, false)));
             } else {
-                recordLog(() -> userLoginLogDao.insert(//
+                recordLog(() -> userLoginLogMapper.insert(//
                         new UserLoginLog(request, u.getId(), userLoginTypeEnum, false)));
             }
             return Result.e(ResultCodeEnum.USER_LOGIN_ERROR);
         }
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, u.getId(), userLoginTypeEnum, true)));
         // redis放入userId
         AuthUtils.setUserId(request, u.getId());
@@ -228,12 +229,12 @@ public class UserService extends BaseService {
         // 账号禁用
         if (user.getIsDelete() == 1) {
             // 日志(登录失败)
-            recordLog(() -> userLoginLogDao.insert(//
+            recordLog(() -> userLoginLogMapper.insert(//
                     new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, false)));
             return Result.e();
         }
         // 日志(登录成功)
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, user.getId(), UserLoginTypeEnum.QQ, true)));
         // redis放入userId，并重置过期时间
         RedisUtils.hashSet(sign, RedisConstant._USER_ID, user.getId(), RedisConstant.EXPIRE);
@@ -247,11 +248,11 @@ public class UserService extends BaseService {
     @Transactional
     public Result changeInfo(UserVo user) {
         // 更新失败
-        if (!tryif(() -> userDao.update(user))) {
+        if (!tryif(() -> userMapper.update(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
         return Result.o();
     }
 
@@ -270,11 +271,11 @@ public class UserService extends BaseService {
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getNewPwd()));
         // 更新失败
-        if (!tryif(() -> userDao.update(u2))) {
+        if (!tryif(() -> userMapper.update(u2))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(u2.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(u2.getId())));
         return Result.o();
     }
 
@@ -293,11 +294,11 @@ public class UserService extends BaseService {
         u2.setId(user.getId());
         u2.setPwd(EncoderUtils.bCrypt(user.getPwd()));
         // 更新失败
-        if (!tryif(() -> userDao.update(u2))) {
+        if (!tryif(() -> userMapper.update(u2))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(u2.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(u2.getId())));
         return Result.o();
     }
 
@@ -307,11 +308,11 @@ public class UserService extends BaseService {
     @Transactional
     public Result deleteById(long id) {
         // 删除失败
-        if (!tryif(() -> userDao.deleteById(id))) {
+        if (!tryif(() -> userMapper.deleteById(id))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(id)));
+        recordBak(() -> userBakMapper.insert(new UserBak(id)));
         return Result.o();
     }
 //endregion
@@ -325,11 +326,11 @@ public class UserService extends BaseService {
     @Transactional
     public Result insert(UserVo user) {
         // 插入
-        if (!tryif(() -> userDao.insert(user))) {
+        if (!tryif(() -> userMapper.insert(user))) {
             return Result.e();
         }
         // 备份
-        recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+        recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
         return Result.o();
     }
 
@@ -341,10 +342,10 @@ public class UserService extends BaseService {
         ResultBatch<String> result = new ResultBatch<>();
         for (UserVo user : users) {
             // 插入
-            if (tryif(false, () -> userDao.insert(user))) {
+            if (tryif(false, () -> userMapper.insert(user))) {
                 result.add(true, user.getAccount(), "成功");
                 // 备份
-                recordBak(() -> userBakDao.insert(new UserBak(user.getId())));
+                recordBak(() -> userBakMapper.insert(new UserBak(user.getId())));
             } else {
                 result.add(false, user.getAccount(), "失败");
             }
@@ -353,10 +354,17 @@ public class UserService extends BaseService {
     }
 
     /**
+     * 导出
+     */
+    public List<UserExport> export(UserVo user) {
+        return userMapper.export(user);
+    }
+
+    /**
      * 精确查询
      */
     public Result findExact(UserVo user) {
-        PageInfo<UserVo> pageInfo = pagination(user, () -> userDao.findExact(user));
+        PageInfo<UserVo> pageInfo = pagination(user, () -> userMapper.findExact(user));
         return Result.o(pageInfo);
     }
 
@@ -364,7 +372,7 @@ public class UserService extends BaseService {
      * 模糊查询
      */
     public Result find(UserVo user) {
-        PageInfo<UserVo> pageInfo = pagination(user, () -> userDao.find(user));
+        PageInfo<UserVo> pageInfo = pagination(user, () -> userMapper.find(user));
         return Result.o(pageInfo);
     }
 //endregion

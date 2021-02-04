@@ -1,9 +1,10 @@
 package com.demo.controller.common;
 
 import com.demo.constant.UserLoginTypeEnum;
-import com.demo.dao.UserLoginLogDao;
 import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
+import com.demo.mapper.UserLoginLogMapper;
+
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ import static com.demo.service.BaseService.recordLog;
 public class IndexController {
 
     private final HttpServletRequest request;
-    private final UserLoginLogDao userLoginLogDao;
+    private final UserLoginLogMapper userLoginLogMapper;
 
     /**
      * 首页
@@ -36,7 +37,7 @@ public class IndexController {
     @GetMapping(value = {"", "/"})
     public Result index() {
         UserLoginLog userLoginLog = new UserLoginLog(request, null, UserLoginTypeEnum.ACCOUNT, false);
-        recordLog(() -> userLoginLogDao.insert(//
+        recordLog(() -> userLoginLogMapper.insert(//
                 new UserLoginLog(request, null, UserLoginTypeEnum.ACCOUNT, false)));
         return Result.o(userLoginLog);
     }

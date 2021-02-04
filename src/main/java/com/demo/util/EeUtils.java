@@ -1,6 +1,8 @@
 package com.demo.util;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +11,8 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.alibaba.excel.EasyExcel;
-import com.alibaba.excel.read.listener.ReadListener;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
@@ -31,41 +34,43 @@ public class EeUtils {
      * 
      * @param filePath 文件路径
      * @param clazz    类
-     * @param data     写入的数据
+     * @param data     写入Excel的数据
      */
-    @SuppressWarnings("rawtypes")
-    public static void write(String filePath, Class clazz, List data) {
+    public static <T> void write(String filePath, Class<?> clazz, List<T> data) {
         EasyExcel.write(filePath, clazz).registerWriteHandler(style1()).sheet("工作表1").doWrite(data);
     }
 
     /**
      * 读文件
      * 
-     * @param pathName     文件的路径
-     * @param clazz        类
-     * @param readListener 读监听器
+     * @param filePath 文件路径
+     * @param clazz    类
+     * @param data     读出Excel的数据
      */
-    @SuppressWarnings("rawtypes")
-    public static void read(String pathName, Class clazz, ReadListener readListener) {
-        EasyExcel.read(pathName, clazz, readListener).sheet().doRead();
+    public static <T> void read(String filePath, Class<?> clazz, List<T> data) {
+        AllDataListener<T> listener = new AllDataListener<>();
+        EasyExcel.read(filePath, clazz, listener).sheet().doRead();
+        data.addAll(listener.getData());
     }
 
     /**
      * 客户端下载文件
      * 
      * @param response HttpServletResponse
-     * @param fileName 文件名
+     * @param fileName 文件名(自动追加yyyyMMddHHmmssSSS格式的时间，以及后缀.xlsx)
      * @param clazz    类
-     * @param data     数据
+     * @param data     要生成的Excel数据
      */
-    @SuppressWarnings("rawtypes")
-    public static void download(HttpServletResponse response, String fileName, Class clazz, List data) {
+    public static <T> void download(HttpServletResponse response, String fileName, Class<?> clazz, List<T> data) {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
+        fileName = fileName + DateUtils.getDatetime("yyyyMMddHHmmssSSS");
+        fileName = URLEncoder.encode(fileName, StandardCharsets.UTF_8).replaceAll("\\+", "%20");
+        response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
         try {
-            fileName = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
-            response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
-            EasyExcel.write(response.getOutputStream(), clazz).registerWriteHandler(style1()).sheet("工作表1")
+            EasyExcel.write(response.getOutputStream(), clazz)//
+                    .registerWriteHandler(style1())//
+                    .sheet("工作表1")//
                     .doWrite(data);
         } catch (Exception e) {
             e.printStackTrace();
@@ -75,17 +80,18 @@ public class EeUtils {
     /**
      * 客户端上传文件
      * 
-     * @param file         客户端上传过来的文件
-     * @param clazz        类
-     * @param readListener 读监听器
+     * @param file  客户端上传过来的MultipartFile文件实体
+     * @param clazz 类
+     * @param data  解析出的Excel数据
      */
-    @SuppressWarnings("rawtypes")
-    public static void upload(MultipartFile file, Class clazz, ReadListener readListener) {
+    public static <T> void upload(MultipartFile file, Class<?> clazz, List<T> data) {
+        AllDataListener<T> listener = new AllDataListener<>();
         try {
-            EasyExcel.read(file.getInputStream(), clazz, readListener).sheet().doRead();
+            EasyExcel.read(file.getInputStream(), clazz, listener).sheet().doRead();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        data.addAll(listener.getData());
     }
 
     /**
@@ -115,4 +121,30 @@ public class EeUtils {
         contentWriteCellStyle.setWriteFont(contentWriteFont);
         return new HorizontalCellStyleStrategy(headWriteCellStyle, contentWriteCellStyle);
     }
+
+}
+
+/**
+ * 读取所有数据监听器
+ */
+class AllDataListener<T> extends AnalysisEventListener<T> {
+
+    private List<T> data = new ArrayList<>();
+
+    @Override
+    public void invoke(T data, AnalysisContext context) {
+        this.data.add(data);
+    }
+
+    @Override
+    public void doAfterAllAnalysed(AnalysisContext context) {
+    }
+
+    /**
+     * 获取到所有数据
+     */
+    public List<T> getData() {
+        return data;
+    }
+
 }

@@ -1,11 +1,11 @@
-package com.demo.dao;
+package com.demo.mapper;
 
 import com.demo.entity.vo.RoleApiVo;
 
 import java.util.List;
 
 /**
- * <h1>api角色业务逻辑接口</h1>
+ * <h1>api角色Mapper</h1>
  *
  * <p>
  * createDate 2021/01/24 15:48:39
@@ -14,7 +14,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface RoleApiDao {
+public interface RoleApiMapper {
 
     /**
      * 新增(需id,name,createId)

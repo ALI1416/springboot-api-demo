@@ -1,11 +1,12 @@
-package com.demo.dao;
-
-import com.demo.entity.vo.UserVo;
+package com.demo.mapper;
 
 import java.util.List;
 
+import com.demo.entity.excel.UserExport;
+import com.demo.entity.vo.UserVo;
+
 /**
- * <h1>用户业务逻辑接口</h1>
+ * <h1>用户Mapper</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -14,7 +15,7 @@ import java.util.List;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface UserDao {
+public interface UserMapper {
 
     /**
      * 插入(需id,account,pwd,createId)
@@ -70,5 +71,10 @@ public interface UserDao {
      * 查询
      */
     List<UserVo> find(UserVo user);
+
+    /**
+     * 导出
+     */
+    List<UserExport> export(UserVo user);
 
 }

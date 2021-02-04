@@ -1,9 +1,9 @@
-package com.demo.dao;
+package com.demo.mapper;
 
 import com.demo.entity.po.AdminLoginLog;
 
 /**
- * <h1>管理员登录日志业务逻辑接口</h1>
+ * <h1>管理员登录日志Mapper</h1>
  *
  * <p>
  * createDate 2021/01/21 21:55:20
@@ -12,7 +12,7 @@ import com.demo.entity.po.AdminLoginLog;
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public interface AdminLoginLogDao {
+public interface AdminLoginLogMapper {
 
     /**
      * 登录后记录日志

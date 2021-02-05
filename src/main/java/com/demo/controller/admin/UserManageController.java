@@ -1,12 +1,18 @@
 package com.demo.controller.admin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +33,7 @@ import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.EeUtils;
 import com.demo.util.EncoderUtils;
+import com.demo.util.EsUtils;
 import com.demo.util.RegexUtils;
 
 import lombok.AllArgsConstructor;
@@ -164,6 +171,61 @@ public class UserManageController extends BaseController {
         ResultBatch<String> batchInsertResult = userService.batchInsert(batchInsertUserList);
         /* 合并返回结果 */
         return Result.o(ResultBatch.merge(invalidResult, batchInsertResult));
+    }
+
+    /**
+     * es导入用户数据
+     */
+    @PostMapping("/es/importUser")
+    public Result esImportUser() {
+        String index = "user";
+        // 不存在索引，去创建
+        if (!EsUtils.existIndex(index)) {
+            String mapping = "{\n" + //
+                    "  \"properties\": {\n" + //
+                    "    \"profile\": {\n" + // 字段名
+                    "      \"type\": \"text\",\n" + // 类型keyword、text
+                    "      \"analyzer\": \"ik_max_word\",\n" + // 分词器standard、ik_smart、ik_max_word
+                    "      \"search_analyzer\": \"ik_max_word\"\n" + // 搜索用分词器
+                    "    },\n" + //
+                    "    \"comment\": {\n" + // 字段名
+                    "      \"type\": \"text\",\n" + // 类型keyword、text
+                    "      \"analyzer\": \"ik_max_word\",\n" + // 分词器standard、ik_smart、ik_max_word
+                    "      \"search_analyzer\": \"ik_max_word\"\n" + // 搜索用分词器
+                    "    }\n" + //
+                    "  }\n" + //
+                    "}";
+            if (!EsUtils.createIndex(index, mapping)) {
+                return Result.e();
+            }
+        }
+        // 查询用户数据
+        List<UserVo> list = userService.esFind(null);
+        Map<String, UserVo> map = new HashMap<>();
+        for (UserVo u : list) {
+            map.put(String.valueOf(u.getId()), u);
+        }
+        // 导入用户数据
+        if (!EsUtils.addDocumentBulk(index, map)) {
+            return Result.e();
+        }
+        return Result.o();
+    }
+
+    /**
+     * es查询
+     */
+    @PostMapping("/es/search")
+    public Result esSearch(@RequestBody UserVo user) {
+        String index = "user";
+        QueryBuilder queryBuilder = QueryBuilders.matchQuery("profile", user.getProfile());
+        HighlightBuilder highlightBuilder = new HighlightBuilder().field("profile")// 匹配字段
+        // .requireFieldMatch(false)// 匹配所有字段
+        // .preTags("<span style='color:red'>")// 内容前缀
+        // .postTags("</span>")// 内容后缀
+        ;
+        SearchResponse searchResponse = EsUtils.search(index, queryBuilder, highlightBuilder, 1, 10, null);
+        return Result.o(EsUtils.extractHighlightResult(searchResponse));
     }
 
     /**

@@ -29,8 +29,8 @@ public class HttpMessageConvertersConfig {
     /**
      * 替换成FastJson
      */
-    @SuppressWarnings("deprecation")
     @Bean
+    @SuppressWarnings("deprecation")
     public HttpMessageConverters fastJsonMessageConverters() {
         // 消息转换器对象
         List<HttpMessageConverter<?>> converters = new ArrayList<>();

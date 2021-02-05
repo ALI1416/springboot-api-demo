@@ -71,6 +71,11 @@ public interface UserMapper {
      * 查询
      */
     List<UserVo> find(UserVo user);
+    
+    /**
+     * es查询
+     */
+    List<UserVo> esFind(UserVo user);
 
     /**
      * 导出

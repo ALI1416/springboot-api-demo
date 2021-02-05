@@ -1,6 +1,7 @@
 package com.demo.entity.excel;
 
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,11 +23,13 @@ public class UserImport {
     /**
      * 账号
      */
+    @ColumnWidth(10)
     @ExcelProperty("账号")
     private String account;
     /**
      * 密码
      */
+    @ColumnWidth(10)
     @ExcelProperty("密码")
     private String pwd;
 

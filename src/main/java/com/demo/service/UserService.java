@@ -361,6 +361,13 @@ public class UserService extends BaseService {
     }
 
     /**
+     * es查询
+     */
+    public List<UserVo> esFind(UserVo user) {
+        return userMapper.esFind(user);
+    }
+
+    /**
      * 精确查询
      */
     public Result findExact(UserVo user) {

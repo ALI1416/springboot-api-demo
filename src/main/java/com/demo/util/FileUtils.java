@@ -1,6 +1,5 @@
 package com.demo.util;
 
-import com.demo.source.EncodingDetect;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.*;
@@ -377,51 +376,51 @@ public class FileUtils {
         return null;
     }
 
-    public static void saveAsUTF8LimitSize(String inputFilePath, String outputFilePath, int size) {
-        try {
-            FileInputStream fileInputStream = new FileInputStream(inputFilePath);
-            int fileSize = fileInputStream.available();
-            if (fileSize <= size) {
-                saveAsUTF8(inputFilePath, outputFilePath);
-                fileInputStream.close();
-            } else {
-                FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath + ".temp");
-                byte[] b = new byte[size];
-                fileInputStream.read(b);
-                fileOutputStream.write(b);
-                fileOutputStream.flush();
-                fileOutputStream.close();
-                fileInputStream.close();
-                saveAsUTF8(outputFilePath + ".temp", outputFilePath);
-                File file = new File(outputFilePath + ".temp");
-                file.delete();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // public static void saveAsUTF8LimitSize(String inputFilePath, String outputFilePath, int size) {
+    //     try {
+    //         FileInputStream fileInputStream = new FileInputStream(inputFilePath);
+    //         int fileSize = fileInputStream.available();
+    //         if (fileSize <= size) {
+    //             saveAsUTF8(inputFilePath, outputFilePath);
+    //             fileInputStream.close();
+    //         } else {
+    //             FileOutputStream fileOutputStream = new FileOutputStream(outputFilePath + ".temp");
+    //             byte[] b = new byte[size];
+    //             fileInputStream.read(b);
+    //             fileOutputStream.write(b);
+    //             fileOutputStream.flush();
+    //             fileOutputStream.close();
+    //             fileInputStream.close();
+    //             saveAsUTF8(outputFilePath + ".temp", outputFilePath);
+    //             File file = new File(outputFilePath + ".temp");
+    //             file.delete();
+    //         }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    public static void saveAsUTF8(String inputFilePath, String outputFilePath) {
-        try {
-            BufferedReader bufferedReader =
-                    new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath),
-                            getJavaEncode(inputFilePath)));
-            BufferedWriter bufferedWriter =
-                    new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                bufferedWriter.write(line + "\r\n");
-            }
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            bufferedReader.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    // public static void saveAsUTF8(String inputFilePath, String outputFilePath) {
+    //     try {
+    //         BufferedReader bufferedReader =
+    //                 new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath),
+    //                         getJavaEncode(inputFilePath)));
+    //         BufferedWriter bufferedWriter =
+    //                 new BufferedWriter(new OutputStreamWriter(new FileOutputStream(outputFilePath), UTF8));
+    //         String line;
+    //         while ((line = bufferedReader.readLine()) != null) {
+    //             bufferedWriter.write(line + "\r\n");
+    //         }
+    //         bufferedWriter.flush();
+    //         bufferedWriter.close();
+    //         bufferedReader.close();
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //     }
+    // }
 
-    public static String getJavaEncode(String filePath) {
-        EncodingDetect s = new EncodingDetect();
-        return EncodingDetect.javaname[s.detectEncoding(new File(filePath))];
-    }
+    // public static String getJavaEncode(String filePath) {
+    //     EncodingDetect s = new EncodingDetect();
+    //     return EncodingDetect.javaname[s.detectEncoding(new File(filePath))];
+    // }
 }

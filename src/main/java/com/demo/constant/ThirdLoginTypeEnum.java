@@ -22,7 +22,8 @@ public enum ThirdLoginTypeEnum {
     /**
      * 账号已登录时，通过第三方绑定/解绑1
      */
-    BIND(1);
+    BIND(1),
+    ;
 
     /**
      * 类型

@@ -25,7 +25,8 @@ public enum CaptchaTypeEnum {
     /**
      * 电子邮件：5分钟
      */
-    EMAIL(1, 5 * 60);
+    EMAIL(1, 5 * 60),
+    ;
 
     /**
      * 类型

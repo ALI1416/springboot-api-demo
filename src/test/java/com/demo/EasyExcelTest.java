@@ -1,25 +1,34 @@
 package com.demo;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-
 import com.alibaba.fastjson.JSON;
 import com.demo.entity.excel.UserExport;
 import com.demo.entity.excel.UserImport;
 import com.demo.util.EeUtils;
+import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * <h1>EasyExcelTest</h1>
+ *
+ * <p>
+ * createDate 2021/02/17 12:37:36
+ * </p>
+ *
+ * @author ALI[ali-k@foxmail.com]
+ * @since 1.0.0
+ **/
 public class EasyExcelTest {
 
 
-//    @Test
+    //    @Test
     void importTemplate() {
         EeUtils.write("D:/模板1.xlsx", UserImport.class, null);
     }
 
-//    @Test
+    //    @Test
     void importExcel() {
         List<UserImport> list = new ArrayList<>();
         EeUtils.read("D:/模板.xlsx", UserImport.class, list);

@@ -1,21 +1,19 @@
 package com.demo.util;
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.poi.ss.usermodel.IndexedColors;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.write.metadata.style.WriteCellStyle;
 import com.alibaba.excel.write.metadata.style.WriteFont;
 import com.alibaba.excel.write.style.HorizontalCellStyleStrategy;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <h1>EasyExcel工具</h1>
@@ -31,7 +29,7 @@ public class EeUtils {
 
     /**
      * 写文件
-     * 
+     *
      * @param filePath 文件路径
      * @param clazz    类
      * @param data     写入Excel的数据
@@ -42,7 +40,7 @@ public class EeUtils {
 
     /**
      * 读文件
-     * 
+     *
      * @param filePath 文件路径
      * @param clazz    类
      * @param data     读出Excel的数据
@@ -55,7 +53,7 @@ public class EeUtils {
 
     /**
      * 客户端下载文件
-     * 
+     *
      * @param response HttpServletResponse
      * @param fileName 文件名(自动追加yyyyMMddHHmmssSSS格式的时间，以及后缀.xlsx)
      * @param clazz    类
@@ -79,7 +77,7 @@ public class EeUtils {
 
     /**
      * 客户端上传文件
-     * 
+     *
      * @param file  客户端上传过来的MultipartFile文件实体
      * @param clazz 类
      * @param data  解析出的Excel数据
@@ -129,7 +127,7 @@ public class EeUtils {
  */
 class AllDataListener<T> extends AnalysisEventListener<T> {
 
-    private List<T> data = new ArrayList<>();
+    private final List<T> data = new ArrayList<>();
 
     @Override
     public void invoke(T data, AnalysisContext context) {

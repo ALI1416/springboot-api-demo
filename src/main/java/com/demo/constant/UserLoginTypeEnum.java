@@ -26,7 +26,8 @@ public enum UserLoginTypeEnum {
     /**
      * QQ2
      */
-    QQ(2);
+    QQ(2),
+    ;
 
     /**
      * 类型

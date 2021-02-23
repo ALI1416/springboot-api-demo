@@ -3,6 +3,8 @@ package com.demo;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.demo.property.IdProperty;
+
 /**
  * <h1>ApplicationTest</h1>
  *
@@ -18,6 +20,7 @@ class ApplicationTest {
 
     @Test
     void contextLoads() {
+        System.out.println(IdProperty.MACHINE_BITS);
     }
 
 }

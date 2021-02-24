@@ -12,7 +12,7 @@ package com.demo.property;
  **/
 public class MailProperty {
 
-    private static final MailAppYml MAIL = Yml.mailAppYml;
+    private final static MailAppYml MAIL = Yml.mailAppYml;
 
     /**
      * 主机

@@ -12,15 +12,15 @@ package com.demo.property;
  **/
 public class Ip2RegionProperty {
 
-    private static final Ip2RegionAppYml IP_2_REGION = Yml.ip2RegionAppYml;
+    private final static Ip2RegionAppYml IP_2_REGION = Yml.ip2RegionAppYml;
 
     /**
      * 数据文件在本项目中resources文件夹下的路径
      */
-    public static final String RESOURCE_PATH = IP_2_REGION.getResourcePath();
+    public final static String RESOURCE_PATH = IP_2_REGION.getResourcePath();
     /**
      * 数据文件引用路径(本机绝对地址)
      */
-    public static final String REFERENCE_PATH = IP_2_REGION.getReferencePath();
+    public final static String REFERENCE_PATH = IP_2_REGION.getReferencePath();
 
 }

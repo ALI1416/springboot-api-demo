@@ -16,7 +16,7 @@ import com.demo.property.IdProperty;
  * @since 1.0.0
  **/
 @SpringBootTest
-class ApplicationTest {
+public class ApplicationTest {
 
     @Test
     void contextLoads() {

@@ -12,7 +12,7 @@ package com.demo.property;
  **/
 public class IdProperty {
 
-    private static final IdAppYml ID = Yml.idAppYml;
+    private final static IdAppYml ID = Yml.idAppYml;
 
     /**
      * 机器码

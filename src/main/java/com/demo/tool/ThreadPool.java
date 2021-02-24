@@ -24,7 +24,7 @@ public class ThreadPool {
     /**
      * 自定义线程池
      */
-    private static final ExecutorService THREAD_POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
+    private final static ExecutorService THREAD_POOL = new ThreadPoolExecutor(5, 200, 0L, TimeUnit.MILLISECONDS,
             new LinkedBlockingQueue<>(1024), new NameTreadFactory(), new ThreadPoolExecutor.AbortPolicy());
 
     /**

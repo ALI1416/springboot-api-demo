@@ -19,7 +19,7 @@ public class Clock {
     /**
      * 系统时钟实例
      */
-    private static final Clock INSTANCE = new Clock();
+    private final static Clock INSTANCE = new Clock();
     /**
      * 现在时间戳(原子长整形，防止多线程异常)
      */

@@ -18,7 +18,7 @@ import java.util.List;
  **/
 public class MyProperty {
 
-    private static final MyYml MY_YML = Yml.myYml;
+    private final static MyYml MY_YML = Yml.myYml;
 
     /**
      * 常量A

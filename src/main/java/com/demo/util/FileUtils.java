@@ -21,7 +21,7 @@ public class FileUtils {
     /**
      * UTF8字符集编码
      */
-    private static final Charset UTF8 = StandardCharsets.UTF_8;
+    private final static Charset UTF8 = StandardCharsets.UTF_8;
 
     public static void main(String[] args) {
         // resource2String

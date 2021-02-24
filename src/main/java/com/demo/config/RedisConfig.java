@@ -96,7 +96,7 @@ public class RedisConfig extends CachingConfigurerSupport {
  */
 class FastJson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 
-    public static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
+    public final static Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
 
     private final Class<T> clazz;
 

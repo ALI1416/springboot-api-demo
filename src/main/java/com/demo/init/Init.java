@@ -1,6 +1,5 @@
 package com.demo.init;
 
-import com.demo.tool.Id;
 import com.demo.util.PhoneUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,7 +21,6 @@ public class Init {
         //        AnsjInit.init();
         Ip2RegionInit.init();
         //        phoneNumberLookupInit();
-        idInit();
         log.info("初始化结束。");
     }
 
@@ -36,17 +34,5 @@ public class Init {
         log.info("PhoneNumberLookup加载结束。");
         log.info("PhoneNumberLookup初始化结束。");
     }
-
-    /**
-     * 高性能ID生成器任务
-     */
-    public static void idInit() {
-        log.info("高性能Id生成器初始化开始...");
-        log.info("高性能Id生成器开始加载...");
-        log.info("高性能Id生成器测试：" + Id.next());
-        log.info("高性能Id生成器加载结束。");
-        log.info("高性能Id生成器初始化结束。");
-    }
-
 
 }

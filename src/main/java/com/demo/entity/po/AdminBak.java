@@ -1,6 +1,7 @@
 package com.demo.entity.po;
 
-import com.demo.tool.Id;
+
+import cn.z.id.Id;
 
 /**
  * <h1>管理员备份表持久化对象</h1>

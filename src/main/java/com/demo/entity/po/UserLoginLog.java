@@ -1,8 +1,8 @@
 package com.demo.entity.po;
 
+import cn.z.id.Id;
 import com.demo.constant.UserLoginTypeEnum;
 import com.demo.entity.BaseEntity;
-import com.demo.tool.Id;
 import lombok.Getter;
 import lombok.Setter;
 

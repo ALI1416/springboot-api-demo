@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import cn.z.id.Id;
 import com.alibaba.fastjson.JSON;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
@@ -7,7 +8,6 @@ import com.demo.constant.ResultCodeEnum;
 import com.demo.constant.ThirdLoginTypeEnum;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.UserVo;
-import com.demo.tool.Id;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 import lombok.AllArgsConstructor;

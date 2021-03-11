@@ -1,6 +1,7 @@
 package com.demo.util;
 
-import com.demo.tool.Clock;
+
+import cn.z.clock.Clock;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

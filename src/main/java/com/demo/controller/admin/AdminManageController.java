@@ -2,6 +2,7 @@ package com.demo.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.z.id.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,6 @@ import com.demo.controller.BaseController;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.AdminVo;
 import com.demo.service.AdminService;
-import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 

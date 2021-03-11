@@ -2,6 +2,7 @@ package com.demo.controller.admin;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.z.id.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,6 @@ import com.demo.controller.BaseController;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
 import com.demo.service.RoleApiService;
-import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 
 import lombok.AllArgsConstructor;

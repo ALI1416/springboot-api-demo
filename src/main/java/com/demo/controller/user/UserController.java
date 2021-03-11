@@ -2,6 +2,7 @@ package com.demo.controller.user;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.z.id.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +16,6 @@ import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
-import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;

@@ -1,6 +1,7 @@
 package com.demo.entity.po;
 
-import com.demo.tool.Id;
+
+import cn.z.id.Id;
 
 /**
  * <h1>api角色树备份表持久化对象</h1>

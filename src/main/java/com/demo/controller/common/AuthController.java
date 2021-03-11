@@ -1,9 +1,9 @@
 package com.demo.controller.common;
 
+import cn.z.id.Id;
 import com.demo.annotation.Auth;
 import com.demo.constant.RedisConstant;
 import com.demo.entity.pojo.Result;
-import com.demo.tool.Id;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;

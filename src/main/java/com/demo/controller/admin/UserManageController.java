@@ -1,27 +1,6 @@
 package com.demo.controller.admin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import cn.z.id.Id;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-
 import com.demo.constant.ResultCodeEnum;
 import com.demo.controller.BaseController;
 import com.demo.entity.excel.UserExport;
@@ -30,13 +9,26 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.service.UserService;
-import com.demo.util.AuthUtils;
-import com.demo.util.EeUtils;
-import com.demo.util.EncoderUtils;
-import com.demo.util.EsUtils;
-import com.demo.util.RegexUtils;
-
+import com.demo.util.*;
 import lombok.AllArgsConstructor;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
+import org.springframework.lang.Nullable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <h1>用户管理api</h1>
@@ -51,7 +43,7 @@ import lombok.AllArgsConstructor;
 //@Auth
 @RestController
 @RequestMapping("admin/user")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class UserManageController extends BaseController {
 
     private final HttpServletRequest request;
@@ -220,10 +212,10 @@ public class UserManageController extends BaseController {
         String index = "user";
         QueryBuilder queryBuilder = QueryBuilders.matchQuery("profile", user.getProfile());
         HighlightBuilder highlightBuilder = new HighlightBuilder().field("profile")// 匹配字段
-        // .requireFieldMatch(false)// 匹配所有字段
-        // .preTags("<span style='color:red'>")// 内容前缀
-        // .postTags("</span>")// 内容后缀
-        ;
+                // .requireFieldMatch(false)// 匹配所有字段
+                // .preTags("<span style='color:red'>")// 内容前缀
+                // .postTags("</span>")// 内容后缀
+                ;
         SearchResponse searchResponse = EsUtils.search(index, queryBuilder, highlightBuilder, 1, 10, null);
         return Result.o(EsUtils.extractHighlightResult(searchResponse));
     }

@@ -11,7 +11,6 @@ import com.demo.entity.vo.UserVo;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,7 +29,7 @@ import java.util.Map;
  * @since 1.0.0
  **/
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class ThirdLoginService extends BaseService {
 
     private final UserService userService;

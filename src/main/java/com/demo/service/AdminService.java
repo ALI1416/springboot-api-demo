@@ -7,12 +7,11 @@ import com.demo.entity.po.AdminLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.AdminVo;
 import com.demo.mapper.AdminBakMapper;
-import com.demo.mapper.AdminMapper;
 import com.demo.mapper.AdminLoginLogMapper;
+import com.demo.mapper.AdminMapper;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +28,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  **/
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class AdminService extends BaseService {
 
     private final AdminMapper adminMapper;
@@ -37,7 +36,8 @@ public class AdminService extends BaseService {
     private final AdminLoginLogMapper adminLoginLogMapper;
 
     /* ==================== 通用方法 ==================== */
-//region
+    //region
+
     /**
      * 存在id
      */
@@ -73,7 +73,7 @@ public class AdminService extends BaseService {
         admin.setAccount(account);
         return adminMapper.findByUniqueKey(admin);
     }
-//endregion
+    //endregion
 
     /**
      * 新增用户(需id,account,pwd,createId)

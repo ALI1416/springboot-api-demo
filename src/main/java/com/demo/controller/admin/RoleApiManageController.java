@@ -1,14 +1,6 @@
 package com.demo.controller.admin;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.z.id.Id;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.controller.BaseController;
@@ -16,8 +8,13 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
 import com.demo.service.RoleApiService;
 import com.demo.util.AuthUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>api角色api</h1>
@@ -31,7 +28,7 @@ import lombok.AllArgsConstructor;
  **/
 @RestController
 @RequestMapping("admin/roleApi")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class RoleApiManageController extends BaseController {
 
     private final HttpServletRequest request;
@@ -73,7 +70,7 @@ public class RoleApiManageController extends BaseController {
         roleApi.setUpdateId(id);
         return roleApiService.changeInfo(roleApi);
     }
-    
+
     /**
      * 删除(需id)
      */

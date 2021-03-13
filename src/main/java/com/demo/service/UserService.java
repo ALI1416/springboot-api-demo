@@ -11,15 +11,14 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
 import com.demo.mapper.UserBakMapper;
-import com.demo.mapper.UserMapper;
 import com.demo.mapper.UserLoginLogMapper;
+import com.demo.mapper.UserMapper;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
 import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,7 @@ import java.util.List;
  * @since 1.0.0
  **/
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class UserService extends BaseService {
 
     private final UserMapper userMapper;
@@ -45,7 +44,8 @@ public class UserService extends BaseService {
     private final UserLoginLogMapper userLoginLogMapper;
 
     /* ==================== 通用方法 ==================== */
-//region
+    //region
+
     /**
      * 存在id
      */
@@ -124,10 +124,11 @@ public class UserService extends BaseService {
         user.setQqOpenid(qqOpenid);
         return userMapper.findByUniqueKey(user);
     }
-//endregion
+    //endregion
 
     /* ==================== 客户端方法 ==================== */
-//region
+    //region
+
     /**
      * 注册，通过account(需id,account,pwd)
      */
@@ -315,10 +316,10 @@ public class UserService extends BaseService {
         recordBak(() -> userBakMapper.insert(new UserBak(id)));
         return Result.o();
     }
-//endregion
+    //endregion
 
     /* ==================== 管理端方法 ==================== */
-//region
+    //region
 
     /**
      * 插入(需id,account,pwd,createId)
@@ -382,5 +383,5 @@ public class UserService extends BaseService {
         PageInfo<UserVo> pageInfo = pagination(user, () -> userMapper.find(user));
         return Result.o(pageInfo);
     }
-//endregion
+    //endregion
 }

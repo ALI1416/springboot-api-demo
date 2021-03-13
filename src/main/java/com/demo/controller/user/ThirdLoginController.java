@@ -10,7 +10,6 @@ import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @RestController
 @RequestMapping("thirdLogin")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class ThirdLoginController {
 
     private final HttpServletRequest request;

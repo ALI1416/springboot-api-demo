@@ -1,15 +1,6 @@
 package com.demo.controller.admin;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.z.id.Id;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.controller.BaseController;
@@ -18,8 +9,10 @@ import com.demo.entity.vo.AdminVo;
 import com.demo.service.AdminService;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>管理员管理api</h1>
@@ -33,7 +26,7 @@ import lombok.AllArgsConstructor;
  **/
 @RestController
 @RequestMapping("admin/admin")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class AdminManageController extends BaseController {
 
     private final HttpServletRequest request;

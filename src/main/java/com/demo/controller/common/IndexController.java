@@ -4,9 +4,7 @@ import com.demo.constant.UserLoginTypeEnum;
 import com.demo.entity.po.UserLoginLog;
 import com.demo.entity.pojo.Result;
 import com.demo.mapper.UserLoginLogMapper;
-
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +23,7 @@ import static com.demo.service.BaseService.recordLog;
  * @since 1.0.0
  **/
 @RestController
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class IndexController {
 
     private final HttpServletRequest request;

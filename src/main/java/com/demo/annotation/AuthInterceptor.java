@@ -27,7 +27,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response,
                              @NonNull Object handler) throws IOException {
-        System.out.println("AuthInterceptor"+request.getRequestURI());
         if (handler instanceof HandlerMethod) {
             // 获取方法
             Method method = ((HandlerMethod) handler).getMethod();

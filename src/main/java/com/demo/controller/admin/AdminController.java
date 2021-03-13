@@ -1,13 +1,5 @@
 package com.demo.controller.admin;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.controller.BaseController;
 import com.demo.entity.pojo.Result;
@@ -15,8 +7,13 @@ import com.demo.entity.vo.AdminVo;
 import com.demo.service.AdminService;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>管理员api</h1>
@@ -30,7 +27,7 @@ import lombok.AllArgsConstructor;
  **/
 @RestController
 @RequestMapping("admin")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class AdminController extends BaseController {
 
     private final HttpServletRequest request;
@@ -72,8 +69,7 @@ public class AdminController extends BaseController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody AdminVo admin) {
-        if (existNull(admin.getPwd(), admin.getNewPwd()) || admin.getPwd().length() != 32
-                || admin.getNewPwd().length() != 32) {
+        if (existNull(admin.getPwd(), admin.getNewPwd()) || admin.getPwd().length() != 32 || admin.getNewPwd().length() != 32) {
             return Result.e1();
         }
         Long id = AuthUtils.getUserId(request);

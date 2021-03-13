@@ -1,14 +1,6 @@
 package com.demo.controller.user;
 
-import javax.servlet.http.HttpServletRequest;
-
 import cn.z.id.Id;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.controller.BaseController;
@@ -20,8 +12,13 @@ import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.RegexUtils;
-
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * <h1>用户api</h1>
@@ -35,7 +32,7 @@ import lombok.AllArgsConstructor;
  **/
 @RestController
 @RequestMapping("user")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class UserController extends BaseController {
 
     private final HttpServletRequest request;
@@ -238,8 +235,7 @@ public class UserController extends BaseController {
     @Auth
     @PostMapping("/changePwd")
     public Result changePwd(@RequestBody UserVo user) {
-        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32
-                || user.getNewPwd().length() != 32) {
+        if (existNull(user.getPwd(), user.getNewPwd()) || user.getPwd().length() != 32 || user.getNewPwd().length() != 32) {
             return Result.e1();
         }
         Long id = AuthUtils.getUserId(request);

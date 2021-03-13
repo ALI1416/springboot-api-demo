@@ -50,6 +50,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // ElasticSearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    // RabbitMQ
+    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     // 修复某些注解异常

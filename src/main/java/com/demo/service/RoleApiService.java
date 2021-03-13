@@ -5,9 +5,7 @@ import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
 import com.demo.mapper.RoleApiBakMapper;
 import com.demo.mapper.RoleApiMapper;
-
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 1.0.0
  **/
 @Service
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@AllArgsConstructor
 public class RoleApiService extends BaseService {
 
     private final RoleApiMapper roleApiMapper;
@@ -93,7 +91,7 @@ public class RoleApiService extends BaseService {
         recordBak(() -> roleApiBakMapper.insert(new RoleApiBak(roleApi.getId())));
         return Result.o(roleApi);
     }
-    
+
     /**
      * 删除(需id,updateId)
      */

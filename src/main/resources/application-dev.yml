@@ -25,6 +25,11 @@ spring:
     username: ali
     password: ali
     virtual-host: ali
+  data:
+    mongodb:
+      host: localhost
+      database: ali
+      port: 27017
   mail:
     host: smtp.qq.com
     username: 1416978277@qq.com

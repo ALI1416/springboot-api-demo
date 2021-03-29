@@ -50,6 +50,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // ElasticSearch
     implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+    // MongoDB
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     // RabbitMQ
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     // 邮件
@@ -85,7 +87,7 @@ dependencies {
     // Minio分布式对象储存
     implementation 'io.minio:minio:8.0.3'
     // 雪花ID生成器
-    implementation 'cn.404z:id-spring-boot-autoconfigure:2.0.1'
+    implementation 'cn.404z:id-spring-boot-autoconfigure:2.1.0'
     // Hutool工具包
     implementation 'cn.hutool:hutool-all:5.5.9'
 /*仅编译时*/

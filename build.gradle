@@ -1,7 +1,7 @@
 // 插件
 plugins {
     // SpringBoot
-    id 'org.springframework.boot' version '2.4.3'
+    id 'org.springframework.boot' version '2.4.5'
     // Spring依赖管理
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     // Java语言
@@ -56,17 +56,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     // 邮件
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-    // 修复某些注解异常
+    // FindBugs:annotations修复某些注解异常
     implementation 'com.google.code.findbugs:annotations:3.0.1'
     // MyBatis
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.3'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
     // PageHelper分页排序查询
     implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.3.0'
     // FastJson
     implementation 'com.alibaba:fastjson:1.2.75'
     // EasyExcel
     implementation 'com.alibaba:easyexcel:2.2.7'
-    // MDx/SHAx加密算法
+    // MDx/SHAx加密
     implementation 'commons-codec:commons-codec:1.15'
     // IO操作
     implementation 'commons-io:commons-io:2.8.0'
@@ -88,7 +88,7 @@ dependencies {
     implementation 'io.minio:minio:8.0.3'
     // 雪花ID生成器
     implementation 'cn.404z:id-spring-boot-autoconfigure:2.1.0'
-    // Hutool工具包
+    // HuTool工具包
     implementation 'cn.hutool:hutool-all:5.5.9'
 /*仅编译时*/
     // 实体层注解
@@ -105,11 +105,8 @@ dependencies {
     // 实体层注解
     annotationProcessor 'org.projectlombok:lombok'
 /*测试*/
-    // 普通测试依赖
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        // 排除
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    // 测试
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 // 测试

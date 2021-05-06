@@ -5,7 +5,7 @@ import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ThirdLoginTypeEnum;
 import com.demo.entity.pojo.Result;
-import com.demo.service.ThirdLoginServiceBase;
+import com.demo.service.ThirdLoginService;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import com.demo.util.StringUtils;
@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ThirdLoginController {
 
     private final HttpServletRequest request;
-    private final ThirdLoginServiceBase thirdLoginService;
+    private final ThirdLoginService thirdLoginService;
 
     /**
      * 获取qq登录链接<br>

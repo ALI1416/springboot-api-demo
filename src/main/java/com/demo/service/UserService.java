@@ -38,7 +38,7 @@ import java.util.List;
  **/
 @Service
 @AllArgsConstructor
-public class UserServiceBase extends ServiceBase {
+public class UserService extends ServiceBase {
 
     private final UserMapper userMapper;
     private final UserBakMapper userBakMapper;

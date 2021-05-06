@@ -30,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Service
 @AllArgsConstructor
-public class AdminServiceBase extends ServiceBase {
+public class AdminService extends ServiceBase {
 
     private final AdminMapper adminMapper;
     private final AdminBakMapper adminBakMapper;

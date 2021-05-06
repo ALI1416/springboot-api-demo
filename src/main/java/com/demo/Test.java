@@ -1,15 +1,14 @@
 package com.demo;
 
-import java.sql.Timestamp;
-
 import com.demo.constant.CaptchaTypeEnum;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
-
 import eu.bitwalker.useragentutils.UserAgent;
+
+import java.sql.Timestamp;
 
 /**
  * <h1>测试类</h1>

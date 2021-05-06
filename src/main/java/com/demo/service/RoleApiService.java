@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Service
 @AllArgsConstructor
-public class RoleApiServiceBase extends ServiceBase {
+public class RoleApiService extends ServiceBase {
 
     private final RoleApiMapper roleApiMapper;
     private final RoleApiBakMapper roleApiBakMapper;

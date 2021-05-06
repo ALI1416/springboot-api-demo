@@ -1,16 +1,10 @@
 package com.demo.util;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
 import com.demo.entity.po.RoleApiTree;
-import com.demo.entity.vo.RoleApiRefVo;
 import com.demo.entity.vo.RoleApiTreeVo;
-import com.demo.entity.vo.RoleApiVo;
+
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <h1>api权限工具</h1>

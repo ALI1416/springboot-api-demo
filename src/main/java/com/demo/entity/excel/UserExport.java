@@ -1,13 +1,12 @@
 package com.demo.entity.excel;
 
-import java.util.Date;
-
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
-
 import com.demo.base.ToStringBase;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Date;
 
 /**
  * <h1>用户导出</h1>

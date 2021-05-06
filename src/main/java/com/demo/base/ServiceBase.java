@@ -1,7 +1,6 @@
 package com.demo.base;
 
 import com.demo.constant.Constant;
-import com.demo.base.EntityBase;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;

@@ -31,9 +31,9 @@ import java.util.Map;
  **/
 @Service
 @AllArgsConstructor
-public class ThirdLoginServiceBase extends ServiceBase {
+public class ThirdLoginService extends ServiceBase {
 
-    private final UserServiceBase userService;
+    private final UserService userService;
 
     /**
      * qq回调

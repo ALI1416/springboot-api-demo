@@ -1,11 +1,10 @@
 package com.demo.entity.vo;
 
-import java.util.List;
-
 import com.demo.entity.po.RoleApi;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * <h1>api角色值对象</h1>

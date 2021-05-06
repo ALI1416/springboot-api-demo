@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.base.ServiceBase;
 import com.demo.entity.po.RoleApiBak;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Service
 @AllArgsConstructor
-public class RoleApiService extends BaseService {
+public class RoleApiServiceBase extends ServiceBase {
 
     private final RoleApiMapper roleApiMapper;
     private final RoleApiBakMapper roleApiBakMapper;

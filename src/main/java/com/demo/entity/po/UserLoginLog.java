@@ -2,7 +2,7 @@ package com.demo.entity.po;
 
 import cn.z.id.Id;
 import com.demo.constant.UserLoginTypeEnum;
-import com.demo.entity.BaseEntity;
+import com.demo.base.EntityBase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Getter
 @Setter
-public class UserLoginLog extends BaseEntity {
+public class UserLoginLog extends EntityBase {
 
     /**
      * 登录类型：0、账号，1、邮箱，2、QQ

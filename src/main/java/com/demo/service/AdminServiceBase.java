@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.base.ServiceBase;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.entity.po.Admin;
 import com.demo.entity.po.AdminBak;
@@ -29,7 +30,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Service
 @AllArgsConstructor
-public class AdminService extends BaseService {
+public class AdminServiceBase extends ServiceBase {
 
     private final AdminMapper adminMapper;
     private final AdminBakMapper adminBakMapper;

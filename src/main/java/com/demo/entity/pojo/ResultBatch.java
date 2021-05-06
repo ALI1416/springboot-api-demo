@@ -1,11 +1,10 @@
 package com.demo.entity.pojo;
 
+import com.demo.base.ToStringBase;
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.demo.entity.BaseEntity;
-
-import lombok.Getter;
 
 /**
  * <h1>批量返回结果实体</h1>
@@ -18,7 +17,7 @@ import lombok.Getter;
  * @since 1.0.0
  **/
 @Getter
-public class ResultBatch<T> extends BaseEntity {
+public class ResultBatch<T> extends ToStringBase {
 
     /**
      * 为true的列表
@@ -76,7 +75,7 @@ public class ResultBatch<T> extends BaseEntity {
 
     /**
      * 合并多个ResultBatch
-     * 
+     *
      * @param resultBatchs 多个ResultBatch(需要相同泛型)
      */
     @SafeVarargs

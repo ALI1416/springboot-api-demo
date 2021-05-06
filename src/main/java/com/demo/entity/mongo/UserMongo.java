@@ -1,5 +1,6 @@
 package com.demo.entity.mongo;
 
+import com.demo.base.ToStringBase;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
@@ -23,7 +24,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document(collection = "user")
 // 复合索引，不推荐写在代码中
 // @CompoundIndex(def = "{'followers': 1 , 'following': -1 }")
-public class UserMongo {
+public class UserMongo extends ToStringBase {
 
     /**
      * id

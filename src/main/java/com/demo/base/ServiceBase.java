@@ -1,7 +1,7 @@
-package com.demo.service;
+package com.demo.base;
 
 import com.demo.constant.Constant;
-import com.demo.entity.BaseEntity;
+import com.demo.base.EntityBase;
 import com.demo.tool.Function;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,7 +11,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.util.List;
 
 /**
- * <h1>基服务</h1>
+ * <h1>ServiceBase</h1>
  *
  * <p>
  * createDate 2020/11/11 11:11:11
@@ -21,7 +21,7 @@ import java.util.List;
  * @since 1.0.0
  **/
 @Slf4j
-public class BaseService {
+public class ServiceBase {
 
     /**
      * try-if简化，不符合function条件的回滚
@@ -87,8 +87,8 @@ public class BaseService {
      * 分页
      *
      * @param <E>        对象类型
-     * @param baseEntity 基实体<br>
-     *                   默认分页，默认排序：baseEntity == null<br>
+     * @param entityBase 基实体<br>
+     *                   默认分页，默认排序：entityBase == null<br>
      *                   默认页码：pages == null<br>
      *                   默认每页条数：rows == null || rows <= 0<br>
      *                   默认排序：orderBy == null<br>
@@ -99,16 +99,16 @@ public class BaseService {
      * @param function   要执行的查询语句
      * @return PageInfo封装的对象
      */
-    public static <E> PageInfo<E> pagination(BaseEntity baseEntity, Function<List<E>> function) {
-        return new PageInfo<>(paginationUnpack(baseEntity, function));
+    public static <E> PageInfo<E> pagination(EntityBase entityBase, Function<List<E>> function) {
+        return new PageInfo<>(paginationUnpack(entityBase, function));
     }
 
     /**
      * 分页
      *
      * @param <E>        对象类型
-     * @param baseEntity 基实体<br>
-     *                   默认分页，默认排序：baseEntity == null<br>
+     * @param entityBase 基实体<br>
+     *                   默认分页，默认排序：entityBase == null<br>
      *                   默认页码：pages == null<br>
      *                   默认每页条数：rows == null || rows <= 0<br>
      *                   默认排序：orderBy == null<br>
@@ -119,26 +119,26 @@ public class BaseService {
      * @param function   要执行的查询语句
      * @return List封装的对象
      */
-    public static <E> List<E> paginationUnpack(BaseEntity baseEntity, Function<List<E>> function) {
+    public static <E> List<E> paginationUnpack(EntityBase entityBase, Function<List<E>> function) {
         /* 默认分页，默认排序(baseEntity为null) */
-        if (baseEntity == null) {
-            baseEntity = new BaseEntity();
-            baseEntity.setPages(Constant.PAGE_DEFAULT_PAGES);
-            baseEntity.setRows(Constant.PAGE_DEFAULT_ROWS);
-            baseEntity.setOrderBy(Constant.PAGE_DEFAULT_ORDER_BY);
+        if (entityBase == null) {
+            entityBase = new EntityBase();
+            entityBase.setPages(Constant.PAGE_DEFAULT_PAGES);
+            entityBase.setRows(Constant.PAGE_DEFAULT_ROWS);
+            entityBase.setOrderBy(Constant.PAGE_DEFAULT_ORDER_BY);
         }
         // 页码(pages为null时，默认)
-        Integer pages = baseEntity.getPages();
+        Integer pages = entityBase.getPages();
         if (pages == null) {
             pages = Constant.PAGE_DEFAULT_PAGES;
         }
         // 每页条数(rows为null或<=0时，默认)
-        Integer rows = baseEntity.getRows();
+        Integer rows = entityBase.getRows();
         if (rows == null || rows <= 0) {
             rows = Constant.PAGE_DEFAULT_ROWS;
         }
         // 排序(orderBy为null时，默认)
-        String orderBy = baseEntity.getOrderBy();
+        String orderBy = entityBase.getOrderBy();
         if (orderBy == null) {
             orderBy = Constant.PAGE_DEFAULT_ORDER_BY;
         }

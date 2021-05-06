@@ -1,5 +1,6 @@
 package com.demo.service;
 
+import com.demo.base.ServiceBase;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
 import com.demo.constant.UserLoginTypeEnum;
@@ -37,7 +38,7 @@ import java.util.List;
  **/
 @Service
 @AllArgsConstructor
-public class UserService extends BaseService {
+public class UserServiceBase extends ServiceBase {
 
     private final UserMapper userMapper;
     private final UserBakMapper userBakMapper;

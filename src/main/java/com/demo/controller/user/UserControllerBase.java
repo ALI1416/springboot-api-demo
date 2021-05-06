@@ -3,11 +3,11 @@ package com.demo.controller.user;
 import cn.z.id.Id;
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.controller.BaseController;
+import com.demo.base.ControllerBase;
 import com.demo.entity.po.User;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.UserVo;
-import com.demo.service.UserService;
+import com.demo.service.UserServiceBase;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import com.demo.util.RedisUtils;
@@ -33,10 +33,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("user")
 @AllArgsConstructor
-public class UserController extends BaseController {
+public class UserControllerBase extends ControllerBase {
 
     private final HttpServletRequest request;
-    private final UserService userService;
+    private final UserServiceBase userService;
 
     /**
      * 存在account

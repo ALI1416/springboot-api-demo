@@ -5,6 +5,7 @@ import java.util.Date;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 
+import com.demo.base.ToStringBase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +21,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class UserExport {
+public class UserExport extends ToStringBase {
 
     /**
      * 账号

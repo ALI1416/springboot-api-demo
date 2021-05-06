@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
-import static com.demo.service.BaseService.recordLog;
+import static com.demo.base.ServiceBase.recordLog;
 
 /**
  * <h1>首页api</h1>

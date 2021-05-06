@@ -1,7 +1,7 @@
 package com.demo.entity.pojo;
 
+import com.demo.base.ToStringBase;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.entity.BaseEntity;
 import lombok.Getter;
 
 /**
@@ -15,7 +15,7 @@ import lombok.Getter;
  * @since 1.0.0
  **/
 @Getter
-public class Result extends BaseEntity {
+public class Result extends ToStringBase {
 
     /**
      * 成功(状态码为0)

@@ -3,10 +3,10 @@ package com.demo.controller.admin;
 import cn.z.id.Id;
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.controller.BaseController;
+import com.demo.base.ControllerBase;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.RoleApiVo;
-import com.demo.service.RoleApiService;
+import com.demo.service.RoleApiServiceBase;
 import com.demo.util.AuthUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,10 +29,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("admin/roleApi")
 @AllArgsConstructor
-public class RoleApiManageController extends BaseController {
+public class RoleApiManageControllerBase extends ControllerBase {
 
     private final HttpServletRequest request;
-    private final RoleApiService roleApiService;
+    private final RoleApiServiceBase roleApiService;
 
     /**
      * 存在name

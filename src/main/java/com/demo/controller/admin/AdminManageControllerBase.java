@@ -3,10 +3,10 @@ package com.demo.controller.admin;
 import cn.z.id.Id;
 import com.demo.annotation.Auth;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.controller.BaseController;
+import com.demo.base.ControllerBase;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.AdminVo;
-import com.demo.service.AdminService;
+import com.demo.service.AdminServiceBase;
 import com.demo.util.AuthUtils;
 import com.demo.util.EncoderUtils;
 import lombok.AllArgsConstructor;
@@ -27,10 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("admin/admin")
 @AllArgsConstructor
-public class AdminManageController extends BaseController {
+public class AdminManageControllerBase extends ControllerBase {
 
     private final HttpServletRequest request;
-    private final AdminService adminService;
+    private final AdminServiceBase adminService;
 
     /**
      * 新增用户(需account,pwd)

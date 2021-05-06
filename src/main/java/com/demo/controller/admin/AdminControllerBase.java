@@ -1,10 +1,10 @@
 package com.demo.controller.admin;
 
 import com.demo.annotation.Auth;
-import com.demo.controller.BaseController;
+import com.demo.base.ControllerBase;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.vo.AdminVo;
-import com.demo.service.AdminService;
+import com.demo.service.AdminServiceBase;
 import com.demo.util.AuthUtils;
 import com.demo.util.RedisUtils;
 import lombok.AllArgsConstructor;
@@ -28,10 +28,10 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("admin")
 @AllArgsConstructor
-public class AdminController extends BaseController {
+public class AdminControllerBase extends ControllerBase {
 
     private final HttpServletRequest request;
-    private final AdminService adminService;
+    private final AdminServiceBase adminService;
 
     /**
      * 登录(需account,pwd)<br>

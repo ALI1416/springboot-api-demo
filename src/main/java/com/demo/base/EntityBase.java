@@ -1,7 +1,5 @@
-package com.demo.entity;
+package com.demo.base;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.demo.util.ClientInfoUtils;
 import com.demo.util.IpUtils;
 import com.demo.util.UserAgentUtils;
@@ -14,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 
 /**
- * <h1>基实体</h1>
+ * <h1>EntityBase</h1>
  *
  * <p>
- * createDate 2020/11/22 15:43:28
+ * createDate 2020/11/11 11:11:11
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
@@ -25,7 +23,7 @@ import java.sql.Timestamp;
  **/
 @Getter
 @Setter
-public class BaseEntity {
+public class EntityBase extends ToStringBase {
 
     /* ++++++++++++++++++++ 属性 ++++++++++++++++++++ */
     /* ==================== po ==================== */
@@ -144,21 +142,6 @@ public class BaseEntity {
         setUaOsName(userAgentInfo.getOperatingSystemName());
         setUaBrowserName(userAgentInfo.getBrowserName());
         setUaDeviceTypeName(userAgentInfo.getDeviceTypeName());
-    }
-
-    /* ==================== 所有类 ==================== */
-
-    /**
-     * 重写toString成JSON格式
-     */
-    @Override
-    public String toString() {
-        return JSON.toJSONStringWithDateFormat(//
-                this, //
-                "yyyy-MM-dd HH:mm:ss", // 日期格式化样式
-                SerializerFeature.DisableCircularReferenceDetect, // 禁用对象循环引用：避免$ref
-                SerializerFeature.WriteNonStringValueAsString// 非String转为String：防止long丢失精度
-        );
     }
 
 }

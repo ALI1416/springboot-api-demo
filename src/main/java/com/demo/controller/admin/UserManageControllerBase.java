@@ -2,13 +2,13 @@ package com.demo.controller.admin;
 
 import cn.z.id.Id;
 import com.demo.constant.ResultCodeEnum;
-import com.demo.controller.BaseController;
+import com.demo.base.ControllerBase;
 import com.demo.entity.excel.UserExport;
 import com.demo.entity.excel.UserImport;
 import com.demo.entity.pojo.Result;
 import com.demo.entity.pojo.ResultBatch;
 import com.demo.entity.vo.UserVo;
-import com.demo.service.UserService;
+import com.demo.service.UserServiceBase;
 import com.demo.util.*;
 import lombok.AllArgsConstructor;
 import org.elasticsearch.action.search.SearchResponse;
@@ -44,11 +44,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("admin/user")
 @AllArgsConstructor
-public class UserManageController extends BaseController {
+public class UserManageControllerBase extends ControllerBase {
 
     private final HttpServletRequest request;
     private final HttpServletResponse response;
-    private final UserService userService;
+    private final UserServiceBase userService;
 
     /**
      * 插入(需account,pwd)

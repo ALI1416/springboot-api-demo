@@ -1,7 +1,7 @@
 package com.demo.entity.po;
 
 import cn.z.id.Id;
-import com.demo.entity.BaseEntity;
+import com.demo.base.EntityBase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Getter
 @Setter
-public class AdminLoginLog extends BaseEntity {
+public class AdminLoginLog extends EntityBase {
 
     /**
      * 登录成功

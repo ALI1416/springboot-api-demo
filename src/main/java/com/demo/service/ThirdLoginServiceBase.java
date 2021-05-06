@@ -2,6 +2,7 @@ package com.demo.service;
 
 import cn.z.id.Id;
 import com.alibaba.fastjson.JSON;
+import com.demo.base.ServiceBase;
 import com.demo.constant.Constant;
 import com.demo.constant.RedisConstant;
 import com.demo.constant.ResultCodeEnum;
@@ -30,9 +31,9 @@ import java.util.Map;
  **/
 @Service
 @AllArgsConstructor
-public class ThirdLoginService extends BaseService {
+public class ThirdLoginServiceBase extends ServiceBase {
 
-    private final UserService userService;
+    private final UserServiceBase userService;
 
     /**
      * qq回调

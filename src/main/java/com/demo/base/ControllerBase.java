@@ -1,16 +1,16 @@
-package com.demo.controller;
+package com.demo.base;
 
 /**
- * <h1>基api</h1>
+ * <h1>ControllerBase</h1>
  *
  * <p>
- * createDate 2021/01/19 20:12:18
+ * createDate 2020/11/11 11:11:11
  * </p>
  *
  * @author ALI[ali-k@foxmail.com]
  * @since 1.0.0
  **/
-public class BaseController {
+public class ControllerBase {
 
     /**
      * 是null对象

@@ -1,6 +1,6 @@
 package com.demo.entity.po;
 
-import com.demo.entity.BaseEntity;
+import com.demo.base.EntityBase;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +16,7 @@ import lombok.Setter;
  **/
 @Getter
 @Setter
-public class User extends BaseEntity {
+public class User extends EntityBase {
 
     /**
      * 账号

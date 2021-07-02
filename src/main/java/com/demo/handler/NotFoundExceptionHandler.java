@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class NotFoundExceptionHandler implements ErrorController {
 
-    @Override
+    // @Override
     public String getErrorPath() {
         return "/error";
     }

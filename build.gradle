@@ -34,7 +34,7 @@ allprojects {
         // maven { url "http://192.168.2.102:8081/nexus/repository/maven-public/" }
         // 私有仓库外网
         // maven { url "http://nas.ycjdy.cn:5008/nexus/repository/maven-public/" }
-        // 阿里云central和jCenter仓库的聚合仓库
+        // 阿里云仓库
         maven { url "https://maven.aliyun.com/repository/public" }
         // central仓库
         mavenCentral()

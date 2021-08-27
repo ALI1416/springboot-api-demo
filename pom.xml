@@ -17,7 +17,14 @@
   </parent>
 
   <properties>
+    <!--java版本-->
     <java.version>11</java.version>
+    <!--maven所需java版本-->
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+    <!--某些依赖需要版本号一致-->
+    <elasticsearch.version>7.12.0</elasticsearch.version>
+    <!--依赖版本-->
     <spring-boot-maven-plugin>2.5.2</spring-boot-maven-plugin>
     <com.google.code.findbugs.annotations>3.0.1</com.google.code.findbugs.annotations>
     <mybatis-spring-boot-starter>2.2.0</mybatis-spring-boot-starter>
@@ -35,7 +42,7 @@
     <ansj_seg>5.1.6</ansj_seg>
     <minio>8.2.2</minio>
     <cn.404z.id-spring-boot-autoconfigure>2.1.0</cn.404z.id-spring-boot-autoconfigure>
-    <hutool-all>5.7.3</hutool-all>
+    <hutool-all>5.7.9</hutool-all>
   </properties>
 
   <dependencies>

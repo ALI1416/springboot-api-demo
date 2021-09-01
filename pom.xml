@@ -19,15 +19,17 @@
   <properties>
     <!--java版本-->
     <java.version>11</java.version>
-    <!--maven的java版本-->
+    <!--maven构建项目的java版本-->
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
-    <!--maven兼容依赖版本-->
-    <spring-boot-maven-plugin>2.5.4</spring-boot-maven-plugin>
+
     <!--某些依赖需要版本号一致-->
     <elasticsearch.version>7.12.0</elasticsearch.version>
+
+    <!--maven插件依赖版本-->
+    <spring-boot-maven-plugin>2.5.4</spring-boot-maven-plugin>
     <!--依赖版本-->
-    <com.google.code.findbugs.annotations>3.0.1</com.google.code.findbugs.annotations>
+    <findbugs-annotations>3.0.1</findbugs-annotations>
     <mybatis-spring-boot-starter>2.2.0</mybatis-spring-boot-starter>
     <pagehelper-spring-boot-starter>1.3.1</pagehelper-spring-boot-starter>
     <fastjson>1.2.78</fastjson>
@@ -35,15 +37,17 @@
     <commons-codec>1.15</commons-codec>
     <commons-io>2.11.0</commons-io>
     <tika-parsers>2.1.0</tika-parsers>
-    <org.mindrot.jbcrypt>0.4</org.mindrot.jbcrypt>
-    <org.lionsoul.ip2region>1.7.2</org.lionsoul.ip2region>
-    <me.ihxq.projects.phone-number-geo>1.0.8-202106</me.ihxq.projects.phone-number-geo>
-    <com.github.whvcse.easy-captcha>1.6.2</com.github.whvcse.easy-captcha>
-    <eu.bitwalker.UserAgentUtils>1.21</eu.bitwalker.UserAgentUtils>
+    <jbcrypt>0.4</jbcrypt>
+    <ip2region>1.7.2</ip2region>
+    <phone-number-geo>1.0.8-202106</phone-number-geo>
+    <easy-captcha>1.6.2</easy-captcha>
+    <UserAgentUtils>1.21</UserAgentUtils>
     <ansj_seg>5.1.6</ansj_seg>
     <minio>8.3.0</minio>
-    <cn.404z.id-spring-boot-autoconfigure>2.1.0</cn.404z.id-spring-boot-autoconfigure>
+    <id-spring-boot-autoconfigure>2.1.0</id-spring-boot-autoconfigure>
     <hutool-all>5.7.10</hutool-all>
+    <JustAuth>1.16.3</JustAuth>
+    <sa-token-spring-boot-starter>1.25.0</sa-token-spring-boot-starter>
   </properties>
 
   <dependencies>
@@ -82,7 +86,7 @@
     <dependency>
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>annotations</artifactId>
-      <version>${com.google.code.findbugs.annotations}</version>
+      <version>${findbugs-annotations}</version>
     </dependency>
     <!--MyBatis-->
     <dependency>
@@ -131,31 +135,31 @@
     <dependency>
       <groupId>org.mindrot</groupId>
       <artifactId>jbcrypt</artifactId>
-      <version>${org.mindrot.jbcrypt}</version>
+      <version>${jbcrypt}</version>
     </dependency>
     <!--IP解析-->
     <dependency>
       <groupId>org.lionsoul</groupId>
       <artifactId>ip2region</artifactId>
-      <version>${org.lionsoul.ip2region}</version>
+      <version>${ip2region}</version>
     </dependency>
     <!--手机号码归属地查询-->
     <dependency>
       <groupId>me.ihxq.projects</groupId>
       <artifactId>phone-number-geo</artifactId>
-      <version>${me.ihxq.projects.phone-number-geo}</version>
+      <version>${phone-number-geo}</version>
     </dependency>
     <!--图片验证码-->
     <dependency>
       <groupId>com.github.whvcse</groupId>
       <artifactId>easy-captcha</artifactId>
-      <version>${com.github.whvcse.easy-captcha}</version>
+      <version>${easy-captcha}</version>
     </dependency>
     <!--UserAgent解析-->
     <dependency>
       <groupId>eu.bitwalker</groupId>
       <artifactId>UserAgentUtils</artifactId>
-      <version>${eu.bitwalker.UserAgentUtils}</version>
+      <version>${UserAgentUtils}</version>
     </dependency>
     <!--Ansj分词-->
     <dependency>
@@ -173,7 +177,7 @@
     <dependency>
       <groupId>cn.404z</groupId>
       <artifactId>id-spring-boot-autoconfigure</artifactId>
-      <version>${cn.404z.id-spring-boot-autoconfigure}</version>
+      <version>${id-spring-boot-autoconfigure}</version>
     </dependency>
     <!--HuTool工具包-->
     <dependency>
@@ -181,6 +185,19 @@
       <artifactId>hutool-all</artifactId>
       <version>${hutool-all}</version>
     </dependency>
+    <!--JustAuth第三方登录-->
+    <dependency>
+      <groupId>me.zhyd.oauth</groupId>
+      <artifactId>JustAuth</artifactId>
+      <version>${JustAuth}</version>
+    </dependency>
+    <!--sa-token权限认证-->
+    <dependency>
+      <groupId>cn.dev33</groupId>
+      <artifactId>sa-token-spring-boot-starter</artifactId>
+      <version>${sa-token-spring-boot-starter}</version>
+    </dependency>
+
     <!--特殊依赖-->
     <!--实体层注解-->
     <dependency>
@@ -207,6 +224,7 @@
       <artifactId>spring-boot-configuration-processor</artifactId>
       <optional>true</optional>
     </dependency>
+
     <!--测试依赖-->
     <!--测试-->
     <dependency>

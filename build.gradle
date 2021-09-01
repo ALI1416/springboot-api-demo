@@ -98,6 +98,10 @@ dependencies {
     implementation 'cn.404z:id-spring-boot-autoconfigure:2.1.0'
     // HuTool工具包
     implementation 'cn.hutool:hutool-all:5.7.10'
+    // JustAuth第三方登录
+    implementation 'me.zhyd.oauth:JustAuth:1.16.3'
+    // sa-token权限认证
+    implementation 'cn.dev33:sa-token-spring-boot-starter:1.25.0'
 /*仅编译时*/
     // 实体层注解
     compileOnly 'org.projectlombok:lombok'

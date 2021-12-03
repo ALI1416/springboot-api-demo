@@ -49,14 +49,14 @@ public class RoleApiUtils {
         RoleApiTreeVo tree = list2Tree(map, roleApiTreeList, 1);
         System.out.println(tree);
         System.out.println(roleApiTreeList);
-//        List<RoleApiTreeVo> expandedList = tree2ExpandedList(tree);
-//        System.out.println(expandedList);
-//
-//        RoleApiTreeVo tree2 = list2Tree(roleApiTreeList, 122);
-//        System.out.println(tree2);
-//
-//        List<RoleApiTreeVo> expandedList1 = tree2List(tree2);
-//        System.out.println(expandedList1);
+       List<RoleApiTreeVo> expandedList = tree2ExpandedList(tree);
+       System.out.println(expandedList);
+
+       // RoleApiTreeVo tree2 = list2Tree(roleApiTreeList, 122);
+       // System.out.println(tree2);
+       //
+       // List<RoleApiTreeVo> expandedList1 = tree2List(tree2);
+       // System.out.println(expandedList1);
 //
 //        List<RoleApiVo> roleApiList = new ArrayList<>();
 //        roleApiList.add(new RoleApiVo(0L, ""));
